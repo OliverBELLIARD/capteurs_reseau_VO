@@ -38,6 +38,7 @@
 /* USER CODE BEGIN PD */
 #define BMP280_ADDR 0x77 << 1	// Doc bst-bmp280-ds001 page 28
 #define BMP280_ID_REG 0xD0		// Doc bst-bmp280-ds001 page 24
+#define BMP280_MODE_REG 0xF4	// Doc bst-bmp280-ds001 page 15
 
 #define BUFF_SIZE 10
 
@@ -52,7 +53,6 @@
 
 /* USER CODE BEGIN PV */
 uint8_t buff[BUFF_SIZE];
-uint8_t buff[0] = BMP280_ID_REG;
 
 /* USER CODE END PV */
 
@@ -107,8 +107,15 @@ int main(void)
 	/* USER CODE BEGIN 2 */
 	printf("\r\n=== TP Capteurs & Reseaux ===\r\n");
 
-	HAL_I2C_Master_Transmit(&hi2c1, BMP280_ADDR, buff, BUFF_SIZE, -1);
-	HAL_I2C_Master_Receive(&hi2c1, BMP280_ADDR, buff, 1, -1);
+	// Identification du BMP280
+	buff[0] = BMP280_ID_REG;
+	HAL_I2C_Master_Transmit(&hi2c1, BMP280_ADDR, buff, 1, HAL_MAX_DELAY);
+
+	HAL_I2C_Master_Receive(&hi2c1, BMP280_ADDR, buff, 1, HAL_MAX_DELAY);
+	printf("Contenu du registre 0x%02X : 0x%02X\r\n", BMP280_ID_REG, buff[0]);
+
+	// Configuration du BMP280
+
 
 	/* USER CODE END 2 */
 
