@@ -115,7 +115,11 @@ int main(void)
 	printf("Contenu du registre 0x%02X : 0x%02X\r\n", BMP280_ID_REG, buff[0]);
 
 	// Configuration du BMP280
-
+	buff[0] = BMP280_MODE_REG;
+	buff[1] = bx11;
+	HAL_I2C_Master_Transmit(&hi2c1, BMP280_ADDR, buff, 2, HAL_MAX_DELAY);
+	HAL_I2C_Master_Receive(&hi2c1, BMP280_MODE_REG, buff, 1, HAL_MAX_DELAY);
+	printf("Contenu du registre 0x%02X : 0x%02X\r\n", BMP280_MODE_REG, buff[0]);
 
 	/* USER CODE END 2 */
 
