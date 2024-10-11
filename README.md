@@ -68,5 +68,20 @@ Afin de pouvoir facilement déboguer votre programme STM32, faites en sorte que 
     /* USER CODE END 1 */
 ```
 
+Il est aussi possibe de réécrire la fonction `__io_putchar` en reprenant son prototype, c'est la méthode que nous avons choisi :
+```c
+    /* Private user code ---------------------------------------------------------*/
+    /* USER CODE BEGIN 0 */
+    int __io_putchar(int ch)
+    {
+        HAL_UART_Transmit(&huart2, (uint8_t *)&ch, 1, 0xFFFF);
+
+        return ch;
+    }
+
+    /* USER CODE END 0 */
+```
+Cette approche permet de ne pas aller modifier d'autres fichiers et de centraliser cette unique fonction de liaison série spécialisée dans le `main.c`.
+
 ### Test de la chaîne de compilation et communication UART sur USB
 Testez ce printf avec un programme de type echo.
