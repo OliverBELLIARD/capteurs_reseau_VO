@@ -18,6 +18,7 @@
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
+#include "i2c.h"
 #include "usart.h"
 #include "gpio.h"
 
@@ -102,8 +103,12 @@ int main(void)
 	/* Initialize all configured peripherals */
 	MX_GPIO_Init();
 	MX_USART2_UART_Init();
+	MX_I2C1_Init();
 	/* USER CODE BEGIN 2 */
-	printf("\r\n=== TP Capteurs & Réseaux ===\r\n");
+	printf("\r\n=== TP Capteurs & Reseaux ===\r\n");
+
+	HAL_I2C_Master_Transmit(&hi2c1, BMP280_ADDR, buff, BUFF_SIZE, -1);
+	HAL_I2C_Master_Receive(&hi2c1, BMP280_ADDR, buff, 1, -1);
 
 	/* USER CODE END 2 */
 

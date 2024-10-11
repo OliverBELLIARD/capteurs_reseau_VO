@@ -47,8 +47,8 @@ qui sont détaillés dans le code qui y est donné.
 Sous STM32CubeIDE, mettre en place une configuration adaptée à votre carte de développement STM32.
 
 Pour ce TP, vous aurez besoin des connections suivantes:
-- d'une liaison I²C. Si possible, on utilisera les broches compatibles avec l'empreinte arduino (broches PB8 et PB9) (Doc nucleo 64)
-- d'une UART sur USB (UART2 sur les broches PA2 et PA3) (Doc nucleo 64)
+- d'une liaison I²C. Si possible, on utilisera les broches compatibles avec l'empreinte arduino (broches PB8 et PB9) [(Doc nucleo 64)](https://moodle.ensea.fr/mod/resource/view.php?id=1911)
+- d'une UART sur USB (UART2 sur les broches PA2 et PA3) [(Doc nucleo 64)](https://moodle.ensea.fr/mod/resource/view.php?id=1911)
 - d'une liaison UART indépendante pour la communication avec le Raspberry (TP2)
 - d'une liaison CAN (TP4)
 
