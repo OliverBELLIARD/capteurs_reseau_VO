@@ -101,7 +101,28 @@ Il est aussi possibe de réécrire la fonction `__io_putchar` en reprenant son p
 
     /* USER CODE END 0 */
 ```
-Cette approche permet de ne pas aller modifier d'autres fichiers et de centraliser cette unique fonction de liaison série spécialisée dans le `main.c`.
+Cette approche permet de ne pas aller modifier d'autres fichiers et de centraliser cette unique fonction de liaison série spécialisée dans le `main.c`.  
 
 ### Test de la chaîne de compilation et communication UART sur USB
-Testez ce printf avec un programme de type echo.
+> Testez ce printf avec un programme de type echo.  
+
+Pour voir le retour de la lisaison série USB (USART2) nous utilisons le programme "minicom" sur linux (Ubuntu) qui permet de tout gérer depuis un terminal. Une fois le paquet installé, il suffit de lancer la communication avec la commande suivante sur un terminal :
+```bash
+minicom -D dev/ttyACM0
+```
+
+Ici notre périphérique est le `ttyACM0` mais il peut varier selon les postes. Une fois lancée la commande et la carte redémarée, on observe sur notre terminal :
+
+```
+Welcome to minicom 2.9
+
+OPTIONS: I18n 
+Port /dev/ttyACM0, 09:36:39
+
+Press CTRL-A Z for help on special keys
+
+
+=== TP Capteurs & Réseaux ===
+
+```
+
