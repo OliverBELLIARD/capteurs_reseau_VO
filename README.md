@@ -20,3 +20,53 @@ L'échelonnement des TP est le suivant:
 5. les registres contenant la température (ainsi que le format)  
 6. les registres contenant la pression (ainsi que le format)  
 7. les fonctions permettant le calcul de la température et de la pression compensées, en format entier 32 bits.  
+
+## 2.2. Setup du STM32
+### Configuration du STM32
+
+Sous STM32CubeIDE, mettre en place une configuration adaptée à votre carte de développement STM32.
+
+Pour ce TP, vous aurez besoin des connections suivantes:
+- d'une liaison I²C. Si possible, on utilisera les broches compatibles avec l'empreinte arduino (broches PB8 et PB9) (Doc nucleo 64)
+- d'une UART sur USB (UART2 sur les broches PA2 et PA3) (Doc nucleo 64)
+- d'une liaison UART indépendante pour la communication avec le Raspberry (TP2)
+- d'une liaison CAN (TP4)
+
+Prenez soin de bien choisir les ports associés à chacun de ces bus.
+
+### Redirection du print
+
+Afin de pouvoir facilement déboguer votre programme STM32, faites en sorte que la fonction printf renvoie bien ses chaînes de caractères sur la liaison UART sur USB, en ajoutant le code suivant au fichier `stm32f4xx_hal_msp.c` :  
+
+```c
+    /* USER CODE BEGIN PV */
+    extern UART_HandleTypeDef huart2;
+    /* USER CODE END PV */
+
+    /* USER CODE BEGIN Macro */
+    #ifdef __GNUC__ /* With GCC/RAISONANCE, small printf (option LD Linker->Libraries->Small printf    set to 'Yes') calls __io_putchar() */
+    #define PUTCHAR_PROTOTYPE int __io_putchar(int ch)
+    #else
+    #define PUTCHAR_PROTOTYPE int fputc(int ch, FILE *f)
+    #endif /* __GNUC__ */
+    /* USER CODE END Macro */
+
+    /* USER CODE BEGIN 1 */
+    /**
+    * @brief  Retargets the C library printf function to the USART.
+    * @param  None
+    * @retval None
+    */
+    PUTCHAR_PROTOTYPE
+    {
+    /* Place your implementation of fputc here */
+    /* e.g. write a character to the USART2 and Loop until the end of transmission */
+    HAL_UART_Transmit(&huart2, (uint8_t *)&ch, 1, 0xFFFF);
+
+    return ch;
+    }
+    /* USER CODE END 1 */
+```
+
+### Test de la chaîne de compilation et communication UART sur USB
+Testez ce printf avec un programme de type echo.
