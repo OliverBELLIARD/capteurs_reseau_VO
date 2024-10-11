@@ -35,6 +35,10 @@
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
+#define BMP280_ADDR 0x77 << 1	// Doc bst-bmp280-ds001 page 28
+#define BMP280_ID_REG 0xD0		// Doc bst-bmp280-ds001 page 24
+
+#define BUFF_SIZE 10
 
 /* USER CODE END PD */
 
@@ -46,6 +50,8 @@
 /* Private variables ---------------------------------------------------------*/
 
 /* USER CODE BEGIN PV */
+uint8_t buff[BUFF_SIZE];
+uint8_t buff[0] = BMP280_ID_REG;
 
 /* USER CODE END PV */
 

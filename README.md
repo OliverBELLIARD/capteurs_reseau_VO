@@ -126,3 +126,62 @@ Press CTRL-A Z for help on special keys
 
 ```
 
+## 2.3. Communication I²C
+### Primitives I²C sous STM32_HAL
+
+L'API HAL (Hardware Abstraction Layer) fournit par ST propose entre autres 2 primitives permettant d'interagir avec le bus I²C en mode Master:
+
+    HAL_StatusTypeDef HAL_I2C_Master_Transmit(I2C_HandleTypeDef *hi2c, uint16_t DevAddress, uint8_t *pData, uint16_t Size, uint32_t Timeout)
+
+    HAL_StatusTypeDef HAL_I2C_Master_Receive(I2C_HandleTypeDef *hi2c, uint16_t DevAddress, uint8_t *pData, uint16_t Size, uint32_t Timeout)
+
+où:
+
+    I2C_HandleTypeDef hi2c: structure stockant les informations du contrôleur I²C
+
+    uint16_t DevAddress: adresse I³C du périphérique Slave avec lequel on souhaite interagir.
+
+    uint8_t *pData: buffer de données
+
+    uint16_t Size: taille du buffer de données
+
+    uint32_t Timeout: peut prendre la valeur HAL_MAX_DELAY
+
+### Communication avec le BMP280
+
+#### Identification du BMP280
+
+L'identification du BMP280 consiste en la lecture du registre ID
+
+En I²C, la lecture se déroule de la manière suivante :
+
+1. envoyer l'adresse du registre ID
+2. recevoir 1 octet correspondant au contenu du registre
+
+Vérifiez que le contenu du registre correspond bien à la datasheet.
+Vérifiez à l'oscilloscope que la formes des trames I²C est conforme.
+
+#### Configuration du BMP280
+
+Avant de pouvoir faire une mesure, il faut configurer le BMP280.
+
+Pour commencer, nous allons utiliser la configuration suivante: mode normal, Pressure oversampling x16, Temperature oversampling x2
+
+En I²C, l'écriture dans un registre se déroule de la manière suivante:
+
+1. envoyer l'adresse du registre à écrire, suivi de la valeur du registre
+2. si on reçoit immédiatement, la valeur reçu sera la nouvelle valeur du registre
+
+Vérifiez que la configuration a bien été écrite dans le registre.
+
+#### Récupération de l'étalonnage, de la température et de la pression
+
+Récupérez en une fois le contenu des registres qui contiennent l'étalonnage du BMP280.
+
+Dans la boucle infinie du STM32, récupérez les valeurs de la température et de la pression. Envoyez sur le port série le valeurs 32 bit non compensées de la pression de la température.
+
+#### Calcul des températures et des pression compensées
+
+Retrouvez dans la datasheet du STM32 le code permettant de compenser la température et la pression à l'aide des valeurs de l'étalonnage au format entier 32 bits (on utilisera pas les flottants pour des problèmes de performance).
+
+Transmettez sur le port série les valeurs compensés de température et de pression sous un format lisible.
