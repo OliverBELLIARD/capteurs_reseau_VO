@@ -14,7 +14,7 @@ L'échelonnement des TP est le suivant:
 ## 2.1. Capteur BMP280
 À partir de la datasheet du [BMP280](https://moodle.ensea.fr/mod/resource/view.php?id=1910), on identifie les éléments suivants:
 1. les adresses I²C possibles pour ce composant :  
-Ce composant dispose de deux adresses disponibles en slave mode: 0x76 et 0x77. On peut changer cette adresse en mettant à 0 ou 1 le bit "SDO".
+Ce composant dispose de deux adresses sur 7 bits 111011x disponibles en slave mode: 0x76 et 0x77. On peut changer cette adresse en mettant à 0 ou 1 le bit "SDO".
 
 2. le registre et la valeur permettant d'identifier ce composant :  
 Le registre permettant d'identifier ce composant est à l'adresse 0xD0,  il doit contenir un chip_id à la valeur "0x58".
