@@ -13,30 +13,30 @@ L'échelonnement des TP est le suivant:
 # 2. TP 1 - Bus I2C
 ## 2.1. Capteur BMP280
 À partir de la datasheet du [BMP280](https://moodle.ensea.fr/mod/resource/view.php?id=1910), on identifie les éléments suivants:
-1. les adresses I²C possibles pour ce composant :
+1. les adresses I²C possibles pour ce composant :  
 Ce composant dispose de deux adresses disponibles en slave mode: 0x76 et 0x77. On peut changer cette adresse en mettant à 0 ou 1 le bit "SDO".
 
-2. le registre et la valeur permettant d'identifier ce composant :
+2. le registre et la valeur permettant d'identifier ce composant :  
 Le registre permettant d'identifier ce composant est à l'adresse 0xD0,  il doit contenir un chip_id à la valeur "0x58".
 
-3. le registre et la valeur permettant de placer le composant en mode normal :
+3. le registre et la valeur permettant de placer le composant en mode normal :  
 Le mode normal peut être activé en modifiant le registre de control à l'adresse
 0xF4, c'est un registre de 2 bits qu'il faut mettre à la valeur "11".
 
-4. les registres contenant l'étalonnage du composant :
+4. les registres contenant l'étalonnage du composant :  
 Les registres d'étalonnage du composant sont situés aux adresses "0x88, ..., 0xA1"
 
-5. les registres contenant la température (ainsi que le format) :
+5. les registres contenant la température (ainsi que le format) :  
 Les registres contenant les valeurs de température sont présents aux adresses
 "0xFA, 0xFB, 0xFC". La température est codée sur 20 bits, d'où la necessité d'avoir 
 plusieurs adresses. FA le MSB, FB le LSB et FC le XLSB.
 
-6. les registres contenant la pression (ainsi que le format) :
+6. les registres contenant la pression (ainsi que le format) :  
 Les registres contenant les valeurs de pression sont présents aux adresses
 "0xF7, 0xF8, 0xF9". La pression est codée sur 20 bits, d'où la necessité d'avoir 
 plusieurs adresses. F7 le MSB, F8 le LSB et F9 le XLSB.
 
-7. les fonctions permettant le calcul de la température et de la pression compensées, en format entier 32 bits :   
+7. les fonctions permettant le calcul de la température et de la pression compensées, en format entier 32 bits :    
 Les fonctions permettant les calculs compensés de la température et de la pression
 sont données dans la datasheet page 22. On doit se servir de coefficients de compensation
 qui sont détaillés dans le code qui y est donné.
