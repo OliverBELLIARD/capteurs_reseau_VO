@@ -224,3 +224,38 @@ Dans la boucle infinie du STM32, récupérez les valeurs de la température et d
 Retrouvez dans la datasheet du STM32 le code permettant de compenser la température et la pression à l'aide des valeurs de l'étalonnage au format entier 32 bits (on utilisera pas les flottants pour des problèmes de performance).
 
 Transmettez sur le port série les valeurs compensés de température et de pression sous un format lisible.
+
+# 3. TP2 - Interfaçage STM32 - Raspberry
+## 3.1. Mise en route du Raspberry PI Zéro
+Le Pi Zero est suffisamment peu puissant pour être alimenté par le port USB de l'ordinateur.
+
+### Préparation du Raspberry
+Si le connecteur GPIO n'est pas encore soudé sur votre Raspberry Pi Zero, faites-le.
+
+Téléchargez l'image "Raspberry Pi OS (32-bit) Lite" et installez la sur la carte SD, disponible à cette adresse:  https://www.raspberrypi.org/downloads/raspberry-pi-os/.
+
+Pour l'installation sur la carte SD, vous pouvez utiliser:
+
+- Rpi_Imager: https://www.raspberrypi.com/software/  
+- BalenaEtcher: https://www.balena.io/etcher/  
+
+Rpi_imager va vous permettre de choisir l'image, de la télécharger et de la configurer.
+
+Configuration réseau du routeur utilisé en TP :
+
+SSID : ESE_Bus_Network  
+Password : ilovelinux  
+  
+ou  
+  
+SSID : D060-2Ghz  
+Password : ilovelinux  
+
+### Premier démarrage
+Installez la carte SD dans le Raspberry et branchez l'alimentation.
+
+> utilisateur : voese  
+> mdp : voese
+> IP : 192.168.88.XXX
+  
+Utilisez ssh pour vous connecter à votre Raspberry. Comment le Raspberry a obtenu son adresse IP ? 
