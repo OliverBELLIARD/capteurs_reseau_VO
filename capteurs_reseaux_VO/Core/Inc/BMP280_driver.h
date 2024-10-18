@@ -8,10 +8,10 @@
 #define BMP280_REG_CALIBRATION 0x88	// Doc bst-bmp280-ds001 page 24, calib25 to calib00, 0x88…0xA1
 
 #define BMP280_REG_TEMP_MSB 0xFA	// Temperature MSB register: 0xFA...0xFC. Doc bst-bmp280-ds001 page 24
-#define BMP280_TEMP_LEN 3
+#define BMP280_LEN_TEMP 3
 
 #define BMP280_REG_PRES_MSB 0xF7	// Pressure MSB register: 0xF7...0xF9, Doc bst-bmp280-ds001 page 24
-#define BMP280_PRES_LEN 3
+#define BMP280_LEN_PRES 3
 
 #define BMP280_CONFIG ((0b010<<5)|(0b101<<2)|(0b11)) // Temperature oversampling x2|Pressure oversampling x16|normal mode
 
@@ -24,6 +24,7 @@ typedef int64_t BMP280_S64_t;
 
 int BMP280_Check_id(void);
 int BMP280_Config(void);
+void BMP280_calibration(void);
 BMP280_S32_t BMP280_compensate_T_int32(BMP280_S32_t);
 BMP280_U32_t BMP280_compensate_P_int64(BMP280_S32_t);
 int BMP280_Write_Reg(uint8_t, uint8_t);

@@ -10,7 +10,7 @@ int BMP280_Check_id(void)
 
 	buff[0] = BMP280_REG_ID;
 
-	ret = HAL_I2C_Master_Transmit(&hi2c1,BMP280_ADDR, buff, 1, HAL_MAX_DELAY);
+	ret = HAL_I2C_Master_Transmit(&hi2c1, BMP280_ADDR, buff, 1, HAL_MAX_DELAY);
 	if(ret != HAL_OK){
 		printf("I2C Transmit failure\r\n");
 		return EXIT_FAILURE;
@@ -68,6 +68,45 @@ int16_t dig_P8;
 int16_t dig_P9;
 
 BMP280_S32_t t_fine;
+/*
+ * Update the calibration parameters.
+ */
+void BMP280_calibration(void)
+{
+	uint8_t buff[BUFF_SIZE];
+	uint8_t receive_buf[24];
+	HAL_StatusTypeDef ret; 		// I2C operations status
+
+	buff[0]= BMP280_REG_CALIBRATION;
+
+	ret = HAL_I2C_Master_Transmit(&hi2c1, BMP280_ADDR, buff, 1, HAL_MAX_DELAY);
+	if(ret != HAL_OK){
+		printf("I2C Transmit failure\r\n");
+	}
+
+	ret = HAL_I2C_Master_Receive(&hi2c1, BMP280_ADDR, receive_buf, 24, HAL_MAX_DELAY);
+	if(ret != HAL_OK){
+		printf("I2C Receive failure\r\n");
+	}
+
+	printf("Current calibration values:\r\n");
+	for(int i=0;i<24;i++){
+		printf("calib %2d = 0x%x\r\n",i, receive_buf[i]);
+	}
+
+	dig_T1 = receive_buf[0]|(receive_buf[1]<<8);
+	dig_T2 = receive_buf[2]|(receive_buf[3]<<8);
+	dig_T3 = receive_buf[4]|(receive_buf[5]<<8);
+	dig_P1 = receive_buf[6]|(receive_buf[7]<<8);
+	dig_P2 = receive_buf[8]|(receive_buf[9]<<8);
+	dig_P3 = receive_buf[10]|(receive_buf[11]<<8);
+	dig_P4 = receive_buf[12]|(receive_buf[13]<<8);
+	dig_P5 = receive_buf[14]|(receive_buf[15]<<8);
+	dig_P6 = receive_buf[16]|(receive_buf[17]<<8);
+	dig_P7 = receive_buf[18]|(receive_buf[19]<<8);
+	dig_P8 = receive_buf[20]|(receive_buf[21]<<8);
+	dig_P9 = receive_buf[22]|(receive_buf[23]<<8);
+}
 
 /* Returns temperature in DegC, resolution is 0.01 DegC. Output value of “5123” equals 51.23 DegC.
  * t_fine carries fine temperature as global value
@@ -109,22 +148,23 @@ BMP280_U32_t BMP280_compensate_P_int64(BMP280_S32_t adc_P)
 }
 
 int BMP280_Write_Reg(uint8_t reg, uint8_t value) {
-	uint8_t buf[BMP280_TEMP_LEN];
+	uint8_t buff[BUFF_SIZE];
 	HAL_StatusTypeDef ret;
 
-	buf[0] = reg;
-	buf[1] = value;
-	ret = HAL_I2C_Master_Transmit(&hi2c1, BMP280_ADDR, buf, 2, HAL_MAX_DELAY);
+	buff[0] = reg;
+	buff[1] = value;
+
+	ret = HAL_I2C_Master_Transmit(&hi2c1, BMP280_ADDR, buff, 2, HAL_MAX_DELAY);
 	if (ret != 0) {
 		printf("Problem with I2C Transmit\r\n");
 	}
 
-	ret = HAL_I2C_Master_Receive(&hi2c1, BMP280_ADDR, buf, 1, HAL_MAX_DELAY);
+	ret = HAL_I2C_Master_Receive(&hi2c1, BMP280_ADDR, buff, 1, HAL_MAX_DELAY);
 	if (ret != 0) {
 		printf("Problem with I2C Receive\r\n");
 	}
 
-	if (buf[0] == value) {
+	if (buff[0] == value) {
 		return EXIT_FAILURE;
 	} else {
 		return EXIT_SUCCESS;
@@ -154,7 +194,7 @@ BMP280_S32_t BMP280_get_temperature() {
 	uint8_t *buf;
 	BMP280_S32_t adc_T;
 
-	buf = BMP280_Read_Reg(BMP280_REG_TEMP_MSB, BMP280_TEMP_LEN);
+	buf = BMP280_Read_Reg(BMP280_REG_TEMP_MSB, BMP280_LEN_TEMP);
 
 	adc_T = ((BMP280_S32_t) (buf[0]) << 12) | ((BMP280_S32_t) (buf[1]) << 4)
 			| ((BMP280_S32_t) (buf[2]) >> 4);
@@ -177,7 +217,7 @@ BMP280_S32_t BMP280_get_pressure() {
 	uint8_t *buf;
 	BMP280_S32_t adc_P;
 
-	buf = BMP280_Read_Reg(BMP280_REG_PRES_MSB, BMP280_PRES_LEN);
+	buf = BMP280_Read_Reg(BMP280_REG_PRES_MSB, BMP280_LEN_PRES);
 
 	adc_P = ((BMP280_S32_t) (buf[0]) << 12) | ((BMP280_S32_t) (buf[1]) << 4)
 			| ((BMP280_S32_t) (buf[2]) >> 4);
