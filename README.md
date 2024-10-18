@@ -1,6 +1,7 @@
 # ***Projet Capteurs & reseaux***
 > *Auteurs : Oliver BELLIARD & Valérian PRIOU*  
 > *Enseignant encadrant : Christophe BARES*
+> *Boite utilisée : n°6*
 
 # 1. Présentation
 Ensemble de TP de Bus & Réseaux. Ces TP seront réalisés en C pour la partie STM32, et Python pour la partie Raspberry Pi.
