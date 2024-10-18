@@ -246,5 +246,10 @@ On installe la carte SD dans le Raspberry puis on branche l'alimentation.
 > utilisateur : voese  
 > mdp : voese  
 > IP : 192.168.88.230
+
+Pour nous connecter en SSH au Raspberry nous utilisons la commande :
+```bash
+ssh voese@192.168.88.230
+```
   
 On utilisez ssh pour vous connecter à votre Raspberry. Comment le Raspberry a obtenu son adresse IP ? 
