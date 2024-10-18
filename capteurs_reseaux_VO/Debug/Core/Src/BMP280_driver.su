@@ -1,2 +1,8 @@
-../Core/Src/BMP280_driver.c:10:5:BMP280_CheckID	16	static
-../Core/Src/BMP280_driver.c:30:5:BMP280_Config	16	static
+../Core/Src/BMP280_driver.c:6:5:BMP280_Check_id	32	static
+../Core/Src/BMP280_driver.c:29:5:BMP280_Config	32	static
+../Core/Src/BMP280_driver.c:75:14:BMP280_compensate_T_int32	32	static
+../Core/Src/BMP280_driver.c:89:14:BMP280_compensate_P_int64	328	static
+../Core/Src/BMP280_driver.c:111:5:BMP280_Write_Reg	32	static
+../Core/Src/BMP280_driver.c:134:10:BMP280_Read_Reg	32	static
+../Core/Src/BMP280_driver.c:153:14:BMP280_get_temperature	16	static
+../Core/Src/BMP280_driver.c:176:14:BMP280_get_pressure	16	static

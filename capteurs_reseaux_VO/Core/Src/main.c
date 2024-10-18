@@ -105,15 +105,19 @@ int main(void)
 	printf("\r\n=== TP Capteurs & Reseaux ===\r\n");
 
 	/* Identification du BMP280 */
+	/*
 	buff[0] = BMP280_REG_ID;
 	HAL_I2C_Master_Transmit(&hi2c1, BMP280_ADDR, buff, 1, HAL_MAX_DELAY);
 
 	HAL_I2C_Master_Receive(&hi2c1, BMP280_ADDR, buff, 1, HAL_MAX_DELAY);
 	printf("Contenu du registre 0x%02X (id) : 0x%02X\r\n", BMP280_REG_ID, buff[0]);
+	*/
 
 	/* Configuration du BMP280 */
-	BMP280_CheckID();
+	BMP280_Check_id();
 	BMP280_Config();
+	BMP280_get_temperature();
+	BMP280_get_pressure();
 
 	/* USER CODE END 2 */
 
