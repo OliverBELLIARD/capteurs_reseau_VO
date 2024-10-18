@@ -1,0 +1,2 @@
+../Core/Src/BMP280_driver.c:10:5:BMP280_CheckID	16	static
+../Core/Src/BMP280_driver.c:30:5:BMP280_Config	16	static

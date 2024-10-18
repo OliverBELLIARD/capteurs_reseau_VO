@@ -26,6 +26,7 @@
 /* USER CODE BEGIN Includes */
 #include <stdio.h>
 #include <stdlib.h>
+#include "BMP280_driver.h"
 
 /* USER CODE END Includes */
 
@@ -36,16 +37,6 @@
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
-#define BMP280_ADDR 0x77 << 1		// Doc bst-bmp280-ds001 page 28
-#define BMP280_REG_ID 0xD0			// Doc bst-bmp280-ds001 page 24
-#define BMP280_REG_MODE 0xF4		// Doc bst-bmp280-ds001 page 15
-#define BMP280_REG_FILTER 0xF5		// Doc bst-bmp280-ds001 page 13
-#define BMP280_REG_CALIBRATION 0x88	// Doc bst-bmp280-ds001 page 24, calib25 to calib00, 0x88…0xA1
-#define BMP280_REG_TEMPERATURE 0xFA	// Temperature MSB register: 0xFA...0xFC. Doc bst-bmp280-ds001 page 24
-#define BMP280_REG_PRESSURE 0xF7	// Pressure MSB register: 0xF7...0xF9, Doc bst-bmp280-ds001 page 24
-#define BMP280_CONFIG ((0b010<<5)|(0b101<<2)|(0b11)) // Temperature oversampling x2|Pressure oversampling x16|normal mode
-
-#define BUFF_SIZE 10
 
 /* USER CODE END PD */
 
@@ -57,7 +48,6 @@
 /* Private variables ---------------------------------------------------------*/
 
 /* USER CODE BEGIN PV */
-uint8_t buff[BUFF_SIZE];
 
 /* USER CODE END PV */
 
@@ -72,53 +62,9 @@ void SystemClock_Config(void);
 int __io_putchar(int ch)
 {
 	HAL_UART_Transmit(&huart2, (uint8_t *)&ch, 1, 0xFFFF);
+	HAL_UART_Transmit(&huart1, (uint8_t *)&ch, 1, 0xFFFF);
 
 	return ch;
-}
-
-HAL_StatusTypeDef ret; // Status des opérations I2C
-
-int BMP280_CheckID(void){
-	buff[0] = BMP280_REG_ID;
-
-	ret = HAL_I2C_Master_Transmit(&hi2c1,BMP280_ADDR, buff, 1, HAL_MAX_DELAY);
-	if(ret != HAL_OK){
-		printf("I2C failure\r\n");
-		return EXIT_FAILURE;
-	}
-	ret = HAL_I2C_Master_Receive(&hi2c1, BMP280_ADDR, buff, 1, HAL_MAX_DELAY);
-	if(ret != HAL_OK){
-		printf("I2C failure\r\n");
-		return EXIT_FAILURE;
-	}
-
-	printf("BMP280 ID: 0x%X\r\n", buff[0]);
-
-	return EXIT_SUCCESS;
-}
-
-int BMP280_Config(void){
-	buff[0]= BMP280_REG_MODE;
-	buff[1]= BMP280_CONFIG;
-
-	ret = HAL_I2C_Master_Transmit(&hi2c1,BMP280_ADDR, buff, 2, HAL_MAX_DELAY);
-	if(ret != HAL_OK){
-		printf("I2C failure\r\n");
-		return EXIT_FAILURE;
-	}
-
-	ret = HAL_I2C_Master_Receive(&hi2c1, BMP280_ADDR, buff, 1, HAL_MAX_DELAY);
-	if(ret != HAL_OK){
-		printf("I2C failure\r\n");
-		return EXIT_FAILURE;
-	}
-
-	if(buff[0] == BMP280_CONFIG){
-		printf("La config envoyée reçue avec succès\r\n");
-		return EXIT_SUCCESS;
-	}
-
-	return 1;
 }
 
 /* USER CODE END 0 */
@@ -154,6 +100,7 @@ int main(void)
 	MX_GPIO_Init();
 	MX_USART2_UART_Init();
 	MX_I2C1_Init();
+	MX_USART1_UART_Init();
 	/* USER CODE BEGIN 2 */
 	printf("\r\n=== TP Capteurs & Reseaux ===\r\n");
 
@@ -165,7 +112,8 @@ int main(void)
 	printf("Contenu du registre 0x%02X (id) : 0x%02X\r\n", BMP280_REG_ID, buff[0]);
 
 	/* Configuration du BMP280 */
-	// Configuration du mode
+	BMP280_CheckID();
+	BMP280_Config();
 
 	/* USER CODE END 2 */
 
