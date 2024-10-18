@@ -257,4 +257,9 @@ Pour nous connecter en SSH au Raspberry nous utilisons la commande :
 ssh voese@192.168.88.230
 ```
   
-On utilisez ssh pour vous connecter à votre Raspberry. Comment le Raspberry a obtenu son adresse IP ? 
+On utilisez ssh pour vous connecter à votre Raspberry.  
+Comment le Raspberry a obtenu son adresse IP ? 
+
+Le Raspberry Pi a obtenu son adresse IP via le réseau Wi-Fi auquel il s'est connecté, spécialement paramétré pour le TP : ESE_Bus_Network.  
+Celui-ci est de la forme "192.168.88.XXX" avec les "X" définis par l'ordre auquel on est arrivé sur le réseau  
+par rapport aux autres élèves de la classe.
