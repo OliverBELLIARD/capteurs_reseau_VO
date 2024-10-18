@@ -240,6 +240,11 @@ Configuration réseau du routeur utilisé en TP :
 SSID : ESE_Bus_Network  
 Password : ilovelinux  
 
+Pour activer le port série sur connecteur GPIO, sur la partition boot, modifiez le fichier config.txt pour ajouter à la fin les lignes suivantes :  
+```
+enable_uart=1  
+dtoverlay=disable-bt  
+```
 ### Premier démarrage
 On installe la carte SD dans le Raspberry puis on branche l'alimentation.
 
