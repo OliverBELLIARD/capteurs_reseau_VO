@@ -255,7 +255,7 @@ Password : ilovelinux
 Installez la carte SD dans le Raspberry et branchez l'alimentation.
 
 > utilisateur : voese  
-> mdp : voese
+> mdp : voese  
 > IP : 192.168.88.XXX
   
 Utilisez ssh pour vous connecter à votre Raspberry. Comment le Raspberry a obtenu son adresse IP ? 
