@@ -1,6 +1,6 @@
 # ***Projet Capteurs & reseaux***
 > *Auteurs : Oliver BELLIARD & Valérian PRIOU*  
-> *Enseignant encadrant : Christophe BARES*
+> *Enseignant encadrant : Christophe BARES*  
 > *Boite utilisée : n°6*
 
 # 1. Présentation
