@@ -256,10 +256,18 @@ Pour nous connecter en SSH au Raspberry nous utilisons la commande :
 ```bash
 ssh voese@192.168.88.230
 ```
-  
-On utilisez ssh pour vous connecter à votre Raspberry.  
+
 Comment le Raspberry a obtenu son adresse IP ? 
 
 Le Raspberry Pi a obtenu son adresse IP via le réseau Wi-Fi auquel il s'est connecté.
 Celui-ci est de la forme "192.168.88.XXX" avec les "X" définis par l'ordre auquel on est arrivé sur le réseau  
 par rapport aux autres élèves de la classe.
+
+On doit ensuite effectuer des modifications dans le fichier config.txt pour ajouter à la fin du fichier les lignes suivantes :  
+enable_uart=1  
+dtoverlay=disable-bt
+Ensuite, dans la fichier cmdline.txt on doit retirer l'option "console=serial0,115200".
+
+Pour vérifier si le port série de la Raspberry fonctionne bien, on branche d'abord son TX et RX en loopback et on utilise la commande "minicom -D /dev/ttyAMA0" pour voir si les caractères qu'on rentre nous sont renvoyés, ce qui est vrai dans notre cas donc le port série de la Raspberry est correctement configuré.
+
+On peut maintenant brancher les pins TX/RX de notre Raspberry sur le UART1 du STM32 et notre capteur en I2C sur la STM32. On pense au passage à ne pas oublier de ramener la masse commune à la Raspberry.
