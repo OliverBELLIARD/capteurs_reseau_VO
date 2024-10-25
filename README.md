@@ -342,6 +342,31 @@ pi@raspberrypi:~/server $ FLASK_APP=hello.py FLASK_ENV=development flask run --h
 ```
 La constante `FLASK_ENV=development` permet de lancer un mode debug. À partir de maintenant, vous pouvez tester votre serveur web avec un navigateur.
 
+Une fois la commande lancée, le serveur se démarre :  
+```bash
+(REST_server) vo@voese:~/REST_server $ FLASK_APP=hello.py FLASK_ENV=development flask run --host 0.0.0.0
+ * Serving Flask app 'hello.py'
+ * Debug mode: off
+WARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.88.230:5000
+Press CTRL+C to quit
+```
+On nous y explique qu'on peut maintenant se connecter au serveur depuis le localhost (http://127.0.0.1:5000) ou depuis une adresse "externe", ce qui nous intéresse ici car on cherche à tester notre serveur depuis mon PC personnel.
+
+Depuis mon navigateur la connexion fonctionne bien et on obtien cet aperçu :  
+
+<html><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8"></head><body>Welcome to 3ESE API!</body></html>  
+
+
+Côté serveur, cette ligne apparaît :  
+```BASH
+192.168.88.222 - - [25/Oct/2024 08:37:18] "GET / HTTP/1.1" 200 -
+```
+Signifiant que mon ordinateur s'est bien connecté à notre serveur REST.
+
 ## 4.2. Première page REST
 ### Première route
 
