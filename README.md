@@ -367,6 +367,17 @@ Côté serveur, cette ligne apparaît :
 ```
 Signifiant que mon ordinateur s'est bien connecté à notre serveur REST.
 
+## Télécharger des fichiers depuis le Raspberry
+On peut profiter de la connection en SSH pour téléchager des fichiers pour notre contrôle de version. Il suffit d'utiliser le protocole SFTP (SSH File Transfer System) avec la commande suivante :
+```bash
+sftp vo@192.168.88.230
+```
+On rappelle qu'ici `vo` est notre utilisateur det `192.168.88.230` l'ip du Raspberry. Ensuite, pour télécharger le dossier de notre projet on utilise la commande :
+```bash
+get -r <nom_du_dossier>/
+```
+Le téléchargement du dossier et son contenu se télécharge alors dans le dossier où pointe notre terminal local.
+
 ## 4.2. Première page REST
 ### Première route
 
