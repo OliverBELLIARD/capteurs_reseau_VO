@@ -366,3 +366,46 @@ Pour pouvoir prétendre être RESTful, notre serveur va devoir:
     - différencier les méthodes HTTP
   
 C’est ce que nous allons voir maintenant.
+
+### Première page REST
+#### Réponse JSON
+
+Un module JSON est disponible dans la librairie standard de python: https://docs.python.org/3/library/json.html Le plus simple pour générer du JSON est d’utiliser la fonction json.dumps() sur un objet Python. Vous pouvez par exemple remplacer la dernière ligne de la fonction api_welcome_index par:
+
+return json.dumps({"index": index, "val": welcome[index]})
+
+(oubliez pas le import json en début de fichier!)
+
+Testez le résultat. Est-ce suffisant pour dire que la réponse est bien du JSON? Observez en particulier les entêtes de la réponse: sous Firefox ou Chrome ouvrez les outils de développement (F12), selectionnez l’onglet “réseau” et rechargez la page. Vous pouvez normalement trouver l’entête de réponse Content-Type: ce n’est pas du JSON!
+
+#### 1re solution
+
+Il faut modifier la réponse renvoyée par flask, en ajoutant au contenu du return des entêtes personnalisés sous forme d’un dictionnaire:
+
+return json.dumps({"index": index, "val": welcome[index]}), {"Content-Type": "application/json"}
+
+À partir de maintenant la réponse est bien du JSON, et Firefox vous présente le résultat de manière différente (Chrome aussi, mais c’est moins visible).
+
+#### 2e solution
+
+L’utilisation de json avec flask étant très fréquente, une fonction jsonify() existe dans la bibliothèque. Elle est accessible après un from flask import jsonify. Cette fonction gère à la fois la conversion en json et l’ajout de l’entête.
+
+Modifiez votre code pour utiliser jsonify et testez le.
+
+### Erreur 404
+
+Il arrive souvent que les URL demandées soient fausses, il faut donc que votre serveur renvoie une erreur 404.
+
+Téléchargez le fichiers page_not_found.html (en ressource) et placez le dans un nouveau répertoire templates (nom de chemin imposé par flask). Le plus simple pour créer ce fichier est de créer un fichier vide, puis de copier-coller son contenu (<shift>+<insert> sous windows). Une autre solution est d'utiliser un utilitaire de copie sur ssh: scp (pscp sous windows, à télécharger sur le site: https://www.chiark.greenend.org.uk/~sgtatham/putty/latest.html).
+
+Ajoutez les lignes suivantes à votre hello.py:
+
+@app.errorhandler(404)
+def page_not_found(error):
+    return render_template('page_not_found.html'), 404
+
+Ainsi vous contrôlez la page d’erreur 404.
+
+Modifiez la fonctions api_welcome_index de manière à retourner cette page 404 si jamais l’index n’est pas correct. Flask fournit une fonction pour cela : abort(404).
+
+Une autre méthode aurai pu être utilisée: redirect avec url_for. plus d’info: https://flask.palletsprojects.com/en/1.1.x/quickstart/#redirects-and-errors
