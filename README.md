@@ -332,18 +332,17 @@ On peut tester votre nouveau serveur avec la commande curl (dans un 2e terminal)
 ```bash
 pi@raspberrypi:~/server $ curl http://127.0.0.1:5000 -s -D -
 ```
--s : Cette option active le "mode silencieux" pour supprimer les messages de progression ou d'erreur standard. Cela permet d'afficher uniquement la réponse.
+    - `-s` : Cette option active le "mode silencieux" pour supprimer les messages de progression ou d'erreur standard. Cela permet d'afficher uniquement la réponse.
+    - `-D -` : Cette option demande à curl d'afficher les en-têtes de la réponse HTTP (comme le code de statut, les en-têtes de type de contenu, etc.) au lieu de les enregistrer dans un fichier. Le - indique que les en-têtes seront affichés dans la sortie standard (le terminal).
 
--D - : Cette option demande à curl d'afficher les en-têtes de la réponse HTTP (comme le code de statut, les en-têtes de type de contenu, etc.) au lieu de les enregistrer dans un fichier. Le - indique que les en-têtes seront affichés dans la sortie standard (le terminal).
-
-Le problème est que votre serveur ne fonctionne pour le moment que sur la loopback. Cela est résolu avec:
+Le problème est que votre serveur ne fonctionne pour le moment que sur la loopback. Cela est résolu avec :
 ```bash
 pi@raspberrypi:~/server $ FLASK_APP=hello.py FLASK_ENV=development flask run --host 0.0.0.0
 ```
-La constante `FLASK_ENV=development` permet de lancer un mode debug. À partir de maintenant, vous pouvez tester votre serveur web avec un navigateur.
+La constante `FLASK_ENV=development` permet de lancer un mode debug. À partir de maintenant, on peut tester notre serveur web avec un navigateur.
 
 Une fois la commande lancée, le serveur se démarre :  
-```bash
+```terminal
 (REST_server) vo@voese:~/REST_server $ FLASK_APP=hello.py FLASK_ENV=development flask run --host 0.0.0.0
  * Serving Flask app 'hello.py'
  * Debug mode: off
@@ -376,7 +375,7 @@ On rappelle qu'ici `vo` est notre utilisateur det `192.168.88.230` l'ip du Raspb
 ```bash
 get -r <nom_du_dossier>/
 ```
-Le téléchargement du dossier et son contenu se télécharge alors dans le dossier où pointe notre terminal local.
+Le téléchargement du dossier et son contenu se télécharge alors dans le dossier où pointe notre terminal local. Nous avons trouvé [ce tuto](https://www.digitalocean.com/community/tutorials/how-to-use-sftp-to-securely-transfer-files-with-a-remote-server) qui nous a permis de comprendre rapidement son fonctionnement avec la documentation à travers la commande `man sftp`.
 
 ## 4.2. Première page REST
 ### Première route
