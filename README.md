@@ -330,11 +330,13 @@ pi@raspberrypi:~/server $ FLASK_APP=hello.py flask run
 ```
 On peut tester votre nouveau serveur avec la commande curl (dans un 2e terminal):
 ```bash
-pi@raspberrypi:~/server $ curl http://127.0.0.1:5000
+pi@raspberrypi:~/server $ curl http://127.0.0.1:5000 -s -D -
 ```
-On peut aussi ajouter les options `-s -D -` à cette commande pour visualiser les headers de la réponse HTTP (on regarde en particulier le champ Server)
+-s : Cette option active le "mode silencieux" pour supprimer les messages de progression ou d'erreur standard. Cela permet d'afficher uniquement la réponse.
 
-Le problème est que votre serveur ne fonctionne pour le moment que sur la loopback. Cela est résolue avec:
+-D - : Cette option demande à curl d'afficher les en-têtes de la réponse HTTP (comme le code de statut, les en-têtes de type de contenu, etc.) au lieu de les enregistrer dans un fichier. Le - indique que les en-têtes seront affichés dans la sortie standard (le terminal).
+
+Le problème est que votre serveur ne fonctionne pour le moment que sur la loopback. Cela est résolu avec:
 ```bash
 pi@raspberrypi:~/server $ FLASK_APP=hello.py FLASK_ENV=development flask run --host 0.0.0.0
 ```
