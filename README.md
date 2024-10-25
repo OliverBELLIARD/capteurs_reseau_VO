@@ -309,6 +309,6 @@ pipenv shell
 ```
 Ensuite il suffira de lancer la commande :
 ```bash
-pipenv install
+pipenv install -r requirements.txt
 ```
 Pour installer les paquets requis contenus dans le fichier `requirements.txt` créé précédemment.
