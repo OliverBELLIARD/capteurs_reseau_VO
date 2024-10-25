@@ -285,3 +285,26 @@ sudo usermod -aG dialout <username>
 Notre nouvel utilisateur est :
 > utilisateur : vo  
 > mdp : voese
+
+Nous avons créé un environnement Python pour notre projet avec les commandes :
+```bash
+python3 -m venv REST_VENV
+```
+Puis, pour activer l'environnement nous utilisons la commande :
+```bash
+source REST_VENV/bin/activate
+```
+Cependant, par soucis de simplicité, nous utiliseront le wrapper de venv : `pipenv`.  
+Pour celà on installe le package :
+```bash
+sudo apt install pipenv
+```
+Puis on crée un environnement virtuel Python 3 :
+```bash
+pipenv --python 3
+```
+Ensuite il suffira de lancer la commande :
+```bash
+pipenv install
+```
+Pour installer les paquets requis contenus dans le fichier `requirement.txt` créé précédemment.
