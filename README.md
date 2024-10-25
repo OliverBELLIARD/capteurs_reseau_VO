@@ -431,18 +431,20 @@ Un module JSON est disponible dans la librairie standard de python: https://docs
 return json.dumps({"index": index, "val": welcome[index]})
 ```
 (oubliez pas le import json en début de fichier!)
-`python
+```python
 import json`
 ```
 
-Est-ce suffisant pour dire que la réponse est bien du JSON? Non, car la page n'a pas encore été "JSONifiée", en Flask, pour indiquer explicitement que le contenu est de type JSON, il est préférable d’utiliser `jsonify`, qui va non seulement convertir les données en JSON mais aussi définir l’en-tête `Content-Type` à `application/json`, ce qui aide les clients à reconnaître le format de la réponse.
+**Est-ce suffisant pour dire que la réponse est bien du JSON?**  
+Non, car la page n'a pas encore été "JSONifiée", en Flask, pour indiquer explicitement que le contenu est de type JSON, il est préférable d’utiliser `jsonify`, qui va non seulement convertir les données en JSON mais aussi définir l’en-tête `Content-Type` à `application/json`, ce qui aide les clients à reconnaître le format de la réponse.  
 On peut observer en particulier les entêtes de la réponse: sous Firefox ou Chrome il faut ouvrir les outils de développement (F12), en selectionnant l’onglet “réseau” et en rechargeant la page. On peut alors normalement trouver l’entête de réponse Content-Type: ce n’est effectivement pas du JSON!
 
 #### 1re solution
 
-Il faut modifier la réponse renvoyée par flask, en ajoutant au contenu du return des entêtes personnalisés sous forme d’un dictionnaire:
-
+Il faut modifier la réponse renvoyée par flask, car la réponse par défaut est sous format HTML. On doit alors ajouter au contenu du return des entêtes personnalisées sous forme d’un dictionnaire:  
+```python
 return json.dumps({"index": index, "val": welcome[index]}), {"Content-Type": "application/json"}
+```
 
 À partir de maintenant la réponse est bien du JSON, et Firefox vous présente le résultat de manière différente (Chrome aussi, mais c’est moins visible).
 
@@ -451,6 +453,12 @@ return json.dumps({"index": index, "val": welcome[index]}), {"Content-Type": "ap
 L’utilisation de json avec flask étant très fréquente, une fonction jsonify() existe dans la bibliothèque. Elle est accessible après un from flask import jsonify. Cette fonction gère à la fois la conversion en json et l’ajout de l’entête.
 
 Modifiez votre code pour utiliser jsonify et testez le.
+
+En ecrivant notre code de cette façon :  
+```python
+return jsonify({"message": 'Hello, World!'})
+```
+nous obtenons bel et bien un résultat en json si nous le vérifions sur firefox.
 
 ### Erreur 404
 
