@@ -303,8 +303,12 @@ Puis on crée un environnement virtuel Python 3 :
 ```bash
 pipenv --python 3
 ```
+Pour activer l'environnement virtuel que nous venons de créer il suffit d'utiliser la commande :
+```bash
+pipenv shell
+```
 Ensuite il suffira de lancer la commande :
 ```bash
 pipenv install
 ```
-Pour installer les paquets requis contenus dans le fichier `requirement.txt` créé précédemment.
+Pour installer les paquets requis contenus dans le fichier `requirements.txt` créé précédemment.
