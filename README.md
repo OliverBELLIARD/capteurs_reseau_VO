@@ -312,3 +312,30 @@ Ensuite il suffira de lancer la commande :
 pipenv install -r requirements.txt
 ```
 Pour installer les paquets requis contenus dans le fichier `requirements.txt` créé précédemment.
+
+### Premier fichier Web
+
+Créez un fichier hello.py dans lequel vous placerez le code suivant:
+```python
+from flask import Flask
+app = Flask(__name__)
+
+@app.route('/')
+def hello_world():
+    return 'Hello, World!\n'
+```
+Voilà votre nouveau serveur web! vous pouvez le lancer avec:
+```bash
+pi@raspberrypi:~/server $ FLASK_APP=hello.py flask run
+```
+Vous pouvez tester votre nouveau serveur avec la commande curl (dans un 2e terminal):
+```bash
+pi@raspberrypi:~/server $ curl http://127.0.0.1:5000
+```
+Vous pouvez aussi ajouter les options `-s -D -` à cette commande pour visualiser les headers de la réponse HTTP (regardez en particulier le champ Server)
+
+Le problème est que votre serveur ne fonctionne pour le moment que sur la loopback. Cela est résolue avec:
+```bash
+pi@raspberrypi:~/server $ FLASK_APP=hello.py FLASK_ENV=development flask run --host 0.0.0.0
+```
+La constante `FLASK_ENV=development` permet de lancer un mode debug. À partir de maintenant, vous pouvez tester votre serveur web avec un navigateur.
