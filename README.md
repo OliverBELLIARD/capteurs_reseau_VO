@@ -315,7 +315,7 @@ Pour installer les paquets requis contenus dans le fichier `requirements.txt` cr
 
 ### Premier fichier Web
 
-Créez un fichier hello.py dans lequel vous placerez le code suivant:
+On crée un fichier hello.py dans lequel avons placé le code suivant:
 ```python
 from flask import Flask
 app = Flask(__name__)
@@ -324,15 +324,15 @@ app = Flask(__name__)
 def hello_world():
     return 'Hello, World!\n'
 ```
-Voilà votre nouveau serveur web! vous pouvez le lancer avec:
+C'est notre nouveau serveur web! On peut le lancer avec:
 ```bash
 pi@raspberrypi:~/server $ FLASK_APP=hello.py flask run
 ```
-Vous pouvez tester votre nouveau serveur avec la commande curl (dans un 2e terminal):
+On peut tester votre nouveau serveur avec la commande curl (dans un 2e terminal):
 ```bash
 pi@raspberrypi:~/server $ curl http://127.0.0.1:5000
 ```
-Vous pouvez aussi ajouter les options `-s -D -` à cette commande pour visualiser les headers de la réponse HTTP (regardez en particulier le champ Server)
+On peut aussi ajouter les options `-s -D -` à cette commande pour visualiser les headers de la réponse HTTP (on regarde en particulier le champ Server)
 
 Le problème est que votre serveur ne fonctionne pour le moment que sur la loopback. Cela est résolue avec:
 ```bash
