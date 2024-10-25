@@ -332,8 +332,8 @@ On peut tester votre nouveau serveur avec la commande curl (dans un 2e terminal)
 ```bash
 pi@raspberrypi:~/server $ curl http://127.0.0.1:5000 -s -D -
 ```
-    - `-s` : Cette option active le "mode silencieux" pour supprimer les messages de progression ou d'erreur standard. Cela permet d'afficher uniquement la réponse.
-    - `-D -` : Cette option demande à curl d'afficher les en-têtes de la réponse HTTP (comme le code de statut, les en-têtes de type de contenu, etc.) au lieu de les enregistrer dans un fichier. Le - indique que les en-têtes seront affichés dans la sortie standard (le terminal).
+- `-s` : Cette option active le "mode silencieux" pour supprimer les messages de progression ou d'erreur standard. Cela permet d'afficher uniquement la réponse.
+- `-D -` : Cette option demande à curl d'afficher les en-têtes de la réponse HTTP (comme le code de statut, les en-têtes de type de contenu, etc.) au lieu de les enregistrer dans un fichier. Le - indique que les en-têtes seront affichés dans la sortie standard (le terminal).
 
 Le problème est que votre serveur ne fonctionne pour le moment que sur la loopback. Cela est résolu avec :
 ```bash
@@ -354,11 +354,27 @@ Press CTRL+C to quit
 ```
 On nous y explique qu'on peut maintenant se connecter au serveur depuis le localhost (http://127.0.0.1:5000) ou depuis une adresse "externe", ce qui nous intéresse ici car on cherche à tester notre serveur depuis mon PC personnel.
 
-Depuis mon navigateur la connexion fonctionne bien et on obtien cet aperçu :  
+Depuis mon navigateur la connexion fonctionne bien et on obtient :  
 
-<html><head>
-<meta http-equiv="content-type" content="text/html; charset=UTF-8"></head><body>Welcome to 3ESE API!</body></html>  
-
+```html
+<html>
+    <head>
+        <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    </head>
+    <body>Welcome to 3ESE API!</body>
+</html>
+```
+Qui s'affiche comme ci dessous :
+  
+------------------
+<html>
+    <head>
+        <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    </head>
+    <body>Welcome to 3ESE API!</body>
+</html>  
+  
+------------------
 
 Côté serveur, cette ligne apparaît :  
 ```BASH
@@ -392,26 +408,35 @@ def api_welcome():
 def api_welcome_index(index):
     return welcome[index]
 ```
-Quel est le rôle du décorateur `@app.route`?
-
-Quel est le role du fragment `<int:index>`?
-
-Pour pouvoir prétendre être RESTful, notre serveur va devoir:
-    - répondre sous forme JSON.
-    - différencier les méthodes HTTP
+**Quel est le rôle du décorateur `@app.route`?**  
+Le décorateur `@app.route` est utilisé dans le framework Flask (ou un autre framework web similaire) pour définir les routes d’une application web, c’est-à-dire les URL qui vont être associées à des fonctions spécifiques.  
+Le décorateur `@app.route('/api/welcome/')` lie l'URL `/api/welcome/` à la fonction `api_welcome`. Quand un utilisateur accède à cette URL, Flask exécute la fonction `api_welcome`, qui renvoie la chaîne de caractères `"Welcome to 3ESE API!"`.
+  
+**Quel est le role du fragment `<int:index>`?**  
+Le fragment `<int:index>` dans `@app.route('/api/welcome/<int:index>')` permet de capturer une partie variable de l’URL, ici un entier (int) nommé index.  
+Lorsque cette URL est appelée avec un entier en tant que suffixe, comme `/api/welcome/5`, l'entier 5 sera extrait de l'URL et passé à la fonction `api_welcome_index` sous forme de paramètre index.  
+Dans `api_welcome_index`, cet entier index est utilisé pour accéder au caractère de la chaîne welcome à l'indice spécifié.
+  
+Pour pouvoir prétendre être RESTful, notre serveur va devoir:  
+    - répondre sous forme JSON.  
+    - différencier les méthodes HTTP.  
   
 C’est ce que nous allons voir maintenant.
 
 ### Première page REST
 #### Réponse JSON
 
-Un module JSON est disponible dans la librairie standard de python: https://docs.python.org/3/library/json.html Le plus simple pour générer du JSON est d’utiliser la fonction json.dumps() sur un objet Python. Vous pouvez par exemple remplacer la dernière ligne de la fonction api_welcome_index par:
-
+Un module JSON est disponible dans la librairie standard de python: https://docs.python.org/3/library/json.html Le plus simple pour générer du JSON est d’utiliser la fonction `json.dumps()` sur un objet Python. Vous pouvez par exemple remplacer la dernière ligne de la fonction api_welcome_index par:
+```python
 return json.dumps({"index": index, "val": welcome[index]})
-
+```
 (oubliez pas le import json en début de fichier!)
+`python
+import json`
+```
 
-Testez le résultat. Est-ce suffisant pour dire que la réponse est bien du JSON? Observez en particulier les entêtes de la réponse: sous Firefox ou Chrome ouvrez les outils de développement (F12), selectionnez l’onglet “réseau” et rechargez la page. Vous pouvez normalement trouver l’entête de réponse Content-Type: ce n’est pas du JSON!
+Est-ce suffisant pour dire que la réponse est bien du JSON? Non, car la page n'a pas encore été "JSONifiée", en Flask, pour indiquer explicitement que le contenu est de type JSON, il est préférable d’utiliser `jsonify`, qui va non seulement convertir les données en JSON mais aussi définir l’en-tête `Content-Type` à `application/json`, ce qui aide les clients à reconnaître le format de la réponse.
+On peut observer en particulier les entêtes de la réponse: sous Firefox ou Chrome il faut ouvrir les outils de développement (F12), en selectionnant l’onglet “réseau” et en rechargeant la page. On peut alors normalement trouver l’entête de réponse Content-Type: ce n’est effectivement pas du JSON!
 
 #### 1re solution
 
