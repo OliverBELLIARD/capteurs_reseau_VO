@@ -341,3 +341,28 @@ Le problème est que votre serveur ne fonctionne pour le moment que sur la loopb
 pi@raspberrypi:~/server $ FLASK_APP=hello.py FLASK_ENV=development flask run --host 0.0.0.0
 ```
 La constante `FLASK_ENV=development` permet de lancer un mode debug. À partir de maintenant, vous pouvez tester votre serveur web avec un navigateur.
+
+## 4.2. Première page REST
+### Première route
+
+Nous avons ajouté les lignes suivantes au fichier `hello.py`:
+```python
+welcome = "Welcome to 3ESE API!"
+
+@app.route('/api/welcome/')
+def api_welcome():
+    return welcome
+    
+@app.route('/api/welcome/<int:index>')
+def api_welcome_index(index):
+    return welcome[index]
+```
+Quel est le rôle du décorateur `@app.route`?
+
+Quel est le role du fragment `<int:index>`?
+
+Pour pouvoir prétendre être RESTful, notre serveur va devoir:
+    - répondre sous forme JSON.
+    - différencier les méthodes HTTP
+  
+C’est ce que nous allons voir maintenant.
