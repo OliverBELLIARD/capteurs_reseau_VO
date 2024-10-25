@@ -1,3 +1,10 @@
+/*
+ * MPU9250_driver.c
+ *
+ *  Created on: Oct 18, 2024
+ *      Author: oliver
+ */
+
 #include "main.h"
 #include "i2c.h"
 #include "BMP280_driver.h"
@@ -190,6 +197,9 @@ uint8_t* BMP280_Read_Reg(uint8_t reg, uint8_t length) {
 	return buf;
 }
 
+/* Returns temperature in DegC, resolution is 0.01 DegC. Output value of “5123” equals 51.23 DegC.
+ * t_fine carries fine temperature as global value
+ */
 BMP280_S32_t BMP280_get_temperature() {
 	uint8_t *buf;
 	BMP280_S32_t adc_T;
@@ -202,17 +212,20 @@ BMP280_S32_t BMP280_get_temperature() {
 	free(buf);
 
 	printf("Temperature: ");
-	printf("0X%05lX", adc_T);
+	printf("0x%05lX = %d°C", adc_T, adc_T);
 	printf("\r\n");
 
 	adc_T = BMP280_compensate_T_int32(adc_T);
 	printf("Compensated temperature: ");
-	printf("0X%05lX", adc_T);
+	printf("0x%05lX = %d°C", adc_T, adc_T);
 	printf("\r\n");
 
 	return adc_T;
 }
 
+/* Returns pressure in Pa as unsigned 32 bit integer in Q24.8 format (24 integer bits and 8 fractional bits).
+ * Output value of “24674867” represents 24674867/256 = 96386.2 Pa = 963.862 hPa
+ */
 BMP280_S32_t BMP280_get_pressure() {
 	uint8_t *buf;
 	BMP280_S32_t adc_P;
@@ -224,13 +237,13 @@ BMP280_S32_t BMP280_get_pressure() {
 
 	free(buf);
 
-	printf("Pressure:    0x");
-	printf("%05lX", adc_P);
+	printf("Pressure: ");
+	printf("0x%05lX = %ld Pa", adc_P, adc_P);
 	printf("\r\n");
 
 	adc_P = BMP280_compensate_P_int64(adc_P);
-	printf("Compensated pressure:    0x");
-	printf("%05lX", adc_P);
+	printf("Compensated pressure: ");
+	printf("0x%05lX = %ld Pa", adc_P, adc_P);
 	printf("\r\n");
 
 	return adc_P;

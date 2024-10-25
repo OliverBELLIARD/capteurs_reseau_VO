@@ -1,0 +1,7 @@
+../Core/Src/MPU9250_driver.c:17:9:MPU_begin	3
+../Core/Src/MPU9250_driver.c:53:6:MPU_writeAccFullScaleRange	5
+../Core/Src/MPU9250_driver.c:92:6:MPU_writeGyroFullScaleRange	5
+../Core/Src/MPU9250_driver.c:130:6:MPU_readRawData	1
+../Core/Src/MPU9250_driver.c:151:6:MPU_calibrateGyro	3
+../Core/Src/MPU9250_driver.c:182:6:MPU_readProcessedData	1
+../Core/Src/MPU9250_driver.c:205:6:MPU_calcAttitude	1

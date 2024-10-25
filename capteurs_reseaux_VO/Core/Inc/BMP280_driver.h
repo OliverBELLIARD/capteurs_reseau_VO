@@ -1,3 +1,13 @@
+/*
+ * MPU9250_driver.h
+ *
+ *  Created on: Oct 18, 2024
+ *      Author: oliver
+ */
+
+#ifndef INC_BMP280_DRIVER_H_
+#define INC_BMP280_DRIVER_H_
+
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -31,3 +41,5 @@ int BMP280_Write_Reg(uint8_t, uint8_t);
 uint8_t* BMP280_Read_Reg(uint8_t, uint8_t);
 BMP280_S32_t BMP280_get_temperature(void);
 BMP280_S32_t BMP280_get_pressure(void);
+
+#endif /* INC_BMP280_DRIVER_H_ */

@@ -27,6 +27,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "BMP280_driver.h"
+#include "MPU9250_driver.h"
 
 /* USER CODE END Includes */
 
@@ -37,6 +38,8 @@
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
+#define TRUE  1
+#define FALSE 0
 
 /* USER CODE END PD */
 
@@ -48,6 +51,7 @@
 /* Private variables ---------------------------------------------------------*/
 
 /* USER CODE BEGIN PV */
+uint8_t serialBuf[100];
 
 /* USER CODE END PV */
 
@@ -109,6 +113,21 @@ int main(void)
 	BMP280_calibration();		// Mise à jour des paramètres d'étalonage
 	BMP280_get_temperature();	// Acquisition de la température
 	BMP280_get_pressure();		// Acquisition de la pression
+
+	// Vérifie si l'IMU est configuré correctement et bloque si ce n'est pas le cas
+	if (MPU_begin(&hi2c1, AD0_LOW, AFSR_4G, GFSR_500DPS, 0.98, 0.004) == TRUE)
+	{
+		printf("Centrale inertielle configurée correctement\r\n");
+	}
+	else
+	{
+		printf("ERREUR!\r\n");
+	}
+
+	// Calibre l'IMU
+	printf("CALIBRATION EN COURS...\r\n");
+	MPU_calibrateGyro(&hi2c1, 1500);
+
 
 	/* USER CODE END 2 */
 
