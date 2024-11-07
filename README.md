@@ -491,19 +491,78 @@ nous obtenons bel et bien un résultat en json si nous le vérifions sur firefox
 
 Il arrive souvent que les URL demandées soient fausses, il faut donc que votre serveur renvoie une erreur 404.
 
-Téléchargez le fichiers page_not_found.html (en ressource) et placez le dans un nouveau répertoire templates (nom de chemin imposé par flask). Le plus simple pour créer ce fichier est de créer un fichier vide, puis de copier-coller son contenu (<shift>+<insert> sous windows). Une autre solution est d'utiliser un utilitaire de copie sur ssh: scp (pscp sous windows, à télécharger sur le site: https://www.chiark.greenend.org.uk/~sgtatham/putty/latest.html).
+Téléchargez le fichiers [page_not_found.html](https://github.com/OliverBELLIARD/capteurs_reseaux_VO_ESE_TP2/blob/main/REST_server/templates/page_not_found.html) (en ressource) et placez le dans un nouveau répertoire `templates` (nom de chemin imposé par flask). Le plus simple pour créer ce fichier est de créer un fichier vide, puis de copier-coller son contenu (<shift>+<insert> sous windows). Une autre solution est d'utiliser un utilitaire de copie sur ssh: scp (pscp sous windows, à télécharger sur le site: https://www.chiark.greenend.org.uk/~sgtatham/putty/latest.html ).
 
 Ajoutez les lignes suivantes à votre hello.py:
-
+```python
 @app.errorhandler(404)
 def page_not_found(error):
     return render_template('page_not_found.html'), 404
+```
+Ainsi vous contrôlez la page d’erreur 404.  
+  
+Modifiez la fonctions `api_welcome_index` de manière à retourner cette page 404 si jamais l’index n’est pas correct. Flask fournit une fonction pour cela : `abort(404)`.
+  
+Une autre méthode aurai pu être utilisée: `redirect` avec `url_for`. Plus d’info: https://flask.palletsprojects.com/en/1.1.x/quickstart/#redirects-and-errors
 
-Ainsi vous contrôlez la page d’erreur 404.
+## 4.3. Nouvelles métodes HTTP
+### Méthodes POST, PUT, DELETE…
 
-Modifiez la fonctions api_welcome_index de manière à retourner cette page 404 si jamais l’index n’est pas correct. Flask fournit une fonction pour cela : abort(404).
+Pour être encore un peu plus RESTful, votre application doit gérer plusieurs méthodes (verb) HTTP
 
-Une autre méthode aurai pu être utilisée: redirect avec url_for. plus d’info: https://flask.palletsprojects.com/en/1.1.x/quickstart/#redirects-and-errors
+### Méthode POST
+
+Pour essayer une autre méthode, utilisez l’utilitaire `curl` sur linux (par exemple directement depuis le raspberry) de cette manière:
+```
+curl -X POST http://ip.du.pi.0/api/welcome/14
+```
+ou bien utiliser l’extension RESTED sur firefox.
+
+Normalement, votre raspberry doit vous insulter à coup d’erreur 405…
+
+Et oui, il faut ajouter la liste des méthodes acceptées à votre route, par exemple
+
+@app.route('/api/welcome/<int:index>', methods=['GET','POST'])
+
+Mais ajouter la méthode ne suffit pas, il faut aussi que votre fonction réagisse correctement à cette méthode. Dans le cas d’un POST, le corps de la requête contient des informations qui doivent être fournies à votre serveur.
+
+Testez à l’aide de **RESTED** ou de curl la founction suivante:
+```python
+@app.route('/api/request/', methods=['GET', 'POST'])
+@app.route('/api/request/<path>', methods=['GET','POST'])
+def api_request(path=None):
+    resp = {
+            "method":   request.method,
+            "url" :  request.url,
+            "path" : path,
+            "args": request.args,
+            "headers": dict(request.headers),
+    }
+    if request.method == 'POST':
+        resp["POST"] = {
+                "data" : request.get_json(),
+                }
+    return jsonify(resp)
+```
+Faite en sorte notamment d’obtenir une réponse qui peuple correctement les champs `args` et `data`.
+
+### API CRUD
+
+En reprenant la fonction `api_welcome_index`, ajoutez-y les fonctions CRUD suivantes:  
+
+  ![image](https://github.com/user-attachments/assets/a945682f-f53e-4ba9-adcd-e51e76a22e52)
+  
+Pour chaque action, l’échange de donnée doit se faire en JSON, et si une action ne renvoie rien, alors le code status de la réponse doit être modifié. Par exemple, le POST doit retourner un `202 No Content`.
+  
+Pour les codes de succès HTTP: https://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.2  
+
+## 4.4. Et encore plus fort...
+
+Le code écrit avec Flask pour créer une API REST est rapide, mais finalement il y a encore beaucoup de redondance...  
+  
+Et donc, il y a encore plus fort: FASTAPI, https://fastapi.tiangolo.com/  
+  
+En plus d'accélérer encore plus l'écriture du code, FASTAPI est auto-documenté... Essayez de réécrire votre code avec FASTAPI, et allez voir la page [/docs](https://moodle.ensea.fr/docs).  
 
 # 5. TP4 - Bus CAN
 **Objectif: Développement d'une API Rest et mise en place d'un périphérique sur bus CAN**  
