@@ -4,7 +4,10 @@
 > *Boite utilisée : n°6*
 
 # 1. Présentation
-Ensemble de TP de Bus & Réseaux. Ces TP seront réalisés en C pour la partie STM32, et Python pour la partie Raspberry Pi.
+Ensemble de TP de Bus & Réseaux. Ces TP seront réalisés en C pour la partie STM32, et Python pour la partie Raspberry Pi.  
+  
+![image](https://github.com/user-attachments/assets/db264833-bb4c-45cb-8fff-ced11e626161)
+  
 L'échelonnement des TP est le suivant:  
 1. Interrogation des capteurs par le bus I²2C  
 2. Interfaçage STM32 <-> Raspberry Pi  
@@ -12,6 +15,9 @@ L'échelonnement des TP est le suivant:
 4. Interface API Rest & pilotage d'actionneur par bus CAN  
 
 # 2. TP 1 - Bus I2C
+
+  ![image](https://github.com/user-attachments/assets/df3235cc-b599-4d1f-821a-d920513f3921)
+
 ## 2.1. Capteur BMP280
 À partir de la datasheet du [BMP280](https://moodle.ensea.fr/mod/resource/view.php?id=1910), on identifie les éléments suivants:
 1. les adresses I²C possibles pour ce composant :  
@@ -226,6 +232,9 @@ Retrouvez dans la datasheet du STM32 le code permettant de compenser la tempéra
 Transmettez sur le port série les valeurs compensés de température et de pression sous un format lisible.
 
 # 3. TP2 - Interfaçage STM32 - Raspberry
+
+  ![image](https://github.com/user-attachments/assets/c9a3c577-fe72-4966-a6ce-285eb7e3e9bf)
+
 ## 3.1. Mise en route du Raspberry PI Zéro
 Le Pi Zero est suffisamment peu puissant pour être alimenté par le port USB de l'ordinateur.
 
@@ -383,6 +392,7 @@ Côté serveur, cette ligne apparaît :
 Signifiant que mon ordinateur s'est bien connecté à notre serveur REST.
 
 ## Télécharger des fichiers depuis le Raspberry
+### Méthode manuelle
 On peut profiter de la connection en SSH pour téléchager des fichiers pour notre contrôle de version. Il suffit d'utiliser le protocole SFTP (SSH File Transfer System) avec la commande suivante :
 ```bash
 sftp vo@192.168.88.230
@@ -392,6 +402,23 @@ On rappelle qu'ici `vo` est notre utilisateur det `192.168.88.230` l'ip du Raspb
 get -r <nom_du_dossier>/
 ```
 Le téléchargement du dossier et son contenu se télécharge alors dans le dossier où pointe notre terminal local. Nous avons trouvé [ce tuto](https://www.digitalocean.com/community/tutorials/how-to-use-sftp-to-securely-transfer-files-with-a-remote-server) qui nous a permis de comprendre rapidement son fonctionnement avec la documentation à travers la commande `man sftp`.
+
+### Script bash pour télécharger un dossier et son contenu
+Pour nous simplifier la tâche de gérer les versions et suvegarder notre travail effectué sur le Raspberry, nous avons rédigés un script bash permetant de télécharger l'ensemble du dossier contenant notre serveur REST.  
+Le script se présente comme ce ci :  
+```bash
+# Warning: you need the expect command: sudo apt install expect
+
+set timeout -1
+spawn sftp vo@192.168.88.230
+expect "password:"
+send -- "voese\n"
+expect "sftp>"
+send -- "get -r REST_server/\n"
+expect "sftp>"
+send -- "bye\n"
+```
+En résumé, il accède au Raspberry via SFTP, ils s'identifie pour avoir accès à la machine et télécharge le dossier `REST_server`. Il est à noté que c'est une façon qui n'est pas très sécurisée du à la présence des identifiants dans le script.
 
 ## 4.2. Première page REST
 ### Première route
@@ -477,3 +504,81 @@ Ainsi vous contrôlez la page d’erreur 404.
 Modifiez la fonctions api_welcome_index de manière à retourner cette page 404 si jamais l’index n’est pas correct. Flask fournit une fonction pour cela : abort(404).
 
 Une autre méthode aurai pu être utilisée: redirect avec url_for. plus d’info: https://flask.palletsprojects.com/en/1.1.x/quickstart/#redirects-and-errors
+
+# 5. TP4 - Bus CAN
+**Objectif: Développement d'une API Rest et mise en place d'un périphérique sur bus CAN**  
+
+  ![image](https://github.com/user-attachments/assets/ccfa4086-71ed-44d9-96b3-1d676e14bd5a)
+
+Les cartes STM32L476 sont équipées d'un contrôleur CAN intégré. Pour pouvoir les utiliser, il faut leur adjoindre un Tranceiver CAN. Ce rôle est dévolu à un TJA1050 (https://www.nxp.com/docs/en/data-sheet/TJA1050.pdf). Ce composant est alimenté en 5V, mais possède des E/S compatibles 3,3V.
+
+Afin de faciliter sa mise en œuvre, ce composant a été installé sur une carte fille (shield) au format Arduino, qui peut donc s'insérer sur les cartes nucléo64:
+
+![image](https://github.com/user-attachments/assets/bec57e48-b6b1-43a0-a814-62f8f7d9217b) ![image](https://github.com/user-attachments/assets/c7fa8152-261c-42ae-977d-5071e3511d48)
+
+Ce shield possède un connecteur subd9, qui permet de connecter un câble au format CAN. Pour rappel, le brochage de ce connecteur est le suivant:  
+
+![image](https://github.com/user-attachments/assets/10b2e4df-5e11-4b47-ac9c-2ce2b66b547c)
+
+Seules les broches 2, 3 et 7 sont utilisés sur les câbles à votre dispositions.  
+  
+Remarque: Vous pourrez noter que les lignes CANL et CANH ont été routées en tant que paire différentielle, et qu'une boucle a été ajouté à la ligne CANL pour la mettre à la même longueur que la ligne CANH.
+  
+Vous allez utiliser le bus CAN pour piloter un module moteur pas-à-pas. Ce module s'alimente en +12V. L'ensemble des informations nécessaires pour utiliser ce module est disponible dans ce document: https://moodle.ensea.fr/mod/resource/view.php?id=1921
+  
+La carte moteur est un peu capricieuse et ne semble tolérer qu'une vitesse CAN de 500kbit/s. Pensez à régler CubeMx en conséquence.
+Edit 2022: Il semble que ce soit surtout le ratio seg2/(seg1+seg2), qui détermine l'instant de décision, qui doit être aux alentours de 87%. Vous pouvez utiliser le calculateur suivant: http://www.bittiming.can-wiki.info/
+
+## 5.1. Pilotage du moteur
+
+Commencez par mettre en place un code simple, qui fait bouger le moteur de 90° dans un sens, puis de 90° dans l'autre, avec une période de 1 seconde.
+
+Vous utiliserez pour cela les primitives HAL suivantes:
+```c
+HAL_StatusTypeDef HAL_CAN_Start (CAN_HandleTypeDef * hcan)
+```
+pour activer le module CAN et
+```c
+HAL_StatusTypeDef HAL_CAN_AddTxMessage (CAN_HandleTypeDef * hcan, CAN_TxHeaderTypeDef * pHeader, uint8_t aData[], uint32_t * pTxMailbox)
+```
+pour envoyer un message, où:  
+  
+- `CAN_HandleTypeDef * hcan` pointeur vers la structure stockant les informations du contrôleur CAN
+- `CAN_TxHeaderTypeDef * pHeader` pointeur vers une structure stockant les informations du header de la trame CAN à envoyer
+- `uint8_t aData[] buffer` contenant les données à envoyer
+- `uint32_t * pTxMailbox` pointeur vers la boite au lettre de transmission
+  
+  
+La variable `hcan` est celle définie par CubeMX, donc normalement ce sera `hcan1` .
+
+La variable `pHeader` est une structure contenant les champs suivants, que vous devez remplir avant de faire appel à `HAL_CAN_AddTxMessage` :
+  
+- `.StdId` contient le message ID quand celui-ci est standard (11 bits)
+- `.ExtId` contient le message ID quand celui-ci est étendu (29 bits) 
+- `.IDE` définit si la trame est standard (CAN_ID_STD) ou étendue (CAN_ID_EXT)
+- `.RTR` définit si la trame est du type standard (CAN_RTR_DATA) ou RTR (CAN_RTR_REMOTE) (voir le cours)
+- `.DLC` entier représentant la taille des données à transmettre (entre 0 et 8)
+- `.TransmitGlobal` dispositif permettant de mesurer les temps de réponse du bus CAN, qu'on utilisera pas. Le fixer à DISABLE
+  
+  
+La gestion de priorité du bus CAN fait que l'on ne peux pas être sûr que notre message puisse être envoyé. C'est pourquoi la fonction `HAL_StatusTypeDef` utilise une boîte au lettre: le message est stocké dans la boite au lettre, et sera envoyé dès que le bus le permettra. Cette fonction renvoie le numéro de boîte au lettre via l'argument `pTxMailbox` , qui permet d'interroger l'état de l'envoi du message à n'importe quel moment dan le code (`HAL_CAN_IsTxMessagePending`) et même d'annuler un message en attente (`HAL_CAN_AbortTxRequest`).
+
+## 5.2. Interfaçage avec le capteur
+
+En reprenant le code des TP précédents, faites en sorte que le mouvement du moteur soit proportionnel à la valeur du capteur.  
+  
+Le coefficient de proportionnalité sera stocké dans une variable. Le calcul peut parfaitement se faire à partir de la donnée issue du capteur sous forme binaire (le calcul avec la calibration n'est pas nécessaire à ce stade).  
+  
+Attention: le shield utilisant les pin PB8 et PB9 pour le CAN, vous allez devoir changer les pins du bus I2C, voir même changer de contrôleur I2C. Dans ce dernier cas, il faudra changer les noms de vos variables hi2c1 vers hic2cX.  
+
+# 6. TP5 - Intégration I²C - Serial - REST - CAN
+**Objectif: Faire marcher ensemble les TP 1, 2, 3 et 4**
+  
+Cahier des charges:
+- Mesures de température et de pression sur I²C par le STM32
+- Communication série entre la STM32 et le Raspberry PI zero: implémentation du protocole proposé au TP2.4
+- API REST sur le Raspberry:  
+    ![image](https://github.com/user-attachments/assets/eee84f9d-10d0-44fb-9fc7-2652a6b528fb)
+
+Les valeurs seront stockées dans des variables globales du serveur python.  
+Toutes les appels doivent générer une demande entre le Raspberry et la STM32.  
