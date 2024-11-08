@@ -51,6 +51,7 @@
 #define MOT_ANGLE_NEGATIVE 0x01
 #define MOT_ANGLE_MIN 0x00
 #define MOT_ANGLE_MAX 0xFF
+#define MOT_ANGLE_SIZE 2
 
 /* USER CODE END PD */
 
@@ -137,7 +138,7 @@ void CAN_Init()
 	}
 }
 
-void CAN_Send(uint8_t * aData, int size, int msg_id)
+void CAN_Send(uint8_t * aData, uint32_t size, uint32_t msg_id)
 {
 	HAL_StatusTypeDef status;
 	CAN_TxHeaderTypeDef * pHeader = NULL;
@@ -148,10 +149,8 @@ void CAN_Send(uint8_t * aData, int size, int msg_id)
 	pHeader->StdId = msg_id;
 	pHeader->IDE = CAN_ID_STD;
 	pHeader->RTR = CAN_RTR_DATA;
-	pHeader->DLC = CAN_BUFF_LENGTH;
+	pHeader->DLC = size;
 	pHeader->TransmitGlobalTime = DISABLE;
-
-	status = HAL_CAN_AddTxMessage(&hcan1, pHeader, aData, pTxMailbox);
 
 	// Attempt to add the CAN message to the transmission mailbox with retry logic
 	do {
@@ -160,7 +159,10 @@ void CAN_Send(uint8_t * aData, int size, int msg_id)
 		switch (status)
 		{
 		case HAL_OK:
-			printf("CAN message 0x%X sent successfully.\r\n", aData[0]);
+			printf("CAN message ");
+			for (int i = 0; i<size; i++)
+				printf(" 0x%X", aData[i]);
+			printf(" sent successfully to  0x%X.\r\n", (unsigned int)msg_id);
 			return;  // Exit the function if the message was sent successfully
 
 		case HAL_BUSY:
@@ -194,21 +196,30 @@ void CAN_Send(uint8_t * aData, int size, int msg_id)
 	}
 }
 
+void MOT_Init()
+{
+	uint8_t aData[3];
+
+	aData[0] = 0;
+	aData[1] = 1;
+	aData[2] = 1;
+	CAN_Send(aData, 3, MOT_MODE_MANUAL_ID);
+
+	aData[0] = 0;
+	CAN_Send(aData, 1, MOT_INIT_POS_ID);
+}
+
 void MOT_Rotate(uint8_t  angle, uint8_t sign)
 {
-	uint8_t aData[CAN_BUFF_LENGTH] = {0};
+	uint8_t aData[2];
 
 	if (angle < MOT_ANGLE_MIN) angle = 0x00;
 	if (angle > MOT_ANGLE_MAX) angle = 0xFF;
 
-	CAN_Send(aData, 1, MOT_MODE_MANUAL_ID);
-	CAN_Send(aData, 1, MOT_INIT_POS_ID);
-
 	aData[0] = angle;
 	aData[1] = sign;
 
-	CAN_Send(aData, 2, MOT_ANGLE_ID);
-
+	CAN_Send(aData, MOT_ANGLE_SIZE, MOT_ANGLE_ID);
 }
 
 /* USER CODE END 0 */
@@ -250,6 +261,7 @@ int main(void)
 	printf("\r\n=== TP Capteurs & Reseaux ===\r\n");
 
 	CAN_Init();
+	//MOT_Init();
 
 	/* USER CODE END 2 */
 
@@ -258,6 +270,8 @@ int main(void)
 	while (1)
 	{
 		MOT_Rotate(90, MOT_ANGLE_POSITIVE);
+		HAL_Delay(1000);
+		MOT_Rotate(90, MOT_ANGLE_NEGATIVE);
 		HAL_Delay(1000);
 		/* USER CODE END WHILE */
 
@@ -288,9 +302,9 @@ void SystemClock_Config(void)
 	RCC_OscInitStruct.HSICalibrationValue = RCC_HSICALIBRATION_DEFAULT;
 	RCC_OscInitStruct.PLL.PLLState = RCC_PLL_ON;
 	RCC_OscInitStruct.PLL.PLLSource = RCC_PLLSOURCE_HSI;
-	RCC_OscInitStruct.PLL.PLLM = 16;
-	RCC_OscInitStruct.PLL.PLLN = 336;
-	RCC_OscInitStruct.PLL.PLLP = RCC_PLLP_DIV4;
+	RCC_OscInitStruct.PLL.PLLM = 8;
+	RCC_OscInitStruct.PLL.PLLN = 80;
+	RCC_OscInitStruct.PLL.PLLP = RCC_PLLP_DIV2;
 	RCC_OscInitStruct.PLL.PLLQ = 2;
 	RCC_OscInitStruct.PLL.PLLR = 2;
 	if (HAL_RCC_OscConfig(&RCC_OscInitStruct) != HAL_OK)
