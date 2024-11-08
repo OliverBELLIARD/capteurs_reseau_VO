@@ -141,16 +141,23 @@ void CAN_Init()
 void CAN_Send(uint8_t * aData, uint32_t size, uint32_t msg_id)
 {
 	HAL_StatusTypeDef status;
-	CAN_TxHeaderTypeDef * pHeader = NULL;
-	uint32_t * pTxMailbox = NULL;
+	CAN_TxHeaderTypeDef header;
+	uint32_t txMailbox;
 	int retryCount = 0;
 	const int maxRetries = 5;
 
-	pHeader->StdId = msg_id;
-	pHeader->IDE = CAN_ID_STD;
-	pHeader->RTR = CAN_RTR_DATA;
-	pHeader->DLC = size;
-	pHeader->TransmitGlobalTime = DISABLE;
+	// Initialiser le header
+	header.StdId = msg_id;
+	header.IDE = CAN_ID_STD;
+	header.RTR = CAN_RTR_DATA;
+	header.DLC = size;
+	header.TransmitGlobalTime = DISABLE;
+
+	// Pointer vers les variables locales
+	CAN_TxHeaderTypeDef *pHeader = &header;
+	uint32_t *pTxMailbox = &txMailbox;
+
+	pHeader = &header;
 
 	// Attempt to add the CAN message to the transmission mailbox with retry logic
 	do {
@@ -261,7 +268,7 @@ int main(void)
 	printf("\r\n=== TP Capteurs & Reseaux ===\r\n");
 
 	CAN_Init();
-	//MOT_Init();
+	MOT_Init();
 
 	/* USER CODE END 2 */
 
