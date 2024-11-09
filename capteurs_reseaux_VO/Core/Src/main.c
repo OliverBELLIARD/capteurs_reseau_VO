@@ -29,6 +29,7 @@
 #include <stdlib.h>
 #include "BMP280_driver.h"
 #include "MPU9250_driver.h"
+#include "motor_driver.h"
 
 /* USER CODE END Includes */
 
@@ -41,17 +42,6 @@
 /* USER CODE BEGIN PD */
 #define TRUE  1
 #define FALSE 0
-#define CAN_BUFF_LENGTH 100
-
-// Step Motor Constants
-#define MOT_MODE_MANUAL_ID 0x60
-#define MOT_ANGLE_ID 0x61
-#define MOT_INIT_POS_ID 0x62
-#define MOT_ANGLE_POSITIVE 0x00
-#define MOT_ANGLE_NEGATIVE 0x01
-#define MOT_ANGLE_MIN 0x00
-#define MOT_ANGLE_MAX 0xFF
-#define MOT_ANGLE_SIZE 2
 
 /* USER CODE END PD */
 
@@ -87,6 +77,7 @@ void BMP280_init()
 	BMP280_Check_id();			// Identification du BMP280
 	BMP280_Config();			// Configuration du BMP280
 	BMP280_calibration();		// Mise à jour des paramètres d'étalonage
+
 	BMP280_get_temperature();	// Acquisition de la température
 	BMP280_get_pressure();		// Acquisition de la pression
 }
@@ -108,125 +99,11 @@ void MPU9250_init()
 	MPU_calibrateGyro(&hi2c1, 1500);
 }
 
-void CAN_Init()
-{
-	HAL_StatusTypeDef status;
-
-	status = HAL_CAN_Start(&hcan1);
-
-	switch (status)
-	{
-	case HAL_OK:
-		printf("CAN started successfully.\r\n");
-		break;
-	case HAL_ERROR:
-		printf("Error: CAN start failed.\r\n");
-		Error_Handler(); // Optional: Go to error handler
-		break;
-	case HAL_BUSY:
-		printf("Warning: CAN is busy. Retry later.\r\n");
-		// Optional: add retry logic if desired
-		break;
-	case HAL_TIMEOUT:
-		printf("Error: CAN start timed out.\r\n");
-		Error_Handler(); // Optional: Go to error handler
-		break;
-	default:
-		printf("Unknown status returned from HAL_CAN_Start.\r\n");
-		Error_Handler(); // Optional: Go to error handler
-		break;
-	}
-}
-
-void CAN_Send(uint8_t * aData, uint32_t size, uint32_t msg_id)
-{
-	HAL_StatusTypeDef status;
-	CAN_TxHeaderTypeDef header;
-	uint32_t txMailbox;
-	int retryCount = 0;
-	const int maxRetries = 5;
-
-	// Initialiser le header
-	header.StdId = msg_id;
-	header.IDE = CAN_ID_STD;
-	header.RTR = CAN_RTR_DATA;
-	header.DLC = size;
-	header.TransmitGlobalTime = DISABLE;
-
-	// Pointer vers les variables locales
-	CAN_TxHeaderTypeDef *pHeader = &header;
-	uint32_t *pTxMailbox = &txMailbox;
-
-	pHeader = &header;
-
-	// Attempt to add the CAN message to the transmission mailbox with retry logic
-	do {
-		status = HAL_CAN_AddTxMessage(&hcan1, pHeader, aData, pTxMailbox);
-
-		switch (status)
-		{
-		case HAL_OK:
-			printf("CAN message ");
-			for (int i = 0; i<size; i++)
-				printf(" 0x%X", aData[i]);
-			printf(" sent successfully to  0x%X.\r\n", (unsigned int)msg_id);
-			return;  // Exit the function if the message was sent successfully
-
-		case HAL_BUSY:
-			retryCount++;
-			printf("Warning: CAN bus is busy, retrying (%d/%d)...\r\n", retryCount, maxRetries);
-			HAL_Delay(10);  // Optional: Add a small delay between retries
-			break;
-
-		case HAL_ERROR:
-			printf("Error: Failed to send CAN message.\r\n");
-			Error_Handler();  // Optional: Go to error handler for critical failure
-			return;
-
-		case HAL_TIMEOUT:
-			printf("Error: CAN message send timed out.\r\n");
-			Error_Handler();  // Optional: Go to error handler for timeout
-			return;
-
-		default:
-			printf("Unknown status returned from HAL_CAN_AddTxMessage.\r\n");
-			Error_Handler();  // Optional: Handle unexpected status
-			return;
-		}
-
-	} while (status == HAL_BUSY && retryCount < maxRetries);
-
-	if (retryCount == maxRetries)
-	{
-		printf("Error: Exceeded maximum retries for CAN message send.\r\n");
-		Error_Handler();  // Optional: Go to error handler after max retries
-	}
-}
-
 void MOT_Init()
 {
-	uint8_t aData[3];
-
-	aData[0] = 0;
-	aData[1] = 1;
-	aData[2] = 1;
-	CAN_Send(aData, 3, MOT_MODE_MANUAL_ID);
-
-	aData[0] = 0;
-	CAN_Send(aData, 1, MOT_INIT_POS_ID);
-}
-
-void MOT_Rotate(uint8_t  angle, uint8_t sign)
-{
-	uint8_t aData[2];
-
-	if (angle < MOT_ANGLE_MIN) angle = 0x00;
-	if (angle > MOT_ANGLE_MAX) angle = 0xFF;
-
-	aData[0] = angle;
-	aData[1] = sign;
-
-	CAN_Send(aData, MOT_ANGLE_SIZE, MOT_ANGLE_ID);
+	CAN_Init();
+	MOT_Set_mode(MOT_MODE_ANTICLOCKWISE, 1, 1);
+	MOT_Set_origin();
 }
 
 /* USER CODE END 0 */
@@ -237,8 +114,8 @@ void MOT_Rotate(uint8_t  angle, uint8_t sign)
  */
 int main(void)
 {
-
 	/* USER CODE BEGIN 1 */
+	int angle = 0;
 
 	/* USER CODE END 1 */
 
@@ -266,8 +143,6 @@ int main(void)
 	MX_CAN1_Init();
 	/* USER CODE BEGIN 2 */
 	printf("\r\n=== TP Capteurs & Reseaux ===\r\n");
-
-	CAN_Init();
 	MOT_Init();
 
 	/* USER CODE END 2 */
@@ -276,10 +151,10 @@ int main(void)
 	/* USER CODE BEGIN WHILE */
 	while (1)
 	{
-		MOT_Rotate(90, MOT_ANGLE_POSITIVE);
+		angle += 30;
+		MOT_Rotate(angle, MOT_ANGLE_POSITIVE);
 		HAL_Delay(1000);
-		MOT_Rotate(90, MOT_ANGLE_NEGATIVE);
-		HAL_Delay(1000);
+
 		/* USER CODE END WHILE */
 
 		/* USER CODE BEGIN 3 */
