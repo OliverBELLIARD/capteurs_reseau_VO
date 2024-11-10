@@ -10,19 +10,31 @@
 #include "BMP280_driver.h"
 
 
+I2C_HandleTypeDef* hi2c_user;
+
+
+/**
+ * @brief Check the BMP280 sensor ID.
+ *
+ * Sends a command to retrieve the BMP280 sensor's ID and checks if the
+ * response matches the expected ID. Prints the ID if successful.
+ *
+ * @return int Returns EXIT_SUCCESS if ID is read successfully, otherwise returns EXIT_FAILURE.
+ */
 int BMP280_Check_id(void)
 {
-	uint8_t buff[BUFF_SIZE];
+	uint8_t buff[BUFF_SIZE];	// Buffer for the I2C communication
 	HAL_StatusTypeDef ret; 		// I2C operations status
+	hi2c_user = &hi2c3;			// I2C Handler used by the user
 
 	buff[0] = BMP280_REG_ID;
 
-	ret = HAL_I2C_Master_Transmit(&hi2c1, BMP280_ADDR, buff, 1, HAL_MAX_DELAY);
+	ret = HAL_I2C_Master_Transmit(hi2c_user, BMP280_ADDR, buff, 1, HAL_MAX_DELAY);
 	if(ret != HAL_OK){
 		printf("I2C Transmit failure\r\n");
 		return EXIT_FAILURE;
 	}
-	ret = HAL_I2C_Master_Receive(&hi2c1, BMP280_ADDR, buff, 1, HAL_MAX_DELAY);
+	ret = HAL_I2C_Master_Receive(hi2c_user, BMP280_ADDR, buff, 1, HAL_MAX_DELAY);
 	if(ret != HAL_OK){
 		printf("I2C Receive failure\r\n");
 		return EXIT_FAILURE;
@@ -33,21 +45,30 @@ int BMP280_Check_id(void)
 	return EXIT_SUCCESS;
 }
 
+/**
+ * @brief Configure the BMP280 sensor.
+ *
+ * Sets up the BMP280 with the specified configuration. The configuration is
+ * sent and confirmed by checking the response from the sensor.
+ *
+ * @return int Returns EXIT_SUCCESS if configuration is confirmed, otherwise returns EXIT_FAILURE.
+ */
 int BMP280_Config(void)
 {
-	uint8_t buff[BUFF_SIZE];
+	uint8_t buff[BUFF_SIZE];	// Buffer for the I2C communication
 	HAL_StatusTypeDef ret; 		// I2C operations status
+	hi2c_user = &hi2c3;			// I2C Handler used by the user
 
 	buff[0]= BMP280_REG_MODE;
 	buff[1]= BMP280_CONFIG;
 
-	ret = HAL_I2C_Master_Transmit(&hi2c1,BMP280_ADDR, buff, 2, HAL_MAX_DELAY);
+	ret = HAL_I2C_Master_Transmit(hi2c_user,BMP280_ADDR, buff, 2, HAL_MAX_DELAY);
 	if(ret != HAL_OK){
 		printf("I2C Transmit failure\r\n");
 		return EXIT_FAILURE;
 	}
 
-	ret = HAL_I2C_Master_Receive(&hi2c1, BMP280_ADDR, buff, 1, HAL_MAX_DELAY);
+	ret = HAL_I2C_Master_Receive(hi2c_user, BMP280_ADDR, buff, 1, HAL_MAX_DELAY);
 	if(ret != HAL_OK){
 		printf("I2C Receive failure\r\n");
 		return EXIT_FAILURE;
@@ -75,8 +96,12 @@ int16_t dig_P8;
 int16_t dig_P9;
 
 BMP280_S32_t t_fine;
-/*
- * Update the calibration parameters.
+
+/**
+ * @brief Update the calibration parameters of BMP280.
+ *
+ * Reads calibration data from the BMP280 sensor and stores it in global
+ * variables for temperature and pressure compensation calculations.
  */
 void BMP280_calibration(void)
 {
@@ -86,12 +111,12 @@ void BMP280_calibration(void)
 
 	buff[0]= BMP280_REG_CALIBRATION;
 
-	ret = HAL_I2C_Master_Transmit(&hi2c1, BMP280_ADDR, buff, 1, HAL_MAX_DELAY);
+	ret = HAL_I2C_Master_Transmit(hi2c_user, BMP280_ADDR, buff, 1, HAL_MAX_DELAY);
 	if(ret != HAL_OK){
 		printf("I2C Transmit failure\r\n");
 	}
 
-	ret = HAL_I2C_Master_Receive(&hi2c1, BMP280_ADDR, receive_buf, 24, HAL_MAX_DELAY);
+	ret = HAL_I2C_Master_Receive(hi2c_user, BMP280_ADDR, receive_buf, 24, HAL_MAX_DELAY);
 	if(ret != HAL_OK){
 		printf("I2C Receive failure\r\n");
 	}
@@ -115,8 +140,15 @@ void BMP280_calibration(void)
 	dig_P9 = receive_buf[22]|(receive_buf[23]<<8);
 }
 
-/* Returns temperature in DegC, resolution is 0.01 DegC. Output value of “5123” equals 51.23 DegC.
- * t_fine carries fine temperature as global value
+/**
+ * @brief Compensate temperature reading from BMP280.
+ *
+ * Compensates the raw temperature data read from the sensor to provide a
+ * temperature value in degrees Celsius, with a resolution of 0.01°C.
+ * t_fine carries fine temperature as global value.
+ *
+ * @param adc_T Raw ADC temperature value.
+ * @return BMP280_S32_t Compensated temperature in degrees Celsius, scaled by 100 (e.g., 5123 represents 51.23°C).
  */
 BMP280_S32_t BMP280_compensate_T_int32(BMP280_S32_t adc_T)
 {
@@ -129,8 +161,15 @@ BMP280_S32_t BMP280_compensate_T_int32(BMP280_S32_t adc_T)
 	return T;
 }
 
-/* Returns pressure in Pa as unsigned 32 bit integer in Q24.8 format (24 integer bits and 8 fractional bits).
- * Output value of “24674867” represents 24674867/256 = 96386.2 Pa = 963.862 hPa
+/**
+ * @brief Compensate pressure reading from BMP280.
+ *
+ * Compensates the raw pressure data read from the sensor to provide a
+ * pressure value in Pascals (Pa) in Q24.8 format (24 integer bits and 8 fractional bits).
+ *
+ * @param adc_P Raw ADC pressure value.
+ * @return BMP280_U32_t Compensated pressure in Pascals as a unsigned 32 bit integer
+ * 						(Output value of “24674867” represents 24674867/256 = 96386.2 Pa = 963.862 hPa).
  */
 BMP280_U32_t BMP280_compensate_P_int64(BMP280_S32_t adc_P)
 {
@@ -154,6 +193,16 @@ BMP280_U32_t BMP280_compensate_P_int64(BMP280_S32_t adc_P)
 	return (BMP280_U32_t)p;
 }
 
+/**
+ * @brief Write a value to a BMP280 register.
+ *
+ * Writes a specified value to a BMP280 register and verifies if the value
+ * was successfully written.
+ *
+ * @param reg Register address.
+ * @param value Value to write to the register.
+ * @return int Returns EXIT_SUCCESS if value is successfully written, otherwise returns EXIT_FAILURE.
+ */
 int BMP280_Write_Reg(uint8_t reg, uint8_t value) {
 	uint8_t buff[BUFF_SIZE];
 	HAL_StatusTypeDef ret;
@@ -161,12 +210,12 @@ int BMP280_Write_Reg(uint8_t reg, uint8_t value) {
 	buff[0] = reg;
 	buff[1] = value;
 
-	ret = HAL_I2C_Master_Transmit(&hi2c1, BMP280_ADDR, buff, 2, HAL_MAX_DELAY);
+	ret = HAL_I2C_Master_Transmit(hi2c_user, BMP280_ADDR, buff, 2, HAL_MAX_DELAY);
 	if (ret != 0) {
 		printf("Problem with I2C Transmit\r\n");
 	}
 
-	ret = HAL_I2C_Master_Receive(&hi2c1, BMP280_ADDR, buff, 1, HAL_MAX_DELAY);
+	ret = HAL_I2C_Master_Receive(hi2c_user, BMP280_ADDR, buff, 1, HAL_MAX_DELAY);
 	if (ret != 0) {
 		printf("Problem with I2C Receive\r\n");
 	}
@@ -178,17 +227,27 @@ int BMP280_Write_Reg(uint8_t reg, uint8_t value) {
 	}
 }
 
+/**
+ * @brief Read data from a BMP280 register.
+ *
+ * Reads a specified number of bytes from a BMP280 register and returns
+ * a dynamically allocated buffer containing the data.
+ *
+ * @param reg Register address to read from.
+ * @param length Number of bytes to read.
+ * @return uint8_t* Pointer to buffer with read data. The caller is responsible for freeing the buffer.
+ */
 uint8_t* BMP280_Read_Reg(uint8_t reg, uint8_t length) {
 	uint8_t *buf;
 	HAL_StatusTypeDef ret;
 
-	ret = HAL_I2C_Master_Transmit(&hi2c1, BMP280_ADDR, &reg, 1, HAL_MAX_DELAY);
+	ret = HAL_I2C_Master_Transmit(hi2c_user, BMP280_ADDR, &reg, 1, HAL_MAX_DELAY);
 	if (ret != 0) {
 		printf("Problem with I2C Transmit\r\n");
 	}
 
 	buf = (uint8_t*) malloc(length);
-	ret = HAL_I2C_Master_Receive(&hi2c1, BMP280_ADDR, buf, length,
+	ret = HAL_I2C_Master_Receive(hi2c_user, BMP280_ADDR, buf, length,
 			HAL_MAX_DELAY);
 	if (ret != 0) {
 		printf("Problem with I2C Receive\r\n");
@@ -197,8 +256,13 @@ uint8_t* BMP280_Read_Reg(uint8_t reg, uint8_t length) {
 	return buf;
 }
 
-/* Returns temperature in DegC, resolution is 0.01 DegC. Output value of “5123” equals 51.23 DegC.
- * t_fine carries fine temperature as global value
+/**
+ * @brief Get the compensated temperature in degrees Celsius.
+ *
+ * Reads the raw temperature data from the BMP280, compensates it, and
+ * returns the result. Prints both raw and compensated temperature values.
+ *
+ * @return BMP280_S32_t Compensated temperature in degrees Celsius, scaled by 100.
  */
 BMP280_S32_t BMP280_get_temperature() {
 	uint8_t *buf;
@@ -223,8 +287,13 @@ BMP280_S32_t BMP280_get_temperature() {
 	return adc_T;
 }
 
-/* Returns pressure in Pa as unsigned 32 bit integer in Q24.8 format (24 integer bits and 8 fractional bits).
- * Output value of “24674867” represents 24674867/256 = 96386.2 Pa = 963.862 hPa
+/**
+ * @brief Get the compensated pressure in Pascals.
+ *
+ * Reads the raw pressure data from the BMP280, compensates it, and
+ * returns the result. Prints both raw and compensated pressure values.
+ *
+ * @return BMP280_S32_t Compensated pressure in Pascals.
  */
 BMP280_S32_t BMP280_get_pressure() {
 	uint8_t *buf;

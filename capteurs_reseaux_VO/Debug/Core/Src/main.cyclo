@@ -3,5 +3,5 @@
 ../Core/Src/main.c:85:6:MPU9250_init	2
 ../Core/Src/main.c:102:6:MOT_Init	1
 ../Core/Src/main.c:115:5:main	1
-../Core/Src/main.c:169:6:SystemClock_Config	3
-../Core/Src/main.c:220:6:Error_Handler	1
+../Core/Src/main.c:171:6:SystemClock_Config	3
+../Core/Src/main.c:222:6:Error_Handler	1
