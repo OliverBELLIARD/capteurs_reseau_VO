@@ -647,3 +647,5 @@ Toutes les appels doivent générer une demande entre le Raspberry et la STM32.
 
 Nous pouvons installer Doxygen et faire une première documentation (https://doxygen.nl/index.html)  
 > To launch Doxygen GUI: `doxywizard` must be typed in the terminal.
+
+  Nos premières documentations sont accessibles sur le chemin [Documentation/html/index.html](https://github.com/OliverBELLIARD/capteurs_reseaux_VO_ESE_TP2/blob/main/Documentation/html/index.html).
