@@ -1,0 +1,145 @@
+\doxysection{motor\+\_\+driver.\+c}
+\hypertarget{motor__driver_8c_source}{}\label{motor__driver_8c_source}\index{/home/oliver/Documents/3A/capteurs\_reseaux\_VO\_ESE\_TP2/capteurs\_reseaux\_VO/Core/Src/motor\_driver.c@{/home/oliver/Documents/3A/capteurs\_reseaux\_VO\_ESE\_TP2/capteurs\_reseaux\_VO/Core/Src/motor\_driver.c}}
+\mbox{\hyperlink{motor__driver_8c}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\Hypertarget{motor__driver_8c_source_l00001}00001\ }
+\DoxyCodeLine{\Hypertarget{motor__driver_8c_source_l00014}00014\ \textcolor{preprocessor}{\#include\ <stdio.h>}}
+\DoxyCodeLine{\Hypertarget{motor__driver_8c_source_l00015}00015\ \textcolor{preprocessor}{\#include\ <stdlib.h>}}
+\DoxyCodeLine{\Hypertarget{motor__driver_8c_source_l00016}00016\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{can_8h}{can.h}}"{}}}
+\DoxyCodeLine{\Hypertarget{motor__driver_8c_source_l00017}00017\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{motor__driver_8h}{motor\_driver.h}}"{}}}
+\DoxyCodeLine{\Hypertarget{motor__driver_8c_source_l00018}00018\ }
+\DoxyCodeLine{\Hypertarget{motor__driver_8c_source_l00019}00019\ \textcolor{preprocessor}{\#define\ TRUE\ \ 1}}
+\DoxyCodeLine{\Hypertarget{motor__driver_8c_source_l00020}00020\ \textcolor{preprocessor}{\#define\ FALSE\ 0}}
+\DoxyCodeLine{\Hypertarget{motor__driver_8c_source_l00021}00021\ }
+\DoxyCodeLine{\Hypertarget{motor__driver_8c_source_l00022}00022\ \textcolor{keywordtype}{int}\ logs;\ \ \ \textcolor{comment}{//\ Boolean\ to\ choose\ to\ display\ logs\ or\ not}}
+\DoxyCodeLine{\Hypertarget{motor__driver_8c_source_l00023}00023\ }
+\DoxyCodeLine{\Hypertarget{motor__driver_8c_source_l00027}\mbox{\hyperlink{motor__driver_8h_aaa44002d1db973d1d85edcd4625303ec}{00027}}\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{motor__driver_8c_aaa44002d1db973d1d85edcd4625303ec}{CAN\_Init}}()}
+\DoxyCodeLine{\Hypertarget{motor__driver_8c_source_l00028}00028\ \{}
+\DoxyCodeLine{\Hypertarget{motor__driver_8c_source_l00029}00029\ \ \ \ \ HAL\_StatusTypeDef\ status;}
+\DoxyCodeLine{\Hypertarget{motor__driver_8c_source_l00030}00030\ \ \ \ \ logs\ =\ TRUE;}
+\DoxyCodeLine{\Hypertarget{motor__driver_8c_source_l00031}00031\ }
+\DoxyCodeLine{\Hypertarget{motor__driver_8c_source_l00032}00032\ \ \ \ \ status\ =\ HAL\_CAN\_Start(\&hcan1);}
+\DoxyCodeLine{\Hypertarget{motor__driver_8c_source_l00033}00033\ }
+\DoxyCodeLine{\Hypertarget{motor__driver_8c_source_l00034}00034\ \ \ \ \ \textcolor{keywordflow}{switch}\ (status)}
+\DoxyCodeLine{\Hypertarget{motor__driver_8c_source_l00035}00035\ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{motor__driver_8c_source_l00036}00036\ \ \ \ \ \textcolor{keywordflow}{case}\ HAL\_OK:}
+\DoxyCodeLine{\Hypertarget{motor__driver_8c_source_l00037}00037\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (logs\ ==\ TRUE)\ printf(\textcolor{stringliteral}{"{}CAN\ started\ successfully.\(\backslash\)r\(\backslash\)n"{}});}
+\DoxyCodeLine{\Hypertarget{motor__driver_8c_source_l00038}00038\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{\Hypertarget{motor__driver_8c_source_l00039}00039\ \ \ \ \ \textcolor{keywordflow}{case}\ HAL\_ERROR:}
+\DoxyCodeLine{\Hypertarget{motor__driver_8c_source_l00040}00040\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (logs\ ==\ TRUE)\ printf(\textcolor{stringliteral}{"{}Error:\ CAN\ start\ failed.\(\backslash\)r\(\backslash\)n"{}});}
+\DoxyCodeLine{\Hypertarget{motor__driver_8c_source_l00041}00041\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{main_8h_a1730ffe1e560465665eb47d9264826f9}{Error\_Handler}}();\ \textcolor{comment}{//\ Optional:\ Go\ to\ error\ handler}}
+\DoxyCodeLine{\Hypertarget{motor__driver_8c_source_l00042}00042\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{\Hypertarget{motor__driver_8c_source_l00043}00043\ \ \ \ \ \textcolor{keywordflow}{case}\ HAL\_BUSY:}
+\DoxyCodeLine{\Hypertarget{motor__driver_8c_source_l00044}00044\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (logs\ ==\ TRUE)\ printf(\textcolor{stringliteral}{"{}Warning:\ CAN\ is\ busy.\ Retry\ later.\(\backslash\)r\(\backslash\)n"{}});}
+\DoxyCodeLine{\Hypertarget{motor__driver_8c_source_l00045}00045\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Optional:\ add\ retry\ logic\ if\ desired}}
+\DoxyCodeLine{\Hypertarget{motor__driver_8c_source_l00046}00046\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{\Hypertarget{motor__driver_8c_source_l00047}00047\ \ \ \ \ \textcolor{keywordflow}{case}\ HAL\_TIMEOUT:}
+\DoxyCodeLine{\Hypertarget{motor__driver_8c_source_l00048}00048\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (logs\ ==\ TRUE)\ printf(\textcolor{stringliteral}{"{}Error:\ CAN\ start\ timed\ out.\(\backslash\)r\(\backslash\)n"{}});}
+\DoxyCodeLine{\Hypertarget{motor__driver_8c_source_l00049}00049\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{main_8h_a1730ffe1e560465665eb47d9264826f9}{Error\_Handler}}();\ \textcolor{comment}{//\ Optional:\ Go\ to\ error\ handler}}
+\DoxyCodeLine{\Hypertarget{motor__driver_8c_source_l00050}00050\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{\Hypertarget{motor__driver_8c_source_l00051}00051\ \ \ \ \ \textcolor{keywordflow}{default}:}
+\DoxyCodeLine{\Hypertarget{motor__driver_8c_source_l00052}00052\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (logs\ ==\ TRUE)\ printf(\textcolor{stringliteral}{"{}Unknown\ status\ returned\ from\ HAL\_CAN\_Start.\(\backslash\)r\(\backslash\)n"{}});}
+\DoxyCodeLine{\Hypertarget{motor__driver_8c_source_l00053}00053\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{main_8h_a1730ffe1e560465665eb47d9264826f9}{Error\_Handler}}();\ \textcolor{comment}{//\ Optional:\ Go\ to\ error\ handler}}
+\DoxyCodeLine{\Hypertarget{motor__driver_8c_source_l00054}00054\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{\Hypertarget{motor__driver_8c_source_l00055}00055\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{motor__driver_8c_source_l00056}00056\ \}}
+\DoxyCodeLine{\Hypertarget{motor__driver_8c_source_l00057}00057\ }
+\DoxyCodeLine{\Hypertarget{motor__driver_8c_source_l00076}\mbox{\hyperlink{motor__driver_8h_aa21e23544d89906e67b53d135864eeb5}{00076}}\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{motor__driver_8c_a115d7cd8d6cc2c93d2b3a2db8acc3bb9}{CAN\_Send}}(uint8\_t\ *\ aData,\ uint32\_t\ size,\ uint32\_t\ msg\_id)}
+\DoxyCodeLine{\Hypertarget{motor__driver_8c_source_l00077}00077\ \{}
+\DoxyCodeLine{\Hypertarget{motor__driver_8c_source_l00078}00078\ \ \ \ \ HAL\_StatusTypeDef\ status;}
+\DoxyCodeLine{\Hypertarget{motor__driver_8c_source_l00079}00079\ \ \ \ \ CAN\_TxHeaderTypeDef\ header;}
+\DoxyCodeLine{\Hypertarget{motor__driver_8c_source_l00080}00080\ \ \ \ \ uint32\_t\ txMailbox;}
+\DoxyCodeLine{\Hypertarget{motor__driver_8c_source_l00081}00081\ \ \ \ \ \textcolor{keywordtype}{int}\ retryCount\ =\ 0;}
+\DoxyCodeLine{\Hypertarget{motor__driver_8c_source_l00082}00082\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\ maxRetries\ =\ 5;}
+\DoxyCodeLine{\Hypertarget{motor__driver_8c_source_l00083}00083\ }
+\DoxyCodeLine{\Hypertarget{motor__driver_8c_source_l00084}00084\ \ \ \ \ \textcolor{comment}{//\ Initialiser\ le\ header}}
+\DoxyCodeLine{\Hypertarget{motor__driver_8c_source_l00085}00085\ \ \ \ \ header.StdId\ =\ msg\_id;}
+\DoxyCodeLine{\Hypertarget{motor__driver_8c_source_l00086}00086\ \ \ \ \ header.IDE\ =\ CAN\_ID\_STD;}
+\DoxyCodeLine{\Hypertarget{motor__driver_8c_source_l00087}00087\ \ \ \ \ header.RTR\ =\ CAN\_RTR\_DATA;}
+\DoxyCodeLine{\Hypertarget{motor__driver_8c_source_l00088}00088\ \ \ \ \ header.DLC\ =\ size;}
+\DoxyCodeLine{\Hypertarget{motor__driver_8c_source_l00089}00089\ \ \ \ \ header.TransmitGlobalTime\ =\ DISABLE;}
+\DoxyCodeLine{\Hypertarget{motor__driver_8c_source_l00090}00090\ }
+\DoxyCodeLine{\Hypertarget{motor__driver_8c_source_l00091}00091\ \ \ \ \ \textcolor{comment}{//\ Pointer\ vers\ les\ variables\ locales}}
+\DoxyCodeLine{\Hypertarget{motor__driver_8c_source_l00092}00092\ \ \ \ \ CAN\_TxHeaderTypeDef\ *pHeader\ =\ \&header;}
+\DoxyCodeLine{\Hypertarget{motor__driver_8c_source_l00093}00093\ \ \ \ \ uint32\_t\ *pTxMailbox\ =\ \&txMailbox;}
+\DoxyCodeLine{\Hypertarget{motor__driver_8c_source_l00094}00094\ }
+\DoxyCodeLine{\Hypertarget{motor__driver_8c_source_l00095}00095\ \ \ \ \ \textcolor{comment}{//\ Attempt\ to\ add\ the\ CAN\ message\ to\ the\ transmission\ mailbox\ with\ retry\ logic}}
+\DoxyCodeLine{\Hypertarget{motor__driver_8c_source_l00096}00096\ \ \ \ \ \textcolor{keywordflow}{do}\ \{}
+\DoxyCodeLine{\Hypertarget{motor__driver_8c_source_l00097}00097\ \ \ \ \ \ \ \ \ status\ =\ HAL\_CAN\_AddTxMessage(\&hcan1,\ pHeader,\ aData,\ pTxMailbox);}
+\DoxyCodeLine{\Hypertarget{motor__driver_8c_source_l00098}00098\ }
+\DoxyCodeLine{\Hypertarget{motor__driver_8c_source_l00099}00099\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{switch}\ (status)}
+\DoxyCodeLine{\Hypertarget{motor__driver_8c_source_l00100}00100\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{motor__driver_8c_source_l00101}00101\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ HAL\_OK:}
+\DoxyCodeLine{\Hypertarget{motor__driver_8c_source_l00102}00102\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (logs\ ==\ TRUE)}
+\DoxyCodeLine{\Hypertarget{motor__driver_8c_source_l00103}00103\ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{motor__driver_8c_source_l00104}00104\ \ \ \ \ \ \ \ \ \ \ \ \ printf(\textcolor{stringliteral}{"{}CAN\ message\ "{}});}
+\DoxyCodeLine{\Hypertarget{motor__driver_8c_source_l00105}00105\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ i\ =\ 0;\ i<size;\ i++)}
+\DoxyCodeLine{\Hypertarget{motor__driver_8c_source_l00106}00106\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ printf(\textcolor{stringliteral}{"{}\ 0x\%X"{}},\ aData[i]);}
+\DoxyCodeLine{\Hypertarget{motor__driver_8c_source_l00107}00107\ \ \ \ \ \ \ \ \ \ \ \ \ printf(\textcolor{stringliteral}{"{}\ sent\ successfully\ to\ \ 0x\%X.\(\backslash\)r\(\backslash\)n"{}},\ (\textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{int})msg\_id);}
+\DoxyCodeLine{\Hypertarget{motor__driver_8c_source_l00108}00108\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{motor__driver_8c_source_l00109}00109\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return};\ \ \textcolor{comment}{//\ Exit\ the\ function\ if\ the\ message\ was\ sent\ successfully}}
+\DoxyCodeLine{\Hypertarget{motor__driver_8c_source_l00110}00110\ }
+\DoxyCodeLine{\Hypertarget{motor__driver_8c_source_l00111}00111\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ HAL\_BUSY:}
+\DoxyCodeLine{\Hypertarget{motor__driver_8c_source_l00112}00112\ \ \ \ \ \ \ \ \ \ \ \ \ retryCount++;}
+\DoxyCodeLine{\Hypertarget{motor__driver_8c_source_l00113}00113\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (logs\ ==\ TRUE)\ printf(\textcolor{stringliteral}{"{}Warning:\ CAN\ bus\ is\ busy,\ retrying\ (\%d/\%d)...\(\backslash\)r\(\backslash\)n"{}},\ retryCount,\ maxRetries);}
+\DoxyCodeLine{\Hypertarget{motor__driver_8c_source_l00114}00114\ \ \ \ \ \ \ \ \ \ \ \ \ HAL\_Delay(10);\ \ \textcolor{comment}{//\ Optional:\ Add\ a\ small\ delay\ between\ retries}}
+\DoxyCodeLine{\Hypertarget{motor__driver_8c_source_l00115}00115\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{\Hypertarget{motor__driver_8c_source_l00116}00116\ }
+\DoxyCodeLine{\Hypertarget{motor__driver_8c_source_l00117}00117\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ HAL\_ERROR:}
+\DoxyCodeLine{\Hypertarget{motor__driver_8c_source_l00118}00118\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (logs\ ==\ TRUE)\ printf(\textcolor{stringliteral}{"{}Error:\ Failed\ to\ send\ CAN\ message.\(\backslash\)r\(\backslash\)n"{}});}
+\DoxyCodeLine{\Hypertarget{motor__driver_8c_source_l00119}00119\ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{main_8h_a1730ffe1e560465665eb47d9264826f9}{Error\_Handler}}();\ \ \textcolor{comment}{//\ Optional:\ Go\ to\ error\ handler\ for\ critical\ failure}}
+\DoxyCodeLine{\Hypertarget{motor__driver_8c_source_l00120}00120\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return};}
+\DoxyCodeLine{\Hypertarget{motor__driver_8c_source_l00121}00121\ }
+\DoxyCodeLine{\Hypertarget{motor__driver_8c_source_l00122}00122\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ HAL\_TIMEOUT:}
+\DoxyCodeLine{\Hypertarget{motor__driver_8c_source_l00123}00123\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (logs\ ==\ TRUE)\ printf(\textcolor{stringliteral}{"{}Error:\ CAN\ message\ send\ timed\ out.\(\backslash\)r\(\backslash\)n"{}});}
+\DoxyCodeLine{\Hypertarget{motor__driver_8c_source_l00124}00124\ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{main_8h_a1730ffe1e560465665eb47d9264826f9}{Error\_Handler}}();\ \ \textcolor{comment}{//\ Optional:\ Go\ to\ error\ handler\ for\ timeout}}
+\DoxyCodeLine{\Hypertarget{motor__driver_8c_source_l00125}00125\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return};}
+\DoxyCodeLine{\Hypertarget{motor__driver_8c_source_l00126}00126\ }
+\DoxyCodeLine{\Hypertarget{motor__driver_8c_source_l00127}00127\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{default}:}
+\DoxyCodeLine{\Hypertarget{motor__driver_8c_source_l00128}00128\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (logs\ ==\ TRUE)\ printf(\textcolor{stringliteral}{"{}Unknown\ status\ returned\ from\ HAL\_CAN\_AddTxMessage.\(\backslash\)r\(\backslash\)n"{}});}
+\DoxyCodeLine{\Hypertarget{motor__driver_8c_source_l00129}00129\ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{main_8h_a1730ffe1e560465665eb47d9264826f9}{Error\_Handler}}();\ \ \textcolor{comment}{//\ Optional:\ Handle\ unexpected\ status}}
+\DoxyCodeLine{\Hypertarget{motor__driver_8c_source_l00130}00130\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return};}
+\DoxyCodeLine{\Hypertarget{motor__driver_8c_source_l00131}00131\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{motor__driver_8c_source_l00132}00132\ }
+\DoxyCodeLine{\Hypertarget{motor__driver_8c_source_l00133}00133\ \ \ \ \ \}\ \textcolor{keywordflow}{while}\ (status\ ==\ HAL\_BUSY\ \&\&\ retryCount\ <\ maxRetries);}
+\DoxyCodeLine{\Hypertarget{motor__driver_8c_source_l00134}00134\ }
+\DoxyCodeLine{\Hypertarget{motor__driver_8c_source_l00135}00135\ \ \ \ \ \textcolor{keywordflow}{if}\ (retryCount\ ==\ maxRetries)}
+\DoxyCodeLine{\Hypertarget{motor__driver_8c_source_l00136}00136\ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{motor__driver_8c_source_l00137}00137\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (logs\ ==\ TRUE)\ printf(\textcolor{stringliteral}{"{}Error:\ Exceeded\ maximum\ retries\ for\ CAN\ message\ send.\(\backslash\)r\(\backslash\)n"{}});}
+\DoxyCodeLine{\Hypertarget{motor__driver_8c_source_l00138}00138\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{main_8h_a1730ffe1e560465665eb47d9264826f9}{Error\_Handler}}();\ \ \textcolor{comment}{//\ Optional:\ Go\ to\ error\ handler\ after\ max\ retries}}
+\DoxyCodeLine{\Hypertarget{motor__driver_8c_source_l00139}00139\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{motor__driver_8c_source_l00140}00140\ \}}
+\DoxyCodeLine{\Hypertarget{motor__driver_8c_source_l00141}00141\ }
+\DoxyCodeLine{\Hypertarget{motor__driver_8c_source_l00148}\mbox{\hyperlink{motor__driver_8h_ac5af04389b40ad641e83891374af67e8}{00148}}\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{motor__driver_8c_a5eb8104a5feb98bbf4beed16793d0334}{MOT\_Set\_mode}}(uint8\_t\ direction,\ uint8\_t\ steps,\ uint8\_t\ speed)}
+\DoxyCodeLine{\Hypertarget{motor__driver_8c_source_l00149}00149\ \{}
+\DoxyCodeLine{\Hypertarget{motor__driver_8c_source_l00150}00150\ \ \ \ \ uint8\_t\ aData[3];}
+\DoxyCodeLine{\Hypertarget{motor__driver_8c_source_l00151}00151\ }
+\DoxyCodeLine{\Hypertarget{motor__driver_8c_source_l00152}00152\ \ \ \ \ aData[0]\ =\ direction;}
+\DoxyCodeLine{\Hypertarget{motor__driver_8c_source_l00153}00153\ \ \ \ \ aData[1]\ =\ steps;}
+\DoxyCodeLine{\Hypertarget{motor__driver_8c_source_l00154}00154\ \ \ \ \ aData[2]\ =\ speed;}
+\DoxyCodeLine{\Hypertarget{motor__driver_8c_source_l00155}00155\ }
+\DoxyCodeLine{\Hypertarget{motor__driver_8c_source_l00156}00156\ \ \ \ \ \mbox{\hyperlink{motor__driver_8c_a115d7cd8d6cc2c93d2b3a2db8acc3bb9}{CAN\_Send}}(aData,\ 3,\ MOT\_MODE\_MANUAL\_ID);}
+\DoxyCodeLine{\Hypertarget{motor__driver_8c_source_l00157}00157\ \}}
+\DoxyCodeLine{\Hypertarget{motor__driver_8c_source_l00158}00158\ }
+\DoxyCodeLine{\Hypertarget{motor__driver_8c_source_l00162}\mbox{\hyperlink{motor__driver_8h_a34fe18199ea8d734f4c2322bbb8a1cd9}{00162}}\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{motor__driver_8c_a34fe18199ea8d734f4c2322bbb8a1cd9}{MOT\_Set\_origin}}()}
+\DoxyCodeLine{\Hypertarget{motor__driver_8c_source_l00163}00163\ \{}
+\DoxyCodeLine{\Hypertarget{motor__driver_8c_source_l00164}00164\ \ \ \ \ uint8\_t\ aData[2];}
+\DoxyCodeLine{\Hypertarget{motor__driver_8c_source_l00165}00165\ }
+\DoxyCodeLine{\Hypertarget{motor__driver_8c_source_l00166}00166\ \ \ \ \ aData[0]\ =\ 0;}
+\DoxyCodeLine{\Hypertarget{motor__driver_8c_source_l00167}00167\ \ \ \ \ \mbox{\hyperlink{motor__driver_8c_a115d7cd8d6cc2c93d2b3a2db8acc3bb9}{CAN\_Send}}(aData,\ 1,\ MOT\_INIT\_POS\_ID);}
+\DoxyCodeLine{\Hypertarget{motor__driver_8c_source_l00168}00168\ \}}
+\DoxyCodeLine{\Hypertarget{motor__driver_8c_source_l00169}00169\ }
+\DoxyCodeLine{\Hypertarget{motor__driver_8c_source_l00175}\mbox{\hyperlink{motor__driver_8h_a68c19f4eb76eceeca25238fe3f96b3f5}{00175}}\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{motor__driver_8c_ac871d052fae9a46d976f13fcf487b24b}{MOT\_Rotate}}(uint8\_t\ angle,\ uint8\_t\ sign)}
+\DoxyCodeLine{\Hypertarget{motor__driver_8c_source_l00176}00176\ \{}
+\DoxyCodeLine{\Hypertarget{motor__driver_8c_source_l00177}00177\ \ \ \ \ uint8\_t\ aData[2];}
+\DoxyCodeLine{\Hypertarget{motor__driver_8c_source_l00178}00178\ }
+\DoxyCodeLine{\Hypertarget{motor__driver_8c_source_l00179}00179\ \ \ \ \ \textcolor{keywordflow}{if}\ (angle\ <\ MOT\_ANGLE\_MIN)\ angle\ =\ 0x00;}
+\DoxyCodeLine{\Hypertarget{motor__driver_8c_source_l00180}00180\ \ \ \ \ \textcolor{keywordflow}{if}\ (angle\ >\ MOT\_ANGLE\_MAX)\ angle\ =\ 0xFF;}
+\DoxyCodeLine{\Hypertarget{motor__driver_8c_source_l00181}00181\ }
+\DoxyCodeLine{\Hypertarget{motor__driver_8c_source_l00182}00182\ \ \ \ \ aData[0]\ =\ angle;}
+\DoxyCodeLine{\Hypertarget{motor__driver_8c_source_l00183}00183\ \ \ \ \ aData[1]\ =\ sign;}
+\DoxyCodeLine{\Hypertarget{motor__driver_8c_source_l00184}00184\ }
+\DoxyCodeLine{\Hypertarget{motor__driver_8c_source_l00185}00185\ \ \ \ \ \mbox{\hyperlink{motor__driver_8c_a115d7cd8d6cc2c93d2b3a2db8acc3bb9}{CAN\_Send}}(aData,\ MOT\_ANGLE\_SIZE,\ MOT\_ANGLE\_ID);}
+\DoxyCodeLine{\Hypertarget{motor__driver_8c_source_l00186}00186\ \}}
+
+\end{DoxyCode}

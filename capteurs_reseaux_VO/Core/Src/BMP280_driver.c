@@ -1,10 +1,11 @@
-/*
- * MPU9250_driver.c
- *
+/**
+ ******************************************************************************
+ * @file           : BMP280_driver.c
+ * @brief          : Driver for the BMP280
+ ******************************************************************************
  *  Created on: Oct 18, 2024
  *      Author: oliver
  */
-
 #include "main.h"
 #include "i2c.h"
 #include "BMP280_driver.h"

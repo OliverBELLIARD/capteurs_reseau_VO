@@ -1,0 +1,158 @@
+.TH "/home/oliver/Documents/3A/capteurs_reseaux_VO_ESE_TP2/capteurs_reseaux_VO/Core/Src/main.c" 3 "Bus et Réseaux - VO" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+/home/oliver/Documents/3A/capteurs_reseaux_VO_ESE_TP2/capteurs_reseaux_VO/Core/Src/main.c \- : Main program body  
+
+.SH SYNOPSIS
+.br
+.PP
+\fC#include 'main\&.h'\fP
+.br
+\fC#include 'can\&.h'\fP
+.br
+\fC#include 'i2c\&.h'\fP
+.br
+\fC#include 'usart\&.h'\fP
+.br
+\fC#include 'gpio\&.h'\fP
+.br
+\fC#include <stdio\&.h>\fP
+.br
+\fC#include <stdlib\&.h>\fP
+.br
+\fC#include 'BMP280_driver\&.h'\fP
+.br
+\fC#include 'MPU9250_driver\&.h'\fP
+.br
+\fC#include 'motor_driver\&.h'\fP
+.br
+
+.SS "Macros"
+
+.in +1c
+.ti -1c
+.RI "#define \fBTRUE\fP   1"
+.br
+.ti -1c
+.RI "#define \fBFALSE\fP   0"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "void \fBSystemClock_Config\fP (void)"
+.br
+.RI "System Clock Configuration\&. "
+.ti -1c
+.RI "int \fB__io_putchar\fP (int ch)"
+.br
+.ti -1c
+.RI "void \fBBMP280_init\fP ()"
+.br
+.ti -1c
+.RI "void \fBMPU9250_init\fP ()"
+.br
+.ti -1c
+.RI "void \fBMOT_Init\fP ()"
+.br
+.ti -1c
+.RI "int \fBmain\fP (void)"
+.br
+.RI "The application entry point\&. "
+.ti -1c
+.RI "void \fBError_Handler\fP (void)"
+.br
+.RI "This function is executed in case of error occurrence\&. "
+.in -1c
+.SH "Detailed Description"
+.PP 
+: Main program body 
+
+
+.PP
+\fBAttention\fP
+.RS 4
+
+.RE
+.PP
+Copyright (c) 2024 STMicroelectronics\&. All rights reserved\&.
+.PP
+This software is licensed under terms that can be found in the LICENSE file in the root directory of this software component\&. If no LICENSE file comes with this software, it is provided AS-IS\&. 
+.PP
+Definition in file \fBmain\&.c\fP\&.
+.SH "Macro Definition Documentation"
+.PP 
+.SS "#define FALSE   0"
+
+.PP
+Definition at line \fB44\fP of file \fBmain\&.c\fP\&.
+.SS "#define TRUE   1"
+
+.PP
+Definition at line \fB43\fP of file \fBmain\&.c\fP\&.
+.SH "Function Documentation"
+.PP 
+.SS "int __io_putchar (int ch)"
+
+.PP
+Definition at line \fB67\fP of file \fBmain\&.c\fP\&.
+.SS "void BMP280_init ()"
+
+.PP
+Definition at line \fB75\fP of file \fBmain\&.c\fP\&.
+.SS "void Error_Handler (void)"
+
+.PP
+This function is executed in case of error occurrence\&. 
+.PP
+\fBReturn values\fP
+.RS 4
+\fINone\fP 
+.RE
+.PP
+
+.PP
+Definition at line \fB223\fP of file \fBmain\&.c\fP\&.
+.SS "int main (void)"
+
+.PP
+The application entry point\&. 
+.PP
+\fBReturn values\fP
+.RS 4
+\fIint\fP 
+.RE
+.PP
+
+.PP
+Definition at line \fB115\fP of file \fBmain\&.c\fP\&.
+.SS "void MOT_Init ()"
+
+.PP
+Definition at line \fB102\fP of file \fBmain\&.c\fP\&.
+.SS "void MPU9250_init ()"
+
+.PP
+Definition at line \fB85\fP of file \fBmain\&.c\fP\&.
+.SS "void SystemClock_Config (void)"
+
+.PP
+System Clock Configuration\&. 
+.PP
+\fBReturn values\fP
+.RS 4
+\fINone\fP 
+.RE
+.PP
+Configure the main internal regulator output voltage
+.PP
+Initializes the RCC Oscillators according to the specified parameters in the RCC_OscInitTypeDef structure\&.
+.PP
+Initializes the CPU, AHB and APB buses clocks
+.PP
+Definition at line \fB172\fP of file \fBmain\&.c\fP\&.
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for Bus et Réseaux - VO from the source code\&.

@@ -1,9 +1,15 @@
-/*
- * motor_driver.h
- *
- *  Created on: Nov 9, 2024
- *      Author: oliver
- */
+/**
+  ******************************************************************************
+  * @file    motor_driver.h
+  * @brief   This file contains all the function prototypes for
+  *          the motor_driver.c file
+  ******************************************************************************
+  *
+  *  Created on: Nov 9, 2024
+  *      Author: oliver
+  *
+  ******************************************************************************
+  */
 
 #ifndef INC_MOTOR_DRIVER_H_
 #define INC_MOTOR_DRIVER_H_

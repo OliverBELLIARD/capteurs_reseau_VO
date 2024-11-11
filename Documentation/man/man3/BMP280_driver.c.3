@@ -1,0 +1,306 @@
+.TH "/home/oliver/Documents/3A/capteurs_reseaux_VO_ESE_TP2/capteurs_reseaux_VO/Core/Src/BMP280_driver.c" 3 "Bus et Réseaux - VO" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+/home/oliver/Documents/3A/capteurs_reseaux_VO_ESE_TP2/capteurs_reseaux_VO/Core/Src/BMP280_driver.c \- : Driver for the BMP280  
+
+.SH SYNOPSIS
+.br
+.PP
+\fC#include 'main\&.h'\fP
+.br
+\fC#include 'i2c\&.h'\fP
+.br
+\fC#include 'BMP280_driver\&.h'\fP
+.br
+
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "int \fBBMP280_Check_id\fP (void)"
+.br
+.RI "Check the BMP280 sensor ID\&. "
+.ti -1c
+.RI "int \fBBMP280_Config\fP (void)"
+.br
+.RI "Configure the BMP280 sensor\&. "
+.ti -1c
+.RI "void \fBBMP280_calibration\fP (void)"
+.br
+.RI "Update the calibration parameters of BMP280\&. "
+.ti -1c
+.RI "BMP280_S32_t \fBBMP280_compensate_T_int32\fP (BMP280_S32_t adc_T)"
+.br
+.RI "Compensate temperature reading from BMP280\&. "
+.ti -1c
+.RI "BMP280_U32_t \fBBMP280_compensate_P_int64\fP (BMP280_S32_t adc_P)"
+.br
+.RI "Compensate pressure reading from BMP280\&. "
+.ti -1c
+.RI "int \fBBMP280_Write_Reg\fP (uint8_t reg, uint8_t value)"
+.br
+.RI "Write a value to a BMP280 register\&. "
+.ti -1c
+.RI "uint8_t * \fBBMP280_Read_Reg\fP (uint8_t reg, uint8_t length)"
+.br
+.RI "Read data from a BMP280 register\&. "
+.ti -1c
+.RI "BMP280_S32_t \fBBMP280_get_temperature\fP ()"
+.br
+.RI "Get the compensated temperature in degrees Celsius\&. "
+.ti -1c
+.RI "BMP280_S32_t \fBBMP280_get_pressure\fP ()"
+.br
+.RI "Get the compensated pressure in Pascals\&. "
+.in -1c
+.SS "Variables"
+
+.in +1c
+.ti -1c
+.RI "I2C_HandleTypeDef * \fBhi2c_user\fP"
+.br
+.ti -1c
+.RI "uint16_t \fBdig_T1\fP"
+.br
+.ti -1c
+.RI "int16_t \fBdig_T2\fP"
+.br
+.ti -1c
+.RI "int16_t \fBdig_T3\fP"
+.br
+.ti -1c
+.RI "uint16_t \fBdig_P1\fP"
+.br
+.ti -1c
+.RI "int16_t \fBdig_P2\fP"
+.br
+.ti -1c
+.RI "int16_t \fBdig_P3\fP"
+.br
+.ti -1c
+.RI "int16_t \fBdig_P4\fP"
+.br
+.ti -1c
+.RI "int16_t \fBdig_P5\fP"
+.br
+.ti -1c
+.RI "int16_t \fBdig_P6\fP"
+.br
+.ti -1c
+.RI "int16_t \fBdig_P7\fP"
+.br
+.ti -1c
+.RI "int16_t \fBdig_P8\fP"
+.br
+.ti -1c
+.RI "int16_t \fBdig_P9\fP"
+.br
+.ti -1c
+.RI "BMP280_S32_t \fBt_fine\fP"
+.br
+.in -1c
+.SH "Detailed Description"
+.PP 
+: Driver for the BMP280 
+
+Created on: Oct 18, 2024 Author: oliver 
+.PP
+Definition in file \fBBMP280_driver\&.c\fP\&.
+.SH "Function Documentation"
+.PP 
+.SS "void BMP280_calibration (void)"
+
+.PP
+Update the calibration parameters of BMP280\&. Reads calibration data from the BMP280 sensor and stores it in global variables for temperature and pressure compensation calculations\&. 
+.PP
+Definition at line \fB107\fP of file \fBBMP280_driver\&.c\fP\&.
+.SS "int BMP280_Check_id (void)"
+
+.PP
+Check the BMP280 sensor ID\&. Sends a command to retrieve the BMP280 sensor's ID and checks if the response matches the expected ID\&. Prints the ID if successful\&.
+.PP
+\fBReturns\fP
+.RS 4
+int Returns EXIT_SUCCESS if ID is read successfully, otherwise returns EXIT_FAILURE\&. 
+.RE
+.PP
+
+.PP
+Definition at line \fB25\fP of file \fBBMP280_driver\&.c\fP\&.
+.SS "BMP280_U32_t BMP280_compensate_P_int64 (BMP280_S32_t adc_P)"
+
+.PP
+Compensate pressure reading from BMP280\&. Compensates the raw pressure data read from the sensor to provide a pressure value in Pascals (Pa) in Q24\&.8 format (24 integer bits and 8 fractional bits)\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fIadc_P\fP Raw ADC pressure value\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+BMP280_U32_t Compensated pressure in Pascals as a unsigned 32 bit integer (Output value of “24674867” represents 24674867/256 = 96386\&.2 Pa = 963\&.862 hPa)\&. 
+.RE
+.PP
+
+.PP
+Definition at line \fB175\fP of file \fBBMP280_driver\&.c\fP\&.
+.SS "BMP280_S32_t BMP280_compensate_T_int32 (BMP280_S32_t adc_T)"
+
+.PP
+Compensate temperature reading from BMP280\&. Compensates the raw temperature data read from the sensor to provide a temperature value in degrees Celsius, with a resolution of 0\&.01°C\&. t_fine carries fine temperature as global value\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fIadc_T\fP Raw ADC temperature value\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+BMP280_S32_t Compensated temperature in degrees Celsius, scaled by 100 (e\&.g\&., 5123 represents 51\&.23°C)\&. 
+.RE
+.PP
+
+.PP
+Definition at line \fB154\fP of file \fBBMP280_driver\&.c\fP\&.
+.SS "int BMP280_Config (void)"
+
+.PP
+Configure the BMP280 sensor\&. Sets up the BMP280 with the specified configuration\&. The configuration is sent and confirmed by checking the response from the sensor\&.
+.PP
+\fBReturns\fP
+.RS 4
+int Returns EXIT_SUCCESS if configuration is confirmed, otherwise returns EXIT_FAILURE\&. 
+.RE
+.PP
+
+.PP
+Definition at line \fB57\fP of file \fBBMP280_driver\&.c\fP\&.
+.SS "BMP280_S32_t BMP280_get_pressure (void)"
+
+.PP
+Get the compensated pressure in Pascals\&. Reads the raw pressure data from the BMP280, compensates it, and returns the result\&. Prints both raw and compensated pressure values\&.
+.PP
+\fBReturns\fP
+.RS 4
+BMP280_S32_t Compensated pressure in Pascals\&. 
+.RE
+.PP
+
+.PP
+Definition at line \fB299\fP of file \fBBMP280_driver\&.c\fP\&.
+.SS "BMP280_S32_t BMP280_get_temperature (void)"
+
+.PP
+Get the compensated temperature in degrees Celsius\&. Reads the raw temperature data from the BMP280, compensates it, and returns the result\&. Prints both raw and compensated temperature values\&.
+.PP
+\fBReturns\fP
+.RS 4
+BMP280_S32_t Compensated temperature in degrees Celsius, scaled by 100\&. 
+.RE
+.PP
+
+.PP
+Definition at line \fB268\fP of file \fBBMP280_driver\&.c\fP\&.
+.SS "uint8_t * BMP280_Read_Reg (uint8_t reg, uint8_t length)"
+
+.PP
+Read data from a BMP280 register\&. Reads a specified number of bytes from a BMP280 register and returns a dynamically allocated buffer containing the data\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fIreg\fP Register address to read from\&. 
+.br
+\fIlength\fP Number of bytes to read\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+uint8_t* Pointer to buffer with read data\&. The caller is responsible for freeing the buffer\&. 
+.RE
+.PP
+
+.PP
+Definition at line \fB241\fP of file \fBBMP280_driver\&.c\fP\&.
+.SS "int BMP280_Write_Reg (uint8_t reg, uint8_t value)"
+
+.PP
+Write a value to a BMP280 register\&. Writes a specified value to a BMP280 register and verifies if the value was successfully written\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fIreg\fP Register address\&. 
+.br
+\fIvalue\fP Value to write to the register\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+int Returns EXIT_SUCCESS if value is successfully written, otherwise returns EXIT_FAILURE\&. 
+.RE
+.PP
+
+.PP
+Definition at line \fB207\fP of file \fBBMP280_driver\&.c\fP\&.
+.SH "Variable Documentation"
+.PP 
+.SS "uint16_t dig_P1"
+
+.PP
+Definition at line \fB89\fP of file \fBBMP280_driver\&.c\fP\&.
+.SS "int16_t dig_P2"
+
+.PP
+Definition at line \fB90\fP of file \fBBMP280_driver\&.c\fP\&.
+.SS "int16_t dig_P3"
+
+.PP
+Definition at line \fB91\fP of file \fBBMP280_driver\&.c\fP\&.
+.SS "int16_t dig_P4"
+
+.PP
+Definition at line \fB92\fP of file \fBBMP280_driver\&.c\fP\&.
+.SS "int16_t dig_P5"
+
+.PP
+Definition at line \fB93\fP of file \fBBMP280_driver\&.c\fP\&.
+.SS "int16_t dig_P6"
+
+.PP
+Definition at line \fB94\fP of file \fBBMP280_driver\&.c\fP\&.
+.SS "int16_t dig_P7"
+
+.PP
+Definition at line \fB95\fP of file \fBBMP280_driver\&.c\fP\&.
+.SS "int16_t dig_P8"
+
+.PP
+Definition at line \fB96\fP of file \fBBMP280_driver\&.c\fP\&.
+.SS "int16_t dig_P9"
+
+.PP
+Definition at line \fB97\fP of file \fBBMP280_driver\&.c\fP\&.
+.SS "uint16_t dig_T1"
+
+.PP
+Definition at line \fB86\fP of file \fBBMP280_driver\&.c\fP\&.
+.SS "int16_t dig_T2"
+
+.PP
+Definition at line \fB87\fP of file \fBBMP280_driver\&.c\fP\&.
+.SS "int16_t dig_T3"
+
+.PP
+Definition at line \fB88\fP of file \fBBMP280_driver\&.c\fP\&.
+.SS "I2C_HandleTypeDef* hi2c_user"
+
+.PP
+Definition at line \fB14\fP of file \fBBMP280_driver\&.c\fP\&.
+.SS "BMP280_S32_t t_fine"
+
+.PP
+Definition at line \fB99\fP of file \fBBMP280_driver\&.c\fP\&.
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for Bus et Réseaux - VO from the source code\&.

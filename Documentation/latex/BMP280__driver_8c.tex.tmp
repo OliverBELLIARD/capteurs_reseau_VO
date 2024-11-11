@@ -1,0 +1,421 @@
+\doxysection{/home/oliver/\+Documents/3\+A/capteurs\+\_\+reseaux\+\_\+\+VO\+\_\+\+ESE\+\_\+\+TP2/capteurs\+\_\+reseaux\+\_\+\+VO/\+Core/\+Src/\+BMP280\+\_\+driver.c File Reference}
+\hypertarget{BMP280__driver_8c}{}\label{BMP280__driver_8c}\index{/home/oliver/Documents/3A/capteurs\_reseaux\_VO\_ESE\_TP2/capteurs\_reseaux\_VO/Core/Src/BMP280\_driver.c@{/home/oliver/Documents/3A/capteurs\_reseaux\_VO\_ESE\_TP2/capteurs\_reseaux\_VO/Core/Src/BMP280\_driver.c}}
+
+
+\+: Driver for the BMP280  
+
+
+{\ttfamily \#include "{}main.\+h"{}}\newline
+{\ttfamily \#include "{}i2c.\+h"{}}\newline
+{\ttfamily \#include "{}BMP280\+\_\+driver.\+h"{}}\newline
+Include dependency graph for BMP280\+\_\+driver.\+c\+:
+% FIG 0
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+int \mbox{\hyperlink{BMP280__driver_8c_a7e2d8e132c60f4de59663255cc0b8987}{BMP280\+\_\+\+Check\+\_\+id}} (void)
+\begin{DoxyCompactList}\small\item\em Check the BMP280 sensor ID. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{BMP280__driver_8c_a39319860004e0f63b0d14f2f33a0119b}{BMP280\+\_\+\+Config}} (void)
+\begin{DoxyCompactList}\small\item\em Configure the BMP280 sensor. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{BMP280__driver_8c_a36c96244995f846115c0357dd9bf5dcc}{BMP280\+\_\+calibration}} (void)
+\begin{DoxyCompactList}\small\item\em Update the calibration parameters of BMP280. \end{DoxyCompactList}\item 
+BMP280\+\_\+\+S32\+\_\+t \mbox{\hyperlink{BMP280__driver_8c_a834859c5ae69b3526a0b585923956c46}{BMP280\+\_\+compensate\+\_\+\+T\+\_\+int32}} (BMP280\+\_\+\+S32\+\_\+t adc\+\_\+T)
+\begin{DoxyCompactList}\small\item\em Compensate temperature reading from BMP280. \end{DoxyCompactList}\item 
+BMP280\+\_\+\+U32\+\_\+t \mbox{\hyperlink{BMP280__driver_8c_a910d1e5dd2fbdb3870e5cf4ca5a763ec}{BMP280\+\_\+compensate\+\_\+\+P\+\_\+int64}} (BMP280\+\_\+\+S32\+\_\+t adc\+\_\+P)
+\begin{DoxyCompactList}\small\item\em Compensate pressure reading from BMP280. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{BMP280__driver_8c_a6e2697078df39b7582d0c93aa33bed21}{BMP280\+\_\+\+Write\+\_\+\+Reg}} (uint8\+\_\+t reg, uint8\+\_\+t value)
+\begin{DoxyCompactList}\small\item\em Write a value to a BMP280 register. \end{DoxyCompactList}\item 
+uint8\+\_\+t \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{BMP280__driver_8c_aa66b5f318d41d4ead70418d8d4e0a21f}{BMP280\+\_\+\+Read\+\_\+\+Reg}} (uint8\+\_\+t reg, uint8\+\_\+t length)
+\begin{DoxyCompactList}\small\item\em Read data from a BMP280 register. \end{DoxyCompactList}\item 
+BMP280\+\_\+\+S32\+\_\+t \mbox{\hyperlink{BMP280__driver_8c_a9ad63608e8acf7960d27522dd0b207e7}{BMP280\+\_\+get\+\_\+temperature}} ()
+\begin{DoxyCompactList}\small\item\em Get the compensated temperature in degrees Celsius. \end{DoxyCompactList}\item 
+BMP280\+\_\+\+S32\+\_\+t \mbox{\hyperlink{BMP280__driver_8c_a5ee7cd62db9e5e3ae5a20073af186812}{BMP280\+\_\+get\+\_\+pressure}} ()
+\begin{DoxyCompactList}\small\item\em Get the compensated pressure in Pascals. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+I2\+C\+\_\+\+Handle\+Type\+Def \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{BMP280__driver_8c_ad01ecb80fc81b6a0d3bdd5dfb04c5b86}{hi2c\+\_\+user}}
+\item 
+uint16\+\_\+t \mbox{\hyperlink{BMP280__driver_8c_a730ed166c629bded674b13faffe9cef7}{dig\+\_\+\+T1}}
+\item 
+int16\+\_\+t \mbox{\hyperlink{BMP280__driver_8c_ab5c023a004c0497ba616d916155c85bb}{dig\+\_\+\+T2}}
+\item 
+int16\+\_\+t \mbox{\hyperlink{BMP280__driver_8c_a9536e89c30bbd791153ac9e407b0752b}{dig\+\_\+\+T3}}
+\item 
+uint16\+\_\+t \mbox{\hyperlink{BMP280__driver_8c_a14cb8cb6405f1dbd7b96eacb1564f3ac}{dig\+\_\+\+P1}}
+\item 
+int16\+\_\+t \mbox{\hyperlink{BMP280__driver_8c_abf2720ad17acc224ed28e66ec3de32ed}{dig\+\_\+\+P2}}
+\item 
+int16\+\_\+t \mbox{\hyperlink{BMP280__driver_8c_a16db1b4967cfd3dc34219d8fb8c92aeb}{dig\+\_\+\+P3}}
+\item 
+int16\+\_\+t \mbox{\hyperlink{BMP280__driver_8c_a9c7db64a28b0e240d0478921741dd67d}{dig\+\_\+\+P4}}
+\item 
+int16\+\_\+t \mbox{\hyperlink{BMP280__driver_8c_a7e509836d7ae0753ceaaed354b5e1479}{dig\+\_\+\+P5}}
+\item 
+int16\+\_\+t \mbox{\hyperlink{BMP280__driver_8c_a2ae5570c6daeda1d3666ed3dad96c4b7}{dig\+\_\+\+P6}}
+\item 
+int16\+\_\+t \mbox{\hyperlink{BMP280__driver_8c_a7f3c3b4bc3acd51c35229dd2cc50a3d6}{dig\+\_\+\+P7}}
+\item 
+int16\+\_\+t \mbox{\hyperlink{BMP280__driver_8c_a40493b036281e2b5fdfdf1776fe4708a}{dig\+\_\+\+P8}}
+\item 
+int16\+\_\+t \mbox{\hyperlink{BMP280__driver_8c_a361620dc95ad1d56b5d416d9d290c5f4}{dig\+\_\+\+P9}}
+\item 
+BMP280\+\_\+\+S32\+\_\+t \mbox{\hyperlink{BMP280__driver_8c_a76976acd94b5aa6ded5c69ae13c1e4ee}{t\+\_\+fine}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+\+: Driver for the BMP280 
+
+Created on\+: Oct 18, 2024 Author\+: oliver 
+
+Definition in file \mbox{\hyperlink{BMP280__driver_8c_source}{BMP280\+\_\+driver.\+c}}.
+
+
+
+\doxysubsection{Function Documentation}
+\Hypertarget{BMP280__driver_8c_a36c96244995f846115c0357dd9bf5dcc}\label{BMP280__driver_8c_a36c96244995f846115c0357dd9bf5dcc} 
+\index{BMP280\_driver.c@{BMP280\_driver.c}!BMP280\_calibration@{BMP280\_calibration}}
+\index{BMP280\_calibration@{BMP280\_calibration}!BMP280\_driver.c@{BMP280\_driver.c}}
+\doxysubsubsection{\texorpdfstring{BMP280\_calibration()}{BMP280\_calibration()}}
+{\footnotesize\ttfamily void BMP280\+\_\+calibration (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+
+
+Update the calibration parameters of BMP280. 
+
+Reads calibration data from the BMP280 sensor and stores it in global variables for temperature and pressure compensation calculations. 
+
+Definition at line \mbox{\hyperlink{BMP280__driver_8c_source_l00107}{107}} of file \mbox{\hyperlink{BMP280__driver_8c_source}{BMP280\+\_\+driver.\+c}}.
+
+\Hypertarget{BMP280__driver_8c_a7e2d8e132c60f4de59663255cc0b8987}\label{BMP280__driver_8c_a7e2d8e132c60f4de59663255cc0b8987} 
+\index{BMP280\_driver.c@{BMP280\_driver.c}!BMP280\_Check\_id@{BMP280\_Check\_id}}
+\index{BMP280\_Check\_id@{BMP280\_Check\_id}!BMP280\_driver.c@{BMP280\_driver.c}}
+\doxysubsubsection{\texorpdfstring{BMP280\_Check\_id()}{BMP280\_Check\_id()}}
+{\footnotesize\ttfamily int BMP280\+\_\+\+Check\+\_\+id (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+
+
+Check the BMP280 sensor ID. 
+
+Sends a command to retrieve the BMP280 sensor\textquotesingle{}s ID and checks if the response matches the expected ID. Prints the ID if successful.
+
+\begin{DoxyReturn}{Returns}
+int Returns EXIT\+\_\+\+SUCCESS if ID is read successfully, otherwise returns EXIT\+\_\+\+FAILURE. 
+\end{DoxyReturn}
+
+
+Definition at line \mbox{\hyperlink{BMP280__driver_8c_source_l00025}{25}} of file \mbox{\hyperlink{BMP280__driver_8c_source}{BMP280\+\_\+driver.\+c}}.
+
+\Hypertarget{BMP280__driver_8c_a910d1e5dd2fbdb3870e5cf4ca5a763ec}\label{BMP280__driver_8c_a910d1e5dd2fbdb3870e5cf4ca5a763ec} 
+\index{BMP280\_driver.c@{BMP280\_driver.c}!BMP280\_compensate\_P\_int64@{BMP280\_compensate\_P\_int64}}
+\index{BMP280\_compensate\_P\_int64@{BMP280\_compensate\_P\_int64}!BMP280\_driver.c@{BMP280\_driver.c}}
+\doxysubsubsection{\texorpdfstring{BMP280\_compensate\_P\_int64()}{BMP280\_compensate\_P\_int64()}}
+{\footnotesize\ttfamily BMP280\+\_\+\+U32\+\_\+t BMP280\+\_\+compensate\+\_\+\+P\+\_\+int64 (\begin{DoxyParamCaption}\item[{BMP280\+\_\+\+S32\+\_\+t}]{adc\+\_\+P }\end{DoxyParamCaption})}
+
+
+
+Compensate pressure reading from BMP280. 
+
+Compensates the raw pressure data read from the sensor to provide a pressure value in Pascals (Pa) in Q24.\+8 format (24 integer bits and 8 fractional bits).
+
+
+\begin{DoxyParams}{Parameters}
+{\em adc\+\_\+P} & Raw ADC pressure value. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+BMP280\+\_\+\+U32\+\_\+t Compensated pressure in Pascals as a unsigned 32 bit integer (Output value of “24674867” represents 24674867/256 = 96386.\+2 Pa = 963.\+862 h\+Pa). 
+\end{DoxyReturn}
+
+
+Definition at line \mbox{\hyperlink{BMP280__driver_8c_source_l00175}{175}} of file \mbox{\hyperlink{BMP280__driver_8c_source}{BMP280\+\_\+driver.\+c}}.
+
+Here is the caller graph for this function\+:
+% FIG 1
+\Hypertarget{BMP280__driver_8c_a834859c5ae69b3526a0b585923956c46}\label{BMP280__driver_8c_a834859c5ae69b3526a0b585923956c46} 
+\index{BMP280\_driver.c@{BMP280\_driver.c}!BMP280\_compensate\_T\_int32@{BMP280\_compensate\_T\_int32}}
+\index{BMP280\_compensate\_T\_int32@{BMP280\_compensate\_T\_int32}!BMP280\_driver.c@{BMP280\_driver.c}}
+\doxysubsubsection{\texorpdfstring{BMP280\_compensate\_T\_int32()}{BMP280\_compensate\_T\_int32()}}
+{\footnotesize\ttfamily BMP280\+\_\+\+S32\+\_\+t BMP280\+\_\+compensate\+\_\+\+T\+\_\+int32 (\begin{DoxyParamCaption}\item[{BMP280\+\_\+\+S32\+\_\+t}]{adc\+\_\+T }\end{DoxyParamCaption})}
+
+
+
+Compensate temperature reading from BMP280. 
+
+Compensates the raw temperature data read from the sensor to provide a temperature value in degrees Celsius, with a resolution of 0.\+01°C. t\+\_\+fine carries fine temperature as global value.
+
+
+\begin{DoxyParams}{Parameters}
+{\em adc\+\_\+T} & Raw ADC temperature value. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+BMP280\+\_\+\+S32\+\_\+t Compensated temperature in degrees Celsius, scaled by 100 (e.\+g., 5123 represents 51.\+23°C). 
+\end{DoxyReturn}
+
+
+Definition at line \mbox{\hyperlink{BMP280__driver_8c_source_l00154}{154}} of file \mbox{\hyperlink{BMP280__driver_8c_source}{BMP280\+\_\+driver.\+c}}.
+
+Here is the caller graph for this function\+:
+% FIG 2
+\Hypertarget{BMP280__driver_8c_a39319860004e0f63b0d14f2f33a0119b}\label{BMP280__driver_8c_a39319860004e0f63b0d14f2f33a0119b} 
+\index{BMP280\_driver.c@{BMP280\_driver.c}!BMP280\_Config@{BMP280\_Config}}
+\index{BMP280\_Config@{BMP280\_Config}!BMP280\_driver.c@{BMP280\_driver.c}}
+\doxysubsubsection{\texorpdfstring{BMP280\_Config()}{BMP280\_Config()}}
+{\footnotesize\ttfamily int BMP280\+\_\+\+Config (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+
+
+Configure the BMP280 sensor. 
+
+Sets up the BMP280 with the specified configuration. The configuration is sent and confirmed by checking the response from the sensor.
+
+\begin{DoxyReturn}{Returns}
+int Returns EXIT\+\_\+\+SUCCESS if configuration is confirmed, otherwise returns EXIT\+\_\+\+FAILURE. 
+\end{DoxyReturn}
+
+
+Definition at line \mbox{\hyperlink{BMP280__driver_8c_source_l00057}{57}} of file \mbox{\hyperlink{BMP280__driver_8c_source}{BMP280\+\_\+driver.\+c}}.
+
+\Hypertarget{BMP280__driver_8c_a5ee7cd62db9e5e3ae5a20073af186812}\label{BMP280__driver_8c_a5ee7cd62db9e5e3ae5a20073af186812} 
+\index{BMP280\_driver.c@{BMP280\_driver.c}!BMP280\_get\_pressure@{BMP280\_get\_pressure}}
+\index{BMP280\_get\_pressure@{BMP280\_get\_pressure}!BMP280\_driver.c@{BMP280\_driver.c}}
+\doxysubsubsection{\texorpdfstring{BMP280\_get\_pressure()}{BMP280\_get\_pressure()}}
+{\footnotesize\ttfamily BMP280\+\_\+\+S32\+\_\+t BMP280\+\_\+get\+\_\+pressure (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+
+
+Get the compensated pressure in Pascals. 
+
+Reads the raw pressure data from the BMP280, compensates it, and returns the result. Prints both raw and compensated pressure values.
+
+\begin{DoxyReturn}{Returns}
+BMP280\+\_\+\+S32\+\_\+t Compensated pressure in Pascals. 
+\end{DoxyReturn}
+
+
+Definition at line \mbox{\hyperlink{BMP280__driver_8c_source_l00299}{299}} of file \mbox{\hyperlink{BMP280__driver_8c_source}{BMP280\+\_\+driver.\+c}}.
+
+Here is the call graph for this function\+:
+% FIG 3
+\Hypertarget{BMP280__driver_8c_a9ad63608e8acf7960d27522dd0b207e7}\label{BMP280__driver_8c_a9ad63608e8acf7960d27522dd0b207e7} 
+\index{BMP280\_driver.c@{BMP280\_driver.c}!BMP280\_get\_temperature@{BMP280\_get\_temperature}}
+\index{BMP280\_get\_temperature@{BMP280\_get\_temperature}!BMP280\_driver.c@{BMP280\_driver.c}}
+\doxysubsubsection{\texorpdfstring{BMP280\_get\_temperature()}{BMP280\_get\_temperature()}}
+{\footnotesize\ttfamily BMP280\+\_\+\+S32\+\_\+t BMP280\+\_\+get\+\_\+temperature (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+
+
+Get the compensated temperature in degrees Celsius. 
+
+Reads the raw temperature data from the BMP280, compensates it, and returns the result. Prints both raw and compensated temperature values.
+
+\begin{DoxyReturn}{Returns}
+BMP280\+\_\+\+S32\+\_\+t Compensated temperature in degrees Celsius, scaled by 100. 
+\end{DoxyReturn}
+
+
+Definition at line \mbox{\hyperlink{BMP280__driver_8c_source_l00268}{268}} of file \mbox{\hyperlink{BMP280__driver_8c_source}{BMP280\+\_\+driver.\+c}}.
+
+Here is the call graph for this function\+:
+% FIG 4
+Here is the caller graph for this function\+:
+% FIG 5
+\Hypertarget{BMP280__driver_8c_aa66b5f318d41d4ead70418d8d4e0a21f}\label{BMP280__driver_8c_aa66b5f318d41d4ead70418d8d4e0a21f} 
+\index{BMP280\_driver.c@{BMP280\_driver.c}!BMP280\_Read\_Reg@{BMP280\_Read\_Reg}}
+\index{BMP280\_Read\_Reg@{BMP280\_Read\_Reg}!BMP280\_driver.c@{BMP280\_driver.c}}
+\doxysubsubsection{\texorpdfstring{BMP280\_Read\_Reg()}{BMP280\_Read\_Reg()}}
+{\footnotesize\ttfamily uint8\+\_\+t \texorpdfstring{$\ast$}{*} BMP280\+\_\+\+Read\+\_\+\+Reg (\begin{DoxyParamCaption}\item[{uint8\+\_\+t}]{reg,  }\item[{uint8\+\_\+t}]{length }\end{DoxyParamCaption})}
+
+
+
+Read data from a BMP280 register. 
+
+Reads a specified number of bytes from a BMP280 register and returns a dynamically allocated buffer containing the data.
+
+
+\begin{DoxyParams}{Parameters}
+{\em reg} & Register address to read from. \\
+\hline
+{\em length} & Number of bytes to read. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+uint8\+\_\+t\texorpdfstring{$\ast$}{*} Pointer to buffer with read data. The caller is responsible for freeing the buffer. 
+\end{DoxyReturn}
+
+
+Definition at line \mbox{\hyperlink{BMP280__driver_8c_source_l00241}{241}} of file \mbox{\hyperlink{BMP280__driver_8c_source}{BMP280\+\_\+driver.\+c}}.
+
+Here is the caller graph for this function\+:
+% FIG 6
+\Hypertarget{BMP280__driver_8c_a6e2697078df39b7582d0c93aa33bed21}\label{BMP280__driver_8c_a6e2697078df39b7582d0c93aa33bed21} 
+\index{BMP280\_driver.c@{BMP280\_driver.c}!BMP280\_Write\_Reg@{BMP280\_Write\_Reg}}
+\index{BMP280\_Write\_Reg@{BMP280\_Write\_Reg}!BMP280\_driver.c@{BMP280\_driver.c}}
+\doxysubsubsection{\texorpdfstring{BMP280\_Write\_Reg()}{BMP280\_Write\_Reg()}}
+{\footnotesize\ttfamily int BMP280\+\_\+\+Write\+\_\+\+Reg (\begin{DoxyParamCaption}\item[{uint8\+\_\+t}]{reg,  }\item[{uint8\+\_\+t}]{value }\end{DoxyParamCaption})}
+
+
+
+Write a value to a BMP280 register. 
+
+Writes a specified value to a BMP280 register and verifies if the value was successfully written.
+
+
+\begin{DoxyParams}{Parameters}
+{\em reg} & Register address. \\
+\hline
+{\em value} & Value to write to the register. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+int Returns EXIT\+\_\+\+SUCCESS if value is successfully written, otherwise returns EXIT\+\_\+\+FAILURE. 
+\end{DoxyReturn}
+
+
+Definition at line \mbox{\hyperlink{BMP280__driver_8c_source_l00207}{207}} of file \mbox{\hyperlink{BMP280__driver_8c_source}{BMP280\+\_\+driver.\+c}}.
+
+
+
+\doxysubsection{Variable Documentation}
+\Hypertarget{BMP280__driver_8c_a14cb8cb6405f1dbd7b96eacb1564f3ac}\label{BMP280__driver_8c_a14cb8cb6405f1dbd7b96eacb1564f3ac} 
+\index{BMP280\_driver.c@{BMP280\_driver.c}!dig\_P1@{dig\_P1}}
+\index{dig\_P1@{dig\_P1}!BMP280\_driver.c@{BMP280\_driver.c}}
+\doxysubsubsection{\texorpdfstring{dig\_P1}{dig\_P1}}
+{\footnotesize\ttfamily uint16\+\_\+t dig\+\_\+\+P1}
+
+
+
+Definition at line \mbox{\hyperlink{BMP280__driver_8c_source_l00089}{89}} of file \mbox{\hyperlink{BMP280__driver_8c_source}{BMP280\+\_\+driver.\+c}}.
+
+\Hypertarget{BMP280__driver_8c_abf2720ad17acc224ed28e66ec3de32ed}\label{BMP280__driver_8c_abf2720ad17acc224ed28e66ec3de32ed} 
+\index{BMP280\_driver.c@{BMP280\_driver.c}!dig\_P2@{dig\_P2}}
+\index{dig\_P2@{dig\_P2}!BMP280\_driver.c@{BMP280\_driver.c}}
+\doxysubsubsection{\texorpdfstring{dig\_P2}{dig\_P2}}
+{\footnotesize\ttfamily int16\+\_\+t dig\+\_\+\+P2}
+
+
+
+Definition at line \mbox{\hyperlink{BMP280__driver_8c_source_l00090}{90}} of file \mbox{\hyperlink{BMP280__driver_8c_source}{BMP280\+\_\+driver.\+c}}.
+
+\Hypertarget{BMP280__driver_8c_a16db1b4967cfd3dc34219d8fb8c92aeb}\label{BMP280__driver_8c_a16db1b4967cfd3dc34219d8fb8c92aeb} 
+\index{BMP280\_driver.c@{BMP280\_driver.c}!dig\_P3@{dig\_P3}}
+\index{dig\_P3@{dig\_P3}!BMP280\_driver.c@{BMP280\_driver.c}}
+\doxysubsubsection{\texorpdfstring{dig\_P3}{dig\_P3}}
+{\footnotesize\ttfamily int16\+\_\+t dig\+\_\+\+P3}
+
+
+
+Definition at line \mbox{\hyperlink{BMP280__driver_8c_source_l00091}{91}} of file \mbox{\hyperlink{BMP280__driver_8c_source}{BMP280\+\_\+driver.\+c}}.
+
+\Hypertarget{BMP280__driver_8c_a9c7db64a28b0e240d0478921741dd67d}\label{BMP280__driver_8c_a9c7db64a28b0e240d0478921741dd67d} 
+\index{BMP280\_driver.c@{BMP280\_driver.c}!dig\_P4@{dig\_P4}}
+\index{dig\_P4@{dig\_P4}!BMP280\_driver.c@{BMP280\_driver.c}}
+\doxysubsubsection{\texorpdfstring{dig\_P4}{dig\_P4}}
+{\footnotesize\ttfamily int16\+\_\+t dig\+\_\+\+P4}
+
+
+
+Definition at line \mbox{\hyperlink{BMP280__driver_8c_source_l00092}{92}} of file \mbox{\hyperlink{BMP280__driver_8c_source}{BMP280\+\_\+driver.\+c}}.
+
+\Hypertarget{BMP280__driver_8c_a7e509836d7ae0753ceaaed354b5e1479}\label{BMP280__driver_8c_a7e509836d7ae0753ceaaed354b5e1479} 
+\index{BMP280\_driver.c@{BMP280\_driver.c}!dig\_P5@{dig\_P5}}
+\index{dig\_P5@{dig\_P5}!BMP280\_driver.c@{BMP280\_driver.c}}
+\doxysubsubsection{\texorpdfstring{dig\_P5}{dig\_P5}}
+{\footnotesize\ttfamily int16\+\_\+t dig\+\_\+\+P5}
+
+
+
+Definition at line \mbox{\hyperlink{BMP280__driver_8c_source_l00093}{93}} of file \mbox{\hyperlink{BMP280__driver_8c_source}{BMP280\+\_\+driver.\+c}}.
+
+\Hypertarget{BMP280__driver_8c_a2ae5570c6daeda1d3666ed3dad96c4b7}\label{BMP280__driver_8c_a2ae5570c6daeda1d3666ed3dad96c4b7} 
+\index{BMP280\_driver.c@{BMP280\_driver.c}!dig\_P6@{dig\_P6}}
+\index{dig\_P6@{dig\_P6}!BMP280\_driver.c@{BMP280\_driver.c}}
+\doxysubsubsection{\texorpdfstring{dig\_P6}{dig\_P6}}
+{\footnotesize\ttfamily int16\+\_\+t dig\+\_\+\+P6}
+
+
+
+Definition at line \mbox{\hyperlink{BMP280__driver_8c_source_l00094}{94}} of file \mbox{\hyperlink{BMP280__driver_8c_source}{BMP280\+\_\+driver.\+c}}.
+
+\Hypertarget{BMP280__driver_8c_a7f3c3b4bc3acd51c35229dd2cc50a3d6}\label{BMP280__driver_8c_a7f3c3b4bc3acd51c35229dd2cc50a3d6} 
+\index{BMP280\_driver.c@{BMP280\_driver.c}!dig\_P7@{dig\_P7}}
+\index{dig\_P7@{dig\_P7}!BMP280\_driver.c@{BMP280\_driver.c}}
+\doxysubsubsection{\texorpdfstring{dig\_P7}{dig\_P7}}
+{\footnotesize\ttfamily int16\+\_\+t dig\+\_\+\+P7}
+
+
+
+Definition at line \mbox{\hyperlink{BMP280__driver_8c_source_l00095}{95}} of file \mbox{\hyperlink{BMP280__driver_8c_source}{BMP280\+\_\+driver.\+c}}.
+
+\Hypertarget{BMP280__driver_8c_a40493b036281e2b5fdfdf1776fe4708a}\label{BMP280__driver_8c_a40493b036281e2b5fdfdf1776fe4708a} 
+\index{BMP280\_driver.c@{BMP280\_driver.c}!dig\_P8@{dig\_P8}}
+\index{dig\_P8@{dig\_P8}!BMP280\_driver.c@{BMP280\_driver.c}}
+\doxysubsubsection{\texorpdfstring{dig\_P8}{dig\_P8}}
+{\footnotesize\ttfamily int16\+\_\+t dig\+\_\+\+P8}
+
+
+
+Definition at line \mbox{\hyperlink{BMP280__driver_8c_source_l00096}{96}} of file \mbox{\hyperlink{BMP280__driver_8c_source}{BMP280\+\_\+driver.\+c}}.
+
+\Hypertarget{BMP280__driver_8c_a361620dc95ad1d56b5d416d9d290c5f4}\label{BMP280__driver_8c_a361620dc95ad1d56b5d416d9d290c5f4} 
+\index{BMP280\_driver.c@{BMP280\_driver.c}!dig\_P9@{dig\_P9}}
+\index{dig\_P9@{dig\_P9}!BMP280\_driver.c@{BMP280\_driver.c}}
+\doxysubsubsection{\texorpdfstring{dig\_P9}{dig\_P9}}
+{\footnotesize\ttfamily int16\+\_\+t dig\+\_\+\+P9}
+
+
+
+Definition at line \mbox{\hyperlink{BMP280__driver_8c_source_l00097}{97}} of file \mbox{\hyperlink{BMP280__driver_8c_source}{BMP280\+\_\+driver.\+c}}.
+
+\Hypertarget{BMP280__driver_8c_a730ed166c629bded674b13faffe9cef7}\label{BMP280__driver_8c_a730ed166c629bded674b13faffe9cef7} 
+\index{BMP280\_driver.c@{BMP280\_driver.c}!dig\_T1@{dig\_T1}}
+\index{dig\_T1@{dig\_T1}!BMP280\_driver.c@{BMP280\_driver.c}}
+\doxysubsubsection{\texorpdfstring{dig\_T1}{dig\_T1}}
+{\footnotesize\ttfamily uint16\+\_\+t dig\+\_\+\+T1}
+
+
+
+Definition at line \mbox{\hyperlink{BMP280__driver_8c_source_l00086}{86}} of file \mbox{\hyperlink{BMP280__driver_8c_source}{BMP280\+\_\+driver.\+c}}.
+
+\Hypertarget{BMP280__driver_8c_ab5c023a004c0497ba616d916155c85bb}\label{BMP280__driver_8c_ab5c023a004c0497ba616d916155c85bb} 
+\index{BMP280\_driver.c@{BMP280\_driver.c}!dig\_T2@{dig\_T2}}
+\index{dig\_T2@{dig\_T2}!BMP280\_driver.c@{BMP280\_driver.c}}
+\doxysubsubsection{\texorpdfstring{dig\_T2}{dig\_T2}}
+{\footnotesize\ttfamily int16\+\_\+t dig\+\_\+\+T2}
+
+
+
+Definition at line \mbox{\hyperlink{BMP280__driver_8c_source_l00087}{87}} of file \mbox{\hyperlink{BMP280__driver_8c_source}{BMP280\+\_\+driver.\+c}}.
+
+\Hypertarget{BMP280__driver_8c_a9536e89c30bbd791153ac9e407b0752b}\label{BMP280__driver_8c_a9536e89c30bbd791153ac9e407b0752b} 
+\index{BMP280\_driver.c@{BMP280\_driver.c}!dig\_T3@{dig\_T3}}
+\index{dig\_T3@{dig\_T3}!BMP280\_driver.c@{BMP280\_driver.c}}
+\doxysubsubsection{\texorpdfstring{dig\_T3}{dig\_T3}}
+{\footnotesize\ttfamily int16\+\_\+t dig\+\_\+\+T3}
+
+
+
+Definition at line \mbox{\hyperlink{BMP280__driver_8c_source_l00088}{88}} of file \mbox{\hyperlink{BMP280__driver_8c_source}{BMP280\+\_\+driver.\+c}}.
+
+\Hypertarget{BMP280__driver_8c_ad01ecb80fc81b6a0d3bdd5dfb04c5b86}\label{BMP280__driver_8c_ad01ecb80fc81b6a0d3bdd5dfb04c5b86} 
+\index{BMP280\_driver.c@{BMP280\_driver.c}!hi2c\_user@{hi2c\_user}}
+\index{hi2c\_user@{hi2c\_user}!BMP280\_driver.c@{BMP280\_driver.c}}
+\doxysubsubsection{\texorpdfstring{hi2c\_user}{hi2c\_user}}
+{\footnotesize\ttfamily I2\+C\+\_\+\+Handle\+Type\+Def\texorpdfstring{$\ast$}{*} hi2c\+\_\+user}
+
+
+
+Definition at line \mbox{\hyperlink{BMP280__driver_8c_source_l00014}{14}} of file \mbox{\hyperlink{BMP280__driver_8c_source}{BMP280\+\_\+driver.\+c}}.
+
+\Hypertarget{BMP280__driver_8c_a76976acd94b5aa6ded5c69ae13c1e4ee}\label{BMP280__driver_8c_a76976acd94b5aa6ded5c69ae13c1e4ee} 
+\index{BMP280\_driver.c@{BMP280\_driver.c}!t\_fine@{t\_fine}}
+\index{t\_fine@{t\_fine}!BMP280\_driver.c@{BMP280\_driver.c}}
+\doxysubsubsection{\texorpdfstring{t\_fine}{t\_fine}}
+{\footnotesize\ttfamily BMP280\+\_\+\+S32\+\_\+t t\+\_\+fine}
+
+
+
+Definition at line \mbox{\hyperlink{BMP280__driver_8c_source_l00099}{99}} of file \mbox{\hyperlink{BMP280__driver_8c_source}{BMP280\+\_\+driver.\+c}}.
+

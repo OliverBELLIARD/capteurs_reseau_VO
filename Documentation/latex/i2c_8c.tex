@@ -1,0 +1,84 @@
+\doxysection{/home/oliver/\+Documents/3\+A/capteurs\+\_\+reseaux\+\_\+\+VO\+\_\+\+ESE\+\_\+\+TP2/capteurs\+\_\+reseaux\+\_\+\+VO/\+Core/\+Src/i2c.c File Reference}
+\hypertarget{i2c_8c}{}\label{i2c_8c}\index{/home/oliver/Documents/3A/capteurs\_reseaux\_VO\_ESE\_TP2/capteurs\_reseaux\_VO/Core/Src/i2c.c@{/home/oliver/Documents/3A/capteurs\_reseaux\_VO\_ESE\_TP2/capteurs\_reseaux\_VO/Core/Src/i2c.c}}
+
+
+This file provides code for the configuration of the I2C instances.  
+
+
+{\ttfamily \#include "{}i2c.\+h"{}}\newline
+Include dependency graph for i2c.\+c\+:
+% FIG 0
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{i2c_8c_ad154e0c7086cb7e507cc717184567ff5}{MX\+\_\+\+I2\+C3\+\_\+\+Init}} (void)
+\item 
+void \mbox{\hyperlink{i2c_8c_a08b1eb7b7be5b94395127e2a33b1b67e}{HAL\+\_\+\+I2\+C\+\_\+\+Msp\+Init}} (I2\+C\+\_\+\+Handle\+Type\+Def \texorpdfstring{$\ast$}{*}i2c\+Handle)
+\item 
+void \mbox{\hyperlink{i2c_8c_adaa17249f3d5001ad363c736df31c593}{HAL\+\_\+\+I2\+C\+\_\+\+Msp\+De\+Init}} (I2\+C\+\_\+\+Handle\+Type\+Def \texorpdfstring{$\ast$}{*}i2c\+Handle)
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+I2\+C\+\_\+\+Handle\+Type\+Def \mbox{\hyperlink{i2c_8c_a5ccf4a01a8d7f08d3190181f843f7515}{hi2c3}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+This file provides code for the configuration of the I2C instances. 
+
+\begin{DoxyAttention}{Attention}
+
+\end{DoxyAttention}
+Copyright (c) 2024 STMicroelectronics. All rights reserved.
+
+This software is licensed under terms that can be found in the LICENSE file in the root directory of this software component. If no LICENSE file comes with this software, it is provided AS-\/\+IS. 
+
+Definition in file \mbox{\hyperlink{i2c_8c_source}{i2c.\+c}}.
+
+
+
+\doxysubsection{Function Documentation}
+\Hypertarget{i2c_8c_adaa17249f3d5001ad363c736df31c593}\label{i2c_8c_adaa17249f3d5001ad363c736df31c593} 
+\index{i2c.c@{i2c.c}!HAL\_I2C\_MspDeInit@{HAL\_I2C\_MspDeInit}}
+\index{HAL\_I2C\_MspDeInit@{HAL\_I2C\_MspDeInit}!i2c.c@{i2c.c}}
+\doxysubsubsection{\texorpdfstring{HAL\_I2C\_MspDeInit()}{HAL\_I2C\_MspDeInit()}}
+{\footnotesize\ttfamily void HAL\+\_\+\+I2\+C\+\_\+\+Msp\+De\+Init (\begin{DoxyParamCaption}\item[{I2\+C\+\_\+\+Handle\+Type\+Def \texorpdfstring{$\ast$}{*}}]{i2c\+Handle }\end{DoxyParamCaption})}
+
+I2\+C3 GPIO Configuration PA8 -\/-\/-\/---\texorpdfstring{$>$}{>} I2\+C3\+\_\+\+SCL PB4 -\/-\/-\/---\texorpdfstring{$>$}{>} I2\+C3\+\_\+\+SDA
+
+Definition at line \mbox{\hyperlink{i2c_8c_source_l00097}{97}} of file \mbox{\hyperlink{i2c_8c_source}{i2c.\+c}}.
+
+\Hypertarget{i2c_8c_a08b1eb7b7be5b94395127e2a33b1b67e}\label{i2c_8c_a08b1eb7b7be5b94395127e2a33b1b67e} 
+\index{i2c.c@{i2c.c}!HAL\_I2C\_MspInit@{HAL\_I2C\_MspInit}}
+\index{HAL\_I2C\_MspInit@{HAL\_I2C\_MspInit}!i2c.c@{i2c.c}}
+\doxysubsubsection{\texorpdfstring{HAL\_I2C\_MspInit()}{HAL\_I2C\_MspInit()}}
+{\footnotesize\ttfamily void HAL\+\_\+\+I2\+C\+\_\+\+Msp\+Init (\begin{DoxyParamCaption}\item[{I2\+C\+\_\+\+Handle\+Type\+Def \texorpdfstring{$\ast$}{*}}]{i2c\+Handle }\end{DoxyParamCaption})}
+
+I2\+C3 GPIO Configuration PA8 -\/-\/-\/---\texorpdfstring{$>$}{>} I2\+C3\+\_\+\+SCL PB4 -\/-\/-\/---\texorpdfstring{$>$}{>} I2\+C3\+\_\+\+SDA
+
+Definition at line \mbox{\hyperlink{i2c_8c_source_l00059}{59}} of file \mbox{\hyperlink{i2c_8c_source}{i2c.\+c}}.
+
+\Hypertarget{i2c_8c_ad154e0c7086cb7e507cc717184567ff5}\label{i2c_8c_ad154e0c7086cb7e507cc717184567ff5} 
+\index{i2c.c@{i2c.c}!MX\_I2C3\_Init@{MX\_I2C3\_Init}}
+\index{MX\_I2C3\_Init@{MX\_I2C3\_Init}!i2c.c@{i2c.c}}
+\doxysubsubsection{\texorpdfstring{MX\_I2C3\_Init()}{MX\_I2C3\_Init()}}
+{\footnotesize\ttfamily void MX\+\_\+\+I2\+C3\+\_\+\+Init (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+
+
+Definition at line \mbox{\hyperlink{i2c_8c_source_l00030}{30}} of file \mbox{\hyperlink{i2c_8c_source}{i2c.\+c}}.
+
+
+
+\doxysubsection{Variable Documentation}
+\Hypertarget{i2c_8c_a5ccf4a01a8d7f08d3190181f843f7515}\label{i2c_8c_a5ccf4a01a8d7f08d3190181f843f7515} 
+\index{i2c.c@{i2c.c}!hi2c3@{hi2c3}}
+\index{hi2c3@{hi2c3}!i2c.c@{i2c.c}}
+\doxysubsubsection{\texorpdfstring{hi2c3}{hi2c3}}
+{\footnotesize\ttfamily I2\+C\+\_\+\+Handle\+Type\+Def hi2c3}
+
+
+
+Definition at line \mbox{\hyperlink{i2c_8c_source_l00027}{27}} of file \mbox{\hyperlink{i2c_8c_source}{i2c.\+c}}.
+

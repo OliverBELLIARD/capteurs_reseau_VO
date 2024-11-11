@@ -1,0 +1,153 @@
+.TH "/home/oliver/Documents/3A/capteurs_reseaux_VO_ESE_TP2/capteurs_reseaux_VO/Core/Src/motor_driver.c" 3 "Bus et Réseaux - VO" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+/home/oliver/Documents/3A/capteurs_reseaux_VO_ESE_TP2/capteurs_reseaux_VO/Core/Src/motor_driver.c \- : Driver for the TP CAN bus – Stepper motor board  
+
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <stdio\&.h>\fP
+.br
+\fC#include <stdlib\&.h>\fP
+.br
+\fC#include 'can\&.h'\fP
+.br
+\fC#include 'motor_driver\&.h'\fP
+.br
+
+.SS "Macros"
+
+.in +1c
+.ti -1c
+.RI "#define \fBTRUE\fP   1"
+.br
+.ti -1c
+.RI "#define \fBFALSE\fP   0"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "void \fBCAN_Init\fP ()"
+.br
+.RI "Initialises the CAN communication\&. "
+.ti -1c
+.RI "void \fBCAN_Send\fP (uint8_t *aData, uint32_t size, uint32_t msg_id)"
+.br
+.RI "Sends a CAN message with retry logic\&. "
+.ti -1c
+.RI "void \fBMOT_Set_mode\fP (uint8_t direction, uint8_t steps, uint8_t speed)"
+.br
+.RI "Sets up the Step motor with parameters\&. "
+.ti -1c
+.RI "void \fBMOT_Set_origin\fP ()"
+.br
+.RI "Sets the current position of the motor as the origin\&. "
+.ti -1c
+.RI "void \fBMOT_Rotate\fP (uint8_t angle, uint8_t sign)"
+.br
+.RI "Rotates the Step Motor of an angle in a defined direction\&. "
+.in -1c
+.SS "Variables"
+
+.in +1c
+.ti -1c
+.RI "int \fBlogs\fP"
+.br
+.in -1c
+.SH "Detailed Description"
+.PP 
+: Driver for the TP CAN bus – Stepper motor board 
+
+Created on: Nov 9, 2024 Author: oliver Documentation: https://moodle.ensea.fr/mod/resource/view.php?id=1921 
+.PP
+Definition in file \fBmotor_driver\&.c\fP\&.
+.SH "Macro Definition Documentation"
+.PP 
+.SS "#define FALSE   0"
+
+.PP
+Definition at line \fB20\fP of file \fBmotor_driver\&.c\fP\&.
+.SS "#define TRUE   1"
+
+.PP
+Definition at line \fB19\fP of file \fBmotor_driver\&.c\fP\&.
+.SH "Function Documentation"
+.PP 
+.SS "void CAN_Init ()"
+
+.PP
+Initialises the CAN communication\&. 
+.PP
+Definition at line \fB27\fP of file \fBmotor_driver\&.c\fP\&.
+.SS "void CAN_Send (uint8_t * aData, uint32_t size, uint32_t msg_id)"
+
+.PP
+Sends a CAN message with retry logic\&. This function attempts to send a message over the CAN bus to a specified message ID (\fCmsg_id\fP)\&. If the CAN bus is busy, it will retry sending up to a maximum number of attempts (\fCmaxRetries\fP)\&. In case of any other error (such as timeout or general error), the function will call \fC\fBError_Handler()\fP\fP to manage the failure\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fIuint8_t*\fP aData Pointer to the data buffer containing the message to send\&. The data should be in the form of an array of \fCuint8_t\fP\&. 
+.br
+\fIuint32_t\fP size Size of the data in bytes (must match the Data Length Code (DLC) field in the CAN frame)\&. 
+.br
+\fIuint32_t\fP msg_id CAN message identifier (11-bit standard ID) that defines the destination or type of the message being sent\&.
+.RE
+.PP
+\fBReturn values\fP
+.RS 4
+\fINone\fP 
+.RE
+.PP
+
+.PP
+Definition at line \fB76\fP of file \fBmotor_driver\&.c\fP\&.
+.SS "void MOT_Rotate (uint8_t angle, uint8_t sign)"
+
+.PP
+Rotates the Step Motor of an angle in a defined direction\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIuint8_t\fP angle Angle of rotation, range: 0x01 to 0xFF (1 unit = 1°)\&. 
+.br
+\fIuint8_t\fP sign Angle sign, can be positive (0x00) or negative (0x01)\&. 
+.RE
+.PP
+
+.PP
+Definition at line \fB175\fP of file \fBmotor_driver\&.c\fP\&.
+.SS "void MOT_Set_mode (uint8_t direction, uint8_t steps, uint8_t speed)"
+
+.PP
+Sets up the Step motor with parameters\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIuint8_t\fP direction Rotation direction: Anti-clockwise (0x00) or Clockwise (0x01)\&. 
+.br
+\fIuint8_t\fP steps Number of steps, range: 0x01 to 0xFF (1 unit = 1°)\&. 
+.br
+\fIuint8_t\fP speed Speed of the motor, range: 0x01 = 1 ms / 1 kHz to 0xFF = 255ms / 4 Hz 
+.RE
+.PP
+
+.PP
+Definition at line \fB148\fP of file \fBmotor_driver\&.c\fP\&.
+.SS "void MOT_Set_origin ()"
+
+.PP
+Sets the current position of the motor as the origin\&. 
+.PP
+Definition at line \fB162\fP of file \fBmotor_driver\&.c\fP\&.
+.SH "Variable Documentation"
+.PP 
+.SS "int logs"
+
+.PP
+Definition at line \fB22\fP of file \fBmotor_driver\&.c\fP\&.
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for Bus et Réseaux - VO from the source code\&.

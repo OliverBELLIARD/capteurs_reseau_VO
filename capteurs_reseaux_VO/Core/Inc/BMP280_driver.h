@@ -1,9 +1,15 @@
-/*
- * MPU9250_driver.h
- *
- *  Created on: Oct 18, 2024
- *      Author: oliver
- */
+/**
+  ******************************************************************************
+  * @file    BMP280_driver.h
+  * @brief   This file contains all the function prototypes for
+  *          the BMP280_driver.c file
+  ******************************************************************************
+  *
+  *  Created on: Oct 18, 2024
+  *      Author: oliver
+  *
+  ******************************************************************************
+  */
 
 #ifndef INC_BMP280_DRIVER_H_
 #define INC_BMP280_DRIVER_H_

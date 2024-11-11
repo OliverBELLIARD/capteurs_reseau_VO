@@ -1,11 +1,16 @@
-/*
- * MPU9250_driver.h
- *
- *  Created on: Oct 25, 2024
- *      Author: oliver
- *  Source: https://github.com/MarkSherstan/STM32-MPU6050-MPU9250-I2C-SPI
- */
-
+/**
+  ******************************************************************************
+  * @file    MPU9250_driver.h
+  * @brief   This file contains all the function prototypes for
+  *          the MPU9250_driver.c file
+  ******************************************************************************
+  *
+  *  Created on: Oct 25, 2024
+  *      Author: oliver
+  *      Source: https://github.com/MarkSherstan/STM32-MPU6050-MPU9250-I2C-SPI
+  *
+  ******************************************************************************
+  */
 #ifndef INC_MPU9250_DRIVER_H_
 #define INC_MPU9250_DRIVER_H_
 

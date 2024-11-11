@@ -1,0 +1,46 @@
+\doxysection{BMP280\+\_\+driver.\+h}
+\hypertarget{BMP280__driver_8h_source}{}\label{BMP280__driver_8h_source}\index{/home/oliver/Documents/3A/capteurs\_reseaux\_VO\_ESE\_TP2/capteurs\_reseaux\_VO/Core/Inc/BMP280\_driver.h@{/home/oliver/Documents/3A/capteurs\_reseaux\_VO\_ESE\_TP2/capteurs\_reseaux\_VO/Core/Inc/BMP280\_driver.h}}
+\mbox{\hyperlink{BMP280__driver_8h}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\Hypertarget{BMP280__driver_8h_source_l00001}00001\ }
+\DoxyCodeLine{\Hypertarget{BMP280__driver_8h_source_l00014}00014\ \textcolor{preprocessor}{\#ifndef\ INC\_BMP280\_DRIVER\_H\_}}
+\DoxyCodeLine{\Hypertarget{BMP280__driver_8h_source_l00015}00015\ \textcolor{preprocessor}{\#define\ INC\_BMP280\_DRIVER\_H\_}}
+\DoxyCodeLine{\Hypertarget{BMP280__driver_8h_source_l00016}00016\ }
+\DoxyCodeLine{\Hypertarget{BMP280__driver_8h_source_l00017}00017\ \textcolor{preprocessor}{\#include\ <stdio.h>}}
+\DoxyCodeLine{\Hypertarget{BMP280__driver_8h_source_l00018}00018\ \textcolor{preprocessor}{\#include\ <stdlib.h>}}
+\DoxyCodeLine{\Hypertarget{BMP280__driver_8h_source_l00019}00019\ }
+\DoxyCodeLine{\Hypertarget{BMP280__driver_8h_source_l00020}00020\ \textcolor{preprocessor}{\#define\ BMP280\_ADDR\ 0x77\ <<\ 1\ \ \ \ \ \ \ }\textcolor{comment}{//\ Doc\ bst-\/bmp280-\/ds001\ page\ 28}}
+\DoxyCodeLine{\Hypertarget{BMP280__driver_8h_source_l00021}00021\ \textcolor{preprocessor}{\#define\ BMP280\_REG\_ID\ 0xD0\ \ \ \ \ \ \ \ \ \ }\textcolor{comment}{//\ Doc\ bst-\/bmp280-\/ds001\ page\ 24}}
+\DoxyCodeLine{\Hypertarget{BMP280__driver_8h_source_l00022}00022\ \textcolor{preprocessor}{\#define\ BMP280\_REG\_MODE\ 0xF4\ \ \ \ \ \ \ \ }\textcolor{comment}{//\ Doc\ bst-\/bmp280-\/ds001\ page\ 15}}
+\DoxyCodeLine{\Hypertarget{BMP280__driver_8h_source_l00023}00023\ \textcolor{preprocessor}{\#define\ BMP280\_REG\_FILTER\ 0xF5\ \ \ \ \ \ }\textcolor{comment}{//\ Doc\ bst-\/bmp280-\/ds001\ page\ 13}}
+\DoxyCodeLine{\Hypertarget{BMP280__driver_8h_source_l00024}00024\ \textcolor{preprocessor}{\#define\ BMP280\_REG\_CALIBRATION\ 0x88\ }\textcolor{comment}{//\ Doc\ bst-\/bmp280-\/ds001\ page\ 24,\ calib25\ to\ calib00,\ 0x88…0xA1}}
+\DoxyCodeLine{\Hypertarget{BMP280__driver_8h_source_l00025}00025\ }
+\DoxyCodeLine{\Hypertarget{BMP280__driver_8h_source_l00026}00026\ \textcolor{preprocessor}{\#define\ BMP280\_REG\_TEMP\_MSB\ 0xFA\ \ \ \ }\textcolor{comment}{//\ Temperature\ MSB\ register:\ 0xFA...0xFC.\ Doc\ bst-\/bmp280-\/ds001\ page\ 24}}
+\DoxyCodeLine{\Hypertarget{BMP280__driver_8h_source_l00027}00027\ \textcolor{preprocessor}{\#define\ BMP280\_LEN\_TEMP\ 3}}
+\DoxyCodeLine{\Hypertarget{BMP280__driver_8h_source_l00028}00028\ }
+\DoxyCodeLine{\Hypertarget{BMP280__driver_8h_source_l00029}00029\ \textcolor{preprocessor}{\#define\ BMP280\_REG\_PRES\_MSB\ 0xF7\ \ \ \ }\textcolor{comment}{//\ Pressure\ MSB\ register:\ 0xF7...0xF9,\ Doc\ bst-\/bmp280-\/ds001\ page\ 24}}
+\DoxyCodeLine{\Hypertarget{BMP280__driver_8h_source_l00030}00030\ \textcolor{preprocessor}{\#define\ BMP280\_LEN\_PRES\ 3}}
+\DoxyCodeLine{\Hypertarget{BMP280__driver_8h_source_l00031}00031\ }
+\DoxyCodeLine{\Hypertarget{BMP280__driver_8h_source_l00032}00032\ \textcolor{preprocessor}{\#define\ BMP280\_CONFIG\ ((0b010<<5)|(0b101<<2)|(0b11))\ }\textcolor{comment}{//\ Temperature\ oversampling\ x2|Pressure\ oversampling\ x16|normal\ mode}}
+\DoxyCodeLine{\Hypertarget{BMP280__driver_8h_source_l00033}00033\ }
+\DoxyCodeLine{\Hypertarget{BMP280__driver_8h_source_l00034}00034\ \textcolor{preprocessor}{\#define\ BUFF\_SIZE\ 10}}
+\DoxyCodeLine{\Hypertarget{BMP280__driver_8h_source_l00035}00035\ }
+\DoxyCodeLine{\Hypertarget{BMP280__driver_8h_source_l00036}00036\ }
+\DoxyCodeLine{\Hypertarget{BMP280__driver_8h_source_l00037}00037\ \textcolor{keyword}{typedef}\ uint32\_t\ BMP280\_U32\_t;}
+\DoxyCodeLine{\Hypertarget{BMP280__driver_8h_source_l00038}00038\ \textcolor{keyword}{typedef}\ int32\_t\ BMP280\_S32\_t;}
+\DoxyCodeLine{\Hypertarget{BMP280__driver_8h_source_l00039}00039\ \textcolor{keyword}{typedef}\ int64\_t\ BMP280\_S64\_t;}
+\DoxyCodeLine{\Hypertarget{BMP280__driver_8h_source_l00040}00040\ }
+\DoxyCodeLine{\Hypertarget{BMP280__driver_8h_source_l00041}00041\ }
+\DoxyCodeLine{\Hypertarget{BMP280__driver_8h_source_l00042}00042\ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{BMP280__driver_8h_a7e2d8e132c60f4de59663255cc0b8987}{BMP280\_Check\_id}}(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{\Hypertarget{BMP280__driver_8h_source_l00043}00043\ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{BMP280__driver_8h_a39319860004e0f63b0d14f2f33a0119b}{BMP280\_Config}}(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{\Hypertarget{BMP280__driver_8h_source_l00044}00044\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{BMP280__driver_8h_a36c96244995f846115c0357dd9bf5dcc}{BMP280\_calibration}}(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{\Hypertarget{BMP280__driver_8h_source_l00045}00045\ BMP280\_S32\_t\ \mbox{\hyperlink{BMP280__driver_8h_ad26c87edfee6c43b790ecc853352d053}{BMP280\_compensate\_T\_int32}}(BMP280\_S32\_t);}
+\DoxyCodeLine{\Hypertarget{BMP280__driver_8h_source_l00046}00046\ BMP280\_U32\_t\ \mbox{\hyperlink{BMP280__driver_8h_a85851a51a02f2c68995e99cb729bef46}{BMP280\_compensate\_P\_int64}}(BMP280\_S32\_t);}
+\DoxyCodeLine{\Hypertarget{BMP280__driver_8h_source_l00047}00047\ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{BMP280__driver_8h_a34db58b29cbfda0a59e0723679c9d0ed}{BMP280\_Write\_Reg}}(uint8\_t,\ uint8\_t);}
+\DoxyCodeLine{\Hypertarget{BMP280__driver_8h_source_l00048}00048\ uint8\_t*\ \mbox{\hyperlink{BMP280__driver_8h_a0d3a7871b1a58bb2f8494d0f3fead938}{BMP280\_Read\_Reg}}(uint8\_t,\ uint8\_t);}
+\DoxyCodeLine{\Hypertarget{BMP280__driver_8h_source_l00049}00049\ BMP280\_S32\_t\ \mbox{\hyperlink{BMP280__driver_8h_a6f7c65571daf1e04ddc2f7e894b3cc65}{BMP280\_get\_temperature}}(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{\Hypertarget{BMP280__driver_8h_source_l00050}00050\ BMP280\_S32\_t\ \mbox{\hyperlink{BMP280__driver_8h_af60ffaff0a7fa89cef551a7bca378b62}{BMP280\_get\_pressure}}(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{\Hypertarget{BMP280__driver_8h_source_l00051}00051\ }
+\DoxyCodeLine{\Hypertarget{BMP280__driver_8h_source_l00052}00052\ \textcolor{preprocessor}{\#endif\ }\textcolor{comment}{/*\ INC\_BMP280\_DRIVER\_H\_\ */}\textcolor{preprocessor}{}}
+
+\end{DoxyCode}

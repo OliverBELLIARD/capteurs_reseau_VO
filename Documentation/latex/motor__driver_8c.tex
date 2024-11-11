@@ -1,0 +1,202 @@
+\doxysection{/home/oliver/\+Documents/3\+A/capteurs\+\_\+reseaux\+\_\+\+VO\+\_\+\+ESE\+\_\+\+TP2/capteurs\+\_\+reseaux\+\_\+\+VO/\+Core/\+Src/motor\+\_\+driver.c File Reference}
+\hypertarget{motor__driver_8c}{}\label{motor__driver_8c}\index{/home/oliver/Documents/3A/capteurs\_reseaux\_VO\_ESE\_TP2/capteurs\_reseaux\_VO/Core/Src/motor\_driver.c@{/home/oliver/Documents/3A/capteurs\_reseaux\_VO\_ESE\_TP2/capteurs\_reseaux\_VO/Core/Src/motor\_driver.c}}
+
+
+\+: Driver for the TP CAN bus – Stepper motor board  
+
+
+{\ttfamily \#include $<$stdio.\+h$>$}\newline
+{\ttfamily \#include $<$stdlib.\+h$>$}\newline
+{\ttfamily \#include "{}can.\+h"{}}\newline
+{\ttfamily \#include "{}motor\+\_\+driver.\+h"{}}\newline
+Include dependency graph for motor\+\_\+driver.\+c\+:
+% FIG 0
+\doxysubsubsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define \mbox{\hyperlink{motor__driver_8c_aa8cecfc5c5c054d2875c03e77b7be15d}{TRUE}}~1
+\item 
+\#define \mbox{\hyperlink{motor__driver_8c_aa93f0eb578d23995850d61f7d61c55c1}{FALSE}}~0
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{motor__driver_8c_aaa44002d1db973d1d85edcd4625303ec}{CAN\+\_\+\+Init}} ()
+\begin{DoxyCompactList}\small\item\em Initialises the CAN communication. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{motor__driver_8c_a115d7cd8d6cc2c93d2b3a2db8acc3bb9}{CAN\+\_\+\+Send}} (uint8\+\_\+t \texorpdfstring{$\ast$}{*}a\+Data, uint32\+\_\+t size, uint32\+\_\+t msg\+\_\+id)
+\begin{DoxyCompactList}\small\item\em Sends a CAN message with retry logic. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{motor__driver_8c_a5eb8104a5feb98bbf4beed16793d0334}{MOT\+\_\+\+Set\+\_\+mode}} (uint8\+\_\+t direction, uint8\+\_\+t steps, uint8\+\_\+t speed)
+\begin{DoxyCompactList}\small\item\em Sets up the Step motor with parameters. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{motor__driver_8c_a34fe18199ea8d734f4c2322bbb8a1cd9}{MOT\+\_\+\+Set\+\_\+origin}} ()
+\begin{DoxyCompactList}\small\item\em Sets the current position of the motor as the origin. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{motor__driver_8c_ac871d052fae9a46d976f13fcf487b24b}{MOT\+\_\+\+Rotate}} (uint8\+\_\+t angle, uint8\+\_\+t sign)
+\begin{DoxyCompactList}\small\item\em Rotates the Step Motor of an angle in a defined direction. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+int \mbox{\hyperlink{motor__driver_8c_ad06f43ef561bac09c28ea5fa8e19c3bb}{logs}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+\+: Driver for the TP CAN bus – Stepper motor board 
+
+Created on\+: Nov 9, 2024 Author\+: oliver Documentation\+: \href{https://moodle.ensea.fr/mod/resource/view.php?id=1921}{\texttt{ https\+://moodle.\+ensea.\+fr/mod/resource/view.\+php?id=1921}} 
+
+Definition in file \mbox{\hyperlink{motor__driver_8c_source}{motor\+\_\+driver.\+c}}.
+
+
+
+\doxysubsection{Macro Definition Documentation}
+\Hypertarget{motor__driver_8c_aa93f0eb578d23995850d61f7d61c55c1}\label{motor__driver_8c_aa93f0eb578d23995850d61f7d61c55c1} 
+\index{motor\_driver.c@{motor\_driver.c}!FALSE@{FALSE}}
+\index{FALSE@{FALSE}!motor\_driver.c@{motor\_driver.c}}
+\doxysubsubsection{\texorpdfstring{FALSE}{FALSE}}
+{\footnotesize\ttfamily \#define FALSE~0}
+
+
+
+Definition at line \mbox{\hyperlink{motor__driver_8c_source_l00020}{20}} of file \mbox{\hyperlink{motor__driver_8c_source}{motor\+\_\+driver.\+c}}.
+
+\Hypertarget{motor__driver_8c_aa8cecfc5c5c054d2875c03e77b7be15d}\label{motor__driver_8c_aa8cecfc5c5c054d2875c03e77b7be15d} 
+\index{motor\_driver.c@{motor\_driver.c}!TRUE@{TRUE}}
+\index{TRUE@{TRUE}!motor\_driver.c@{motor\_driver.c}}
+\doxysubsubsection{\texorpdfstring{TRUE}{TRUE}}
+{\footnotesize\ttfamily \#define TRUE~1}
+
+
+
+Definition at line \mbox{\hyperlink{motor__driver_8c_source_l00019}{19}} of file \mbox{\hyperlink{motor__driver_8c_source}{motor\+\_\+driver.\+c}}.
+
+
+
+\doxysubsection{Function Documentation}
+\Hypertarget{motor__driver_8c_aaa44002d1db973d1d85edcd4625303ec}\label{motor__driver_8c_aaa44002d1db973d1d85edcd4625303ec} 
+\index{motor\_driver.c@{motor\_driver.c}!CAN\_Init@{CAN\_Init}}
+\index{CAN\_Init@{CAN\_Init}!motor\_driver.c@{motor\_driver.c}}
+\doxysubsubsection{\texorpdfstring{CAN\_Init()}{CAN\_Init()}}
+{\footnotesize\ttfamily void CAN\+\_\+\+Init (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Initialises the CAN communication. 
+
+
+
+Definition at line \mbox{\hyperlink{motor__driver_8c_source_l00027}{27}} of file \mbox{\hyperlink{motor__driver_8c_source}{motor\+\_\+driver.\+c}}.
+
+Here is the call graph for this function\+:
+% FIG 1
+\Hypertarget{motor__driver_8c_a115d7cd8d6cc2c93d2b3a2db8acc3bb9}\label{motor__driver_8c_a115d7cd8d6cc2c93d2b3a2db8acc3bb9} 
+\index{motor\_driver.c@{motor\_driver.c}!CAN\_Send@{CAN\_Send}}
+\index{CAN\_Send@{CAN\_Send}!motor\_driver.c@{motor\_driver.c}}
+\doxysubsubsection{\texorpdfstring{CAN\_Send()}{CAN\_Send()}}
+{\footnotesize\ttfamily void CAN\+\_\+\+Send (\begin{DoxyParamCaption}\item[{uint8\+\_\+t \texorpdfstring{$\ast$}{*}}]{a\+Data,  }\item[{uint32\+\_\+t}]{size,  }\item[{uint32\+\_\+t}]{msg\+\_\+id }\end{DoxyParamCaption})}
+
+
+
+Sends a CAN message with retry logic. 
+
+This function attempts to send a message over the CAN bus to a specified message ID ({\ttfamily msg\+\_\+id}). If the CAN bus is busy, it will retry sending up to a maximum number of attempts ({\ttfamily max\+Retries}). In case of any other error (such as timeout or general error), the function will call {\ttfamily \doxylink{main_8h_a1730ffe1e560465665eb47d9264826f9}{Error\+\_\+\+Handler()}} to manage the failure.
+
+
+\begin{DoxyParams}{Parameters}
+{\em uint8\+\_\+t\texorpdfstring{$\ast$}{*}} & a\+Data Pointer to the data buffer containing the message to send. The data should be in the form of an array of {\ttfamily uint8\+\_\+t}. \\
+\hline
+{\em uint32\+\_\+t} & size Size of the data in bytes (must match the Data Length Code (DLC) field in the CAN frame). \\
+\hline
+{\em uint32\+\_\+t} & msg\+\_\+id CAN message identifier (11-\/bit standard ID) that defines the destination or type of the message being sent.\\
+\hline
+\end{DoxyParams}
+
+\begin{DoxyRetVals}{Return values}
+{\em None} & \\
+\hline
+\end{DoxyRetVals}
+
+
+Definition at line \mbox{\hyperlink{motor__driver_8c_source_l00076}{76}} of file \mbox{\hyperlink{motor__driver_8c_source}{motor\+\_\+driver.\+c}}.
+
+Here is the call graph for this function\+:
+% FIG 2
+Here is the caller graph for this function\+:
+% FIG 3
+\Hypertarget{motor__driver_8c_ac871d052fae9a46d976f13fcf487b24b}\label{motor__driver_8c_ac871d052fae9a46d976f13fcf487b24b} 
+\index{motor\_driver.c@{motor\_driver.c}!MOT\_Rotate@{MOT\_Rotate}}
+\index{MOT\_Rotate@{MOT\_Rotate}!motor\_driver.c@{motor\_driver.c}}
+\doxysubsubsection{\texorpdfstring{MOT\_Rotate()}{MOT\_Rotate()}}
+{\footnotesize\ttfamily void MOT\+\_\+\+Rotate (\begin{DoxyParamCaption}\item[{uint8\+\_\+t}]{angle,  }\item[{uint8\+\_\+t}]{sign }\end{DoxyParamCaption})}
+
+
+
+Rotates the Step Motor of an angle in a defined direction. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em uint8\+\_\+t} & angle Angle of rotation, range\+: 0x01 to 0x\+FF (1 unit = 1°). \\
+\hline
+{\em uint8\+\_\+t} & sign Angle sign, can be positive (0x00) or negative (0x01). \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line \mbox{\hyperlink{motor__driver_8c_source_l00175}{175}} of file \mbox{\hyperlink{motor__driver_8c_source}{motor\+\_\+driver.\+c}}.
+
+Here is the call graph for this function\+:
+% FIG 4
+Here is the caller graph for this function\+:
+% FIG 5
+\Hypertarget{motor__driver_8c_a5eb8104a5feb98bbf4beed16793d0334}\label{motor__driver_8c_a5eb8104a5feb98bbf4beed16793d0334} 
+\index{motor\_driver.c@{motor\_driver.c}!MOT\_Set\_mode@{MOT\_Set\_mode}}
+\index{MOT\_Set\_mode@{MOT\_Set\_mode}!motor\_driver.c@{motor\_driver.c}}
+\doxysubsubsection{\texorpdfstring{MOT\_Set\_mode()}{MOT\_Set\_mode()}}
+{\footnotesize\ttfamily void MOT\+\_\+\+Set\+\_\+mode (\begin{DoxyParamCaption}\item[{uint8\+\_\+t}]{direction,  }\item[{uint8\+\_\+t}]{steps,  }\item[{uint8\+\_\+t}]{speed }\end{DoxyParamCaption})}
+
+
+
+Sets up the Step motor with parameters. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em uint8\+\_\+t} & direction Rotation direction\+: Anti-\/clockwise (0x00) or Clockwise (0x01). \\
+\hline
+{\em uint8\+\_\+t} & steps Number of steps, range\+: 0x01 to 0x\+FF (1 unit = 1°). \\
+\hline
+{\em uint8\+\_\+t} & speed Speed of the motor, range\+: 0x01 = 1 ms / 1 k\+Hz to 0x\+FF = 255ms / 4 Hz \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line \mbox{\hyperlink{motor__driver_8c_source_l00148}{148}} of file \mbox{\hyperlink{motor__driver_8c_source}{motor\+\_\+driver.\+c}}.
+
+Here is the call graph for this function\+:
+% FIG 6
+\Hypertarget{motor__driver_8c_a34fe18199ea8d734f4c2322bbb8a1cd9}\label{motor__driver_8c_a34fe18199ea8d734f4c2322bbb8a1cd9} 
+\index{motor\_driver.c@{motor\_driver.c}!MOT\_Set\_origin@{MOT\_Set\_origin}}
+\index{MOT\_Set\_origin@{MOT\_Set\_origin}!motor\_driver.c@{motor\_driver.c}}
+\doxysubsubsection{\texorpdfstring{MOT\_Set\_origin()}{MOT\_Set\_origin()}}
+{\footnotesize\ttfamily void MOT\+\_\+\+Set\+\_\+origin (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Sets the current position of the motor as the origin. 
+
+
+
+Definition at line \mbox{\hyperlink{motor__driver_8c_source_l00162}{162}} of file \mbox{\hyperlink{motor__driver_8c_source}{motor\+\_\+driver.\+c}}.
+
+Here is the call graph for this function\+:
+% FIG 7
+
+
+\doxysubsection{Variable Documentation}
+\Hypertarget{motor__driver_8c_ad06f43ef561bac09c28ea5fa8e19c3bb}\label{motor__driver_8c_ad06f43ef561bac09c28ea5fa8e19c3bb} 
+\index{motor\_driver.c@{motor\_driver.c}!logs@{logs}}
+\index{logs@{logs}!motor\_driver.c@{motor\_driver.c}}
+\doxysubsubsection{\texorpdfstring{logs}{logs}}
+{\footnotesize\ttfamily int logs}
+
+
+
+Definition at line \mbox{\hyperlink{motor__driver_8c_source_l00022}{22}} of file \mbox{\hyperlink{motor__driver_8c_source}{motor\+\_\+driver.\+c}}.
+

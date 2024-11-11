@@ -1,8 +1,14 @@
-/*
- * motor_driver.c
+/**
+ ******************************************************************************
+ * @file           : motor_driver.c
+ * @brief          : Driver for the TP CAN bus – Stepper motor board
+ ******************************************************************************
  *
  *  Created on: Nov 9, 2024
  *      Author: oliver
+ *  Documentation: https://moodle.ensea.fr/mod/resource/view.php?id=1921
+ *
+ ******************************************************************************
  */
 
 #include <stdio.h>

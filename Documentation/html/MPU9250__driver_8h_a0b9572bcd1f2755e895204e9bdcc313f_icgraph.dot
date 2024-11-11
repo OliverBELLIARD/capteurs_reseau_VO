@@ -1,0 +1,11 @@
+digraph "MPU_readProcessedData"
+{
+ // LATEX_PDF_SIZE
+  bgcolor="transparent";
+  edge [fontname=Helvetica,fontsize=10,labelfontname=Helvetica,labelfontsize=10];
+  node [fontname=Helvetica,fontsize=10,shape=box,height=0.2,width=0.4];
+  rankdir="RL";
+  Node1 [id="Node000001",label="MPU_readProcessedData",height=0.2,width=0.4,color="gray40", fillcolor="grey60", style="filled", fontcolor="black",tooltip="Calculate the real world sensor values."];
+  Node1 -> Node2 [id="edge1_Node000001_Node000002",dir="back",color="steelblue1",style="solid",tooltip=" "];
+  Node2 [id="Node000002",label="MPU_calcAttitude",height=0.2,width=0.4,color="grey40", fillcolor="white", style="filled",URL="$MPU9250__driver_8c.html#a9e48249ac6c48ba5b4e1816e67d8807f",tooltip="Calculate the attitude of the sensor in degrees using a complementary filter."];
+}

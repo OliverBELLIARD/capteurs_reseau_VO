@@ -1,0 +1,446 @@
+\doxysection{/home/oliver/\+Documents/3\+A/capteurs\+\_\+reseaux\+\_\+\+VO\+\_\+\+ESE\+\_\+\+TP2/capteurs\+\_\+reseaux\+\_\+\+VO/\+Core/\+Inc/\+MPU9250\+\_\+driver.h File Reference}
+\hypertarget{MPU9250__driver_8h}{}\label{MPU9250__driver_8h}\index{/home/oliver/Documents/3A/capteurs\_reseaux\_VO\_ESE\_TP2/capteurs\_reseaux\_VO/Core/Inc/MPU9250\_driver.h@{/home/oliver/Documents/3A/capteurs\_reseaux\_VO\_ESE\_TP2/capteurs\_reseaux\_VO/Core/Inc/MPU9250\_driver.h}}
+
+
+This file contains all the function prototypes for the \doxylink{MPU9250__driver_8c}{MPU9250\+\_\+driver.\+c} file.  
+
+
+{\ttfamily \#include $<$stdint.\+h$>$}\newline
+{\ttfamily \#include $<$math.\+h$>$}\newline
+{\ttfamily \#include "{}i2c.\+h"{}}\newline
+Include dependency graph for MPU9250\+\_\+driver.\+h\+:
+% FIG 0
+This graph shows which files directly or indirectly include this file\+:
+% FIG 1
+\doxysubsubsection*{Data Structures}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{structRawData}{Raw\+Data}}
+\item 
+struct \mbox{\hyperlink{structSensorData}{Sensor\+Data}}
+\item 
+struct \mbox{\hyperlink{structGyroCal}{Gyro\+Cal}}
+\item 
+struct \mbox{\hyperlink{structAttitude}{Attitude}}
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define \mbox{\hyperlink{MPU9250__driver_8h_ac5a945020d3528355cda82d383676736}{RAD2\+DEG}}~57.\+2957795131
+\item 
+\#define \mbox{\hyperlink{MPU9250__driver_8h_a7895d37ce48f9f3225be1ad66ae20f6e}{WHO\+\_\+\+AM\+\_\+\+I\+\_\+6050\+\_\+\+ANS}}~0x68
+\item 
+\#define \mbox{\hyperlink{MPU9250__driver_8h_afa6cf0fd3b00f15481f8cf33c6854895}{WHO\+\_\+\+AM\+\_\+\+I\+\_\+9250\+\_\+\+ANS}}~0x71
+\item 
+\#define \mbox{\hyperlink{MPU9250__driver_8h_a9fcb9e460d175bfc7ab4d80bf788b43a}{WHO\+\_\+\+AM\+\_\+I}}~0x75
+\item 
+\#define \mbox{\hyperlink{MPU9250__driver_8h_ac143f6de9a26d703e4031b6cab16f0a1}{AD0\+\_\+\+LOW}}~0x68
+\item 
+\#define \mbox{\hyperlink{MPU9250__driver_8h_ad332826d4771381b3409d7ba0cdd4797}{AD0\+\_\+\+HIGH}}~0x69
+\item 
+\#define \mbox{\hyperlink{MPU9250__driver_8h_ac57e8c3192c859321b447c07089f20f0}{GYRO\+\_\+\+CONFIG}}~0x1B
+\item 
+\#define \mbox{\hyperlink{MPU9250__driver_8h_ab7336e26f8947086e41a375f1e1e74d4}{ACCEL\+\_\+\+CONFIG}}~0x1C
+\item 
+\#define \mbox{\hyperlink{MPU9250__driver_8h_a96169eb207e721c1546cea9ffd8a35e4}{PWR\+\_\+\+MGMT\+\_\+1}}~0x6B
+\item 
+\#define \mbox{\hyperlink{MPU9250__driver_8h_a94b93aa4aabbe7caec7884ddb46b531b}{ACCEL\+\_\+\+XOUT\+\_\+H}}~0x3B
+\item 
+\#define \mbox{\hyperlink{MPU9250__driver_8h_a0ba60b4b9c2e5320ee0963369c54d69f}{I2\+C\+\_\+\+TIMOUT\+\_\+\+MS}}~1000
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Enumerations}
+\begin{DoxyCompactItemize}
+\item 
+enum {\bfseries gyroscope\+Full\+Scale\+Range} \{ {\bfseries GFSR\+\_\+250\+DPS}
+, {\bfseries GFSR\+\_\+500\+DPS}
+, {\bfseries GFSR\+\_\+1000\+DPS}
+, {\bfseries GFSR\+\_\+2000\+DPS}
+ \}
+\item 
+enum {\bfseries accelerometer\+Full\+Scale\+Range} \{ {\bfseries AFSR\+\_\+2G}
+, {\bfseries AFSR\+\_\+4G}
+, {\bfseries AFSR\+\_\+8G}
+, {\bfseries AFSR\+\_\+16G}
+ \}
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+uint8\+\_\+t \mbox{\hyperlink{MPU9250__driver_8h_a5cc20d149521bd728225436e0e8245bd}{MPU\+\_\+begin}} (I2\+C\+\_\+\+Handle\+Type\+Def \texorpdfstring{$\ast$}{*}I2\+Cx, uint8\+\_\+t addr, uint8\+\_\+t a\+Scale, uint8\+\_\+t g\+Scale, float tau, float dt)
+\begin{DoxyCompactList}\small\item\em Set the IMU address, check for connection, reset IMU, and set full range scale. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{MPU9250__driver_8h_aa847c36df2da652d7fa796696a056758}{MPU\+\_\+calibrate\+Gyro}} (I2\+C\+\_\+\+Handle\+Type\+Def \texorpdfstring{$\ast$}{*}I2\+Cx, uint16\+\_\+t num\+Cal\+Points)
+\begin{DoxyCompactList}\small\item\em Find offsets for each axis of gyroscope. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{MPU9250__driver_8h_a9e48249ac6c48ba5b4e1816e67d8807f}{MPU\+\_\+calc\+Attitude}} (I2\+C\+\_\+\+Handle\+Type\+Def \texorpdfstring{$\ast$}{*}I2\+Cx)
+\begin{DoxyCompactList}\small\item\em Calculate the attitude of the sensor in degrees using a complementary filter. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{MPU9250__driver_8h_a9c3d9fc8303a931dd23be6debffaa598}{MPU\+\_\+read\+Raw\+Data}} (I2\+C\+\_\+\+Handle\+Type\+Def \texorpdfstring{$\ast$}{*}I2\+Cx)
+\begin{DoxyCompactList}\small\item\em Read raw data from IMU. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{MPU9250__driver_8h_a0b9572bcd1f2755e895204e9bdcc313f}{MPU\+\_\+read\+Processed\+Data}} (I2\+C\+\_\+\+Handle\+Type\+Def \texorpdfstring{$\ast$}{*}I2\+Cx)
+\begin{DoxyCompactList}\small\item\em Calculate the real world sensor values. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{MPU9250__driver_8h_a93c5414a16ec3a8bb315a9ce5ac2ebfb}{MPU\+\_\+write\+Gyro\+Full\+Scale\+Range}} (I2\+C\+\_\+\+Handle\+Type\+Def \texorpdfstring{$\ast$}{*}I2\+Cx, uint8\+\_\+t g\+Scale)
+\begin{DoxyCompactList}\small\item\em Set the gyroscope full scale range. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{MPU9250__driver_8h_af7b16d00e6f5e3d9585a920cb33584bd}{MPU\+\_\+write\+Acc\+Full\+Scale\+Range}} (I2\+C\+\_\+\+Handle\+Type\+Def \texorpdfstring{$\ast$}{*}I2\+Cx, uint8\+\_\+t a\+Scale)
+\begin{DoxyCompactList}\small\item\em Set the accelerometer full scale range. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{MPU9250__driver_8h_af8b332d9548f9e358e689ca66916ecdc}\label{MPU9250__driver_8h_af8b332d9548f9e358e689ca66916ecdc} 
+struct \mbox{\hyperlink{structRawData}{Raw\+Data}} {\bfseries raw\+Data}
+\item 
+\Hypertarget{MPU9250__driver_8h_a86aba6b52546191382ef191cb35e2215}\label{MPU9250__driver_8h_a86aba6b52546191382ef191cb35e2215} 
+struct \mbox{\hyperlink{structSensorData}{Sensor\+Data}} {\bfseries sensor\+Data}
+\item 
+\Hypertarget{MPU9250__driver_8h_af5841326de5e20e01a05a58b4642cf7d}\label{MPU9250__driver_8h_af5841326de5e20e01a05a58b4642cf7d} 
+struct \mbox{\hyperlink{structGyroCal}{Gyro\+Cal}} {\bfseries gyro\+Cal}
+\item 
+\Hypertarget{MPU9250__driver_8h_a2da816efd46ad10a81a1b1f616c4dc6e}\label{MPU9250__driver_8h_a2da816efd46ad10a81a1b1f616c4dc6e} 
+struct \mbox{\hyperlink{structAttitude}{Attitude}} {\bfseries attitude}
+\item 
+\Hypertarget{MPU9250__driver_8h_a94481033f284133a315c2ae6932509ad}\label{MPU9250__driver_8h_a94481033f284133a315c2ae6932509ad} 
+uint8\+\_\+t {\bfseries \+\_\+addr}
+\item 
+\Hypertarget{MPU9250__driver_8h_a49682d8798d683d38ec251b31c34b18c}\label{MPU9250__driver_8h_a49682d8798d683d38ec251b31c34b18c} 
+float {\bfseries \+\_\+dt}
+\item 
+float \mbox{\hyperlink{MPU9250__driver_8h_a40c3631fb89cc3c36fd2261fc11c7037}{\+\_\+tau}}
+\item 
+\Hypertarget{MPU9250__driver_8h_ad3b386e9054925162fa3e7a14b24b5db}\label{MPU9250__driver_8h_ad3b386e9054925162fa3e7a14b24b5db} 
+float {\bfseries a\+Scale\+Factor}
+\item 
+float \mbox{\hyperlink{MPU9250__driver_8h_a4f1ebfd683d8999b56b5d6fddb46855a}{g\+Scale\+Factor}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+This file contains all the function prototypes for the \doxylink{MPU9250__driver_8c}{MPU9250\+\_\+driver.\+c} file. 
+
+Created on\+: Oct 25, 2024 Author\+: oliver Source\+: \href{https://github.com/MarkSherstan/STM32-MPU6050-MPU9250-I2C-SPI}{\texttt{ https\+://github.\+com/\+Mark\+Sherstan/\+STM32-\/\+MPU6050-\/\+MPU9250-\/\+I2\+C-\/\+SPI}} 
+
+Definition in file \mbox{\hyperlink{MPU9250__driver_8h_source}{MPU9250\+\_\+driver.\+h}}.
+
+
+
+\doxysubsection{Macro Definition Documentation}
+\Hypertarget{MPU9250__driver_8h_ab7336e26f8947086e41a375f1e1e74d4}\label{MPU9250__driver_8h_ab7336e26f8947086e41a375f1e1e74d4} 
+\index{MPU9250\_driver.h@{MPU9250\_driver.h}!ACCEL\_CONFIG@{ACCEL\_CONFIG}}
+\index{ACCEL\_CONFIG@{ACCEL\_CONFIG}!MPU9250\_driver.h@{MPU9250\_driver.h}}
+\doxysubsubsection{\texorpdfstring{ACCEL\_CONFIG}{ACCEL\_CONFIG}}
+{\footnotesize\ttfamily \#define ACCEL\+\_\+\+CONFIG~0x1C}
+
+
+
+Definition at line \mbox{\hyperlink{MPU9250__driver_8h_source_l00032}{32}} of file \mbox{\hyperlink{MPU9250__driver_8h_source}{MPU9250\+\_\+driver.\+h}}.
+
+\Hypertarget{MPU9250__driver_8h_a94b93aa4aabbe7caec7884ddb46b531b}\label{MPU9250__driver_8h_a94b93aa4aabbe7caec7884ddb46b531b} 
+\index{MPU9250\_driver.h@{MPU9250\_driver.h}!ACCEL\_XOUT\_H@{ACCEL\_XOUT\_H}}
+\index{ACCEL\_XOUT\_H@{ACCEL\_XOUT\_H}!MPU9250\_driver.h@{MPU9250\_driver.h}}
+\doxysubsubsection{\texorpdfstring{ACCEL\_XOUT\_H}{ACCEL\_XOUT\_H}}
+{\footnotesize\ttfamily \#define ACCEL\+\_\+\+XOUT\+\_\+H~0x3B}
+
+
+
+Definition at line \mbox{\hyperlink{MPU9250__driver_8h_source_l00034}{34}} of file \mbox{\hyperlink{MPU9250__driver_8h_source}{MPU9250\+\_\+driver.\+h}}.
+
+\Hypertarget{MPU9250__driver_8h_ad332826d4771381b3409d7ba0cdd4797}\label{MPU9250__driver_8h_ad332826d4771381b3409d7ba0cdd4797} 
+\index{MPU9250\_driver.h@{MPU9250\_driver.h}!AD0\_HIGH@{AD0\_HIGH}}
+\index{AD0\_HIGH@{AD0\_HIGH}!MPU9250\_driver.h@{MPU9250\_driver.h}}
+\doxysubsubsection{\texorpdfstring{AD0\_HIGH}{AD0\_HIGH}}
+{\footnotesize\ttfamily \#define AD0\+\_\+\+HIGH~0x69}
+
+
+
+Definition at line \mbox{\hyperlink{MPU9250__driver_8h_source_l00030}{30}} of file \mbox{\hyperlink{MPU9250__driver_8h_source}{MPU9250\+\_\+driver.\+h}}.
+
+\Hypertarget{MPU9250__driver_8h_ac143f6de9a26d703e4031b6cab16f0a1}\label{MPU9250__driver_8h_ac143f6de9a26d703e4031b6cab16f0a1} 
+\index{MPU9250\_driver.h@{MPU9250\_driver.h}!AD0\_LOW@{AD0\_LOW}}
+\index{AD0\_LOW@{AD0\_LOW}!MPU9250\_driver.h@{MPU9250\_driver.h}}
+\doxysubsubsection{\texorpdfstring{AD0\_LOW}{AD0\_LOW}}
+{\footnotesize\ttfamily \#define AD0\+\_\+\+LOW~0x68}
+
+
+
+Definition at line \mbox{\hyperlink{MPU9250__driver_8h_source_l00029}{29}} of file \mbox{\hyperlink{MPU9250__driver_8h_source}{MPU9250\+\_\+driver.\+h}}.
+
+\Hypertarget{MPU9250__driver_8h_ac57e8c3192c859321b447c07089f20f0}\label{MPU9250__driver_8h_ac57e8c3192c859321b447c07089f20f0} 
+\index{MPU9250\_driver.h@{MPU9250\_driver.h}!GYRO\_CONFIG@{GYRO\_CONFIG}}
+\index{GYRO\_CONFIG@{GYRO\_CONFIG}!MPU9250\_driver.h@{MPU9250\_driver.h}}
+\doxysubsubsection{\texorpdfstring{GYRO\_CONFIG}{GYRO\_CONFIG}}
+{\footnotesize\ttfamily \#define GYRO\+\_\+\+CONFIG~0x1B}
+
+
+
+Definition at line \mbox{\hyperlink{MPU9250__driver_8h_source_l00031}{31}} of file \mbox{\hyperlink{MPU9250__driver_8h_source}{MPU9250\+\_\+driver.\+h}}.
+
+\Hypertarget{MPU9250__driver_8h_a0ba60b4b9c2e5320ee0963369c54d69f}\label{MPU9250__driver_8h_a0ba60b4b9c2e5320ee0963369c54d69f} 
+\index{MPU9250\_driver.h@{MPU9250\_driver.h}!I2C\_TIMOUT\_MS@{I2C\_TIMOUT\_MS}}
+\index{I2C\_TIMOUT\_MS@{I2C\_TIMOUT\_MS}!MPU9250\_driver.h@{MPU9250\_driver.h}}
+\doxysubsubsection{\texorpdfstring{I2C\_TIMOUT\_MS}{I2C\_TIMOUT\_MS}}
+{\footnotesize\ttfamily \#define I2\+C\+\_\+\+TIMOUT\+\_\+\+MS~1000}
+
+
+
+Definition at line \mbox{\hyperlink{MPU9250__driver_8h_source_l00035}{35}} of file \mbox{\hyperlink{MPU9250__driver_8h_source}{MPU9250\+\_\+driver.\+h}}.
+
+\Hypertarget{MPU9250__driver_8h_a96169eb207e721c1546cea9ffd8a35e4}\label{MPU9250__driver_8h_a96169eb207e721c1546cea9ffd8a35e4} 
+\index{MPU9250\_driver.h@{MPU9250\_driver.h}!PWR\_MGMT\_1@{PWR\_MGMT\_1}}
+\index{PWR\_MGMT\_1@{PWR\_MGMT\_1}!MPU9250\_driver.h@{MPU9250\_driver.h}}
+\doxysubsubsection{\texorpdfstring{PWR\_MGMT\_1}{PWR\_MGMT\_1}}
+{\footnotesize\ttfamily \#define PWR\+\_\+\+MGMT\+\_\+1~0x6B}
+
+
+
+Definition at line \mbox{\hyperlink{MPU9250__driver_8h_source_l00033}{33}} of file \mbox{\hyperlink{MPU9250__driver_8h_source}{MPU9250\+\_\+driver.\+h}}.
+
+\Hypertarget{MPU9250__driver_8h_ac5a945020d3528355cda82d383676736}\label{MPU9250__driver_8h_ac5a945020d3528355cda82d383676736} 
+\index{MPU9250\_driver.h@{MPU9250\_driver.h}!RAD2DEG@{RAD2DEG}}
+\index{RAD2DEG@{RAD2DEG}!MPU9250\_driver.h@{MPU9250\_driver.h}}
+\doxysubsubsection{\texorpdfstring{RAD2DEG}{RAD2DEG}}
+{\footnotesize\ttfamily \#define RAD2\+DEG~57.\+2957795131}
+
+
+
+Definition at line \mbox{\hyperlink{MPU9250__driver_8h_source_l00023}{23}} of file \mbox{\hyperlink{MPU9250__driver_8h_source}{MPU9250\+\_\+driver.\+h}}.
+
+\Hypertarget{MPU9250__driver_8h_a9fcb9e460d175bfc7ab4d80bf788b43a}\label{MPU9250__driver_8h_a9fcb9e460d175bfc7ab4d80bf788b43a} 
+\index{MPU9250\_driver.h@{MPU9250\_driver.h}!WHO\_AM\_I@{WHO\_AM\_I}}
+\index{WHO\_AM\_I@{WHO\_AM\_I}!MPU9250\_driver.h@{MPU9250\_driver.h}}
+\doxysubsubsection{\texorpdfstring{WHO\_AM\_I}{WHO\_AM\_I}}
+{\footnotesize\ttfamily \#define WHO\+\_\+\+AM\+\_\+I~0x75}
+
+
+
+Definition at line \mbox{\hyperlink{MPU9250__driver_8h_source_l00028}{28}} of file \mbox{\hyperlink{MPU9250__driver_8h_source}{MPU9250\+\_\+driver.\+h}}.
+
+\Hypertarget{MPU9250__driver_8h_a7895d37ce48f9f3225be1ad66ae20f6e}\label{MPU9250__driver_8h_a7895d37ce48f9f3225be1ad66ae20f6e} 
+\index{MPU9250\_driver.h@{MPU9250\_driver.h}!WHO\_AM\_I\_6050\_ANS@{WHO\_AM\_I\_6050\_ANS}}
+\index{WHO\_AM\_I\_6050\_ANS@{WHO\_AM\_I\_6050\_ANS}!MPU9250\_driver.h@{MPU9250\_driver.h}}
+\doxysubsubsection{\texorpdfstring{WHO\_AM\_I\_6050\_ANS}{WHO\_AM\_I\_6050\_ANS}}
+{\footnotesize\ttfamily \#define WHO\+\_\+\+AM\+\_\+\+I\+\_\+6050\+\_\+\+ANS~0x68}
+
+
+
+Definition at line \mbox{\hyperlink{MPU9250__driver_8h_source_l00026}{26}} of file \mbox{\hyperlink{MPU9250__driver_8h_source}{MPU9250\+\_\+driver.\+h}}.
+
+\Hypertarget{MPU9250__driver_8h_afa6cf0fd3b00f15481f8cf33c6854895}\label{MPU9250__driver_8h_afa6cf0fd3b00f15481f8cf33c6854895} 
+\index{MPU9250\_driver.h@{MPU9250\_driver.h}!WHO\_AM\_I\_9250\_ANS@{WHO\_AM\_I\_9250\_ANS}}
+\index{WHO\_AM\_I\_9250\_ANS@{WHO\_AM\_I\_9250\_ANS}!MPU9250\_driver.h@{MPU9250\_driver.h}}
+\doxysubsubsection{\texorpdfstring{WHO\_AM\_I\_9250\_ANS}{WHO\_AM\_I\_9250\_ANS}}
+{\footnotesize\ttfamily \#define WHO\+\_\+\+AM\+\_\+\+I\+\_\+9250\+\_\+\+ANS~0x71}
+
+
+
+Definition at line \mbox{\hyperlink{MPU9250__driver_8h_source_l00027}{27}} of file \mbox{\hyperlink{MPU9250__driver_8h_source}{MPU9250\+\_\+driver.\+h}}.
+
+
+
+\doxysubsection{Enumeration Type Documentation}
+\Hypertarget{MPU9250__driver_8h_a724fae8eb3bbe6712ca018a191404ca2}\label{MPU9250__driver_8h_a724fae8eb3bbe6712ca018a191404ca2} 
+\index{MPU9250\_driver.h@{MPU9250\_driver.h}!accelerometerFullScaleRange@{accelerometerFullScaleRange}}
+\index{accelerometerFullScaleRange@{accelerometerFullScaleRange}!MPU9250\_driver.h@{MPU9250\_driver.h}}
+\doxysubsubsection{\texorpdfstring{accelerometerFullScaleRange}{accelerometerFullScaleRange}}
+{\footnotesize\ttfamily enum accelerometer\+Full\+Scale\+Range}
+
+
+
+Definition at line \mbox{\hyperlink{MPU9250__driver_8h_source_l00046}{46}} of file \mbox{\hyperlink{MPU9250__driver_8h_source}{MPU9250\+\_\+driver.\+h}}.
+
+\Hypertarget{MPU9250__driver_8h_a3ce1bfed581057e207b601ee8baff99a}\label{MPU9250__driver_8h_a3ce1bfed581057e207b601ee8baff99a} 
+\index{MPU9250\_driver.h@{MPU9250\_driver.h}!gyroscopeFullScaleRange@{gyroscopeFullScaleRange}}
+\index{gyroscopeFullScaleRange@{gyroscopeFullScaleRange}!MPU9250\_driver.h@{MPU9250\_driver.h}}
+\doxysubsubsection{\texorpdfstring{gyroscopeFullScaleRange}{gyroscopeFullScaleRange}}
+{\footnotesize\ttfamily enum gyroscope\+Full\+Scale\+Range}
+
+
+
+Definition at line \mbox{\hyperlink{MPU9250__driver_8h_source_l00038}{38}} of file \mbox{\hyperlink{MPU9250__driver_8h_source}{MPU9250\+\_\+driver.\+h}}.
+
+
+
+\doxysubsection{Function Documentation}
+\Hypertarget{MPU9250__driver_8h_a5cc20d149521bd728225436e0e8245bd}\label{MPU9250__driver_8h_a5cc20d149521bd728225436e0e8245bd} 
+\index{MPU9250\_driver.h@{MPU9250\_driver.h}!MPU\_begin@{MPU\_begin}}
+\index{MPU\_begin@{MPU\_begin}!MPU9250\_driver.h@{MPU9250\_driver.h}}
+\doxysubsubsection{\texorpdfstring{MPU\_begin()}{MPU\_begin()}}
+{\footnotesize\ttfamily uint8\+\_\+t MPU\+\_\+begin (\begin{DoxyParamCaption}\item[{I2\+C\+\_\+\+Handle\+Type\+Def \texorpdfstring{$\ast$}{*}}]{I2\+Cx,  }\item[{uint8\+\_\+t}]{addr,  }\item[{uint8\+\_\+t}]{a\+Scale,  }\item[{uint8\+\_\+t}]{g\+Scale,  }\item[{float}]{tau,  }\item[{float}]{dt }\end{DoxyParamCaption})}
+
+
+
+Set the IMU address, check for connection, reset IMU, and set full range scale. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em I2\+Cx} & Pointer to I2C structure config. \\
+\hline
+{\em addr} & Hex address based on AD0 pin -\/ 0x68 low or 0x69 high. \\
+\hline
+{\em a\+Scale} & Set accelerometer full scale range\+: 0 for ±2g, 1 for ±4g, 2 for ±8g, and 3 for ±16g. \\
+\hline
+{\em g\+Scale} & Set gyroscope full scale range\+: 0 for ±250°/s, 1 for ±500°/s, 2 for ±1000°/s, and 3 for ±2000°/s. \\
+\hline
+{\em tau} & Set tau value for the complementary filter (typically 0.\+98). \\
+\hline
+{\em dt} & Set sampling rate in seconds determined by the timer interrupt. \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line \mbox{\hyperlink{MPU9250__driver_8c_source_l00023}{23}} of file \mbox{\hyperlink{MPU9250__driver_8c_source}{MPU9250\+\_\+driver.\+c}}.
+
+Here is the call graph for this function\+:
+% FIG 2
+\Hypertarget{MPU9250__driver_8h_a9e48249ac6c48ba5b4e1816e67d8807f}\label{MPU9250__driver_8h_a9e48249ac6c48ba5b4e1816e67d8807f} 
+\index{MPU9250\_driver.h@{MPU9250\_driver.h}!MPU\_calcAttitude@{MPU\_calcAttitude}}
+\index{MPU\_calcAttitude@{MPU\_calcAttitude}!MPU9250\_driver.h@{MPU9250\_driver.h}}
+\doxysubsubsection{\texorpdfstring{MPU\_calcAttitude()}{MPU\_calcAttitude()}}
+{\footnotesize\ttfamily void MPU\+\_\+calc\+Attitude (\begin{DoxyParamCaption}\item[{I2\+C\+\_\+\+Handle\+Type\+Def \texorpdfstring{$\ast$}{*}}]{I2\+Cx }\end{DoxyParamCaption})}
+
+
+
+Calculate the attitude of the sensor in degrees using a complementary filter. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em I2\+Cx} & Pointer to I2C structure config. \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line \mbox{\hyperlink{MPU9250__driver_8c_source_l00211}{211}} of file \mbox{\hyperlink{MPU9250__driver_8c_source}{MPU9250\+\_\+driver.\+c}}.
+
+Here is the call graph for this function\+:
+% FIG 3
+\Hypertarget{MPU9250__driver_8h_aa847c36df2da652d7fa796696a056758}\label{MPU9250__driver_8h_aa847c36df2da652d7fa796696a056758} 
+\index{MPU9250\_driver.h@{MPU9250\_driver.h}!MPU\_calibrateGyro@{MPU\_calibrateGyro}}
+\index{MPU\_calibrateGyro@{MPU\_calibrateGyro}!MPU9250\_driver.h@{MPU9250\_driver.h}}
+\doxysubsubsection{\texorpdfstring{MPU\_calibrateGyro()}{MPU\_calibrateGyro()}}
+{\footnotesize\ttfamily void MPU\+\_\+calibrate\+Gyro (\begin{DoxyParamCaption}\item[{I2\+C\+\_\+\+Handle\+Type\+Def \texorpdfstring{$\ast$}{*}}]{I2\+Cx,  }\item[{uint16\+\_\+t}]{num\+Cal\+Points }\end{DoxyParamCaption})}
+
+
+
+Find offsets for each axis of gyroscope. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em I2\+Cx} & Pointer to I2C structure config. \\
+\hline
+{\em num\+Cal\+Points} & Number of data points to average. \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line \mbox{\hyperlink{MPU9250__driver_8c_source_l00157}{157}} of file \mbox{\hyperlink{MPU9250__driver_8c_source}{MPU9250\+\_\+driver.\+c}}.
+
+Here is the call graph for this function\+:
+% FIG 4
+\Hypertarget{MPU9250__driver_8h_a0b9572bcd1f2755e895204e9bdcc313f}\label{MPU9250__driver_8h_a0b9572bcd1f2755e895204e9bdcc313f} 
+\index{MPU9250\_driver.h@{MPU9250\_driver.h}!MPU\_readProcessedData@{MPU\_readProcessedData}}
+\index{MPU\_readProcessedData@{MPU\_readProcessedData}!MPU9250\_driver.h@{MPU9250\_driver.h}}
+\doxysubsubsection{\texorpdfstring{MPU\_readProcessedData()}{MPU\_readProcessedData()}}
+{\footnotesize\ttfamily void MPU\+\_\+read\+Processed\+Data (\begin{DoxyParamCaption}\item[{I2\+C\+\_\+\+Handle\+Type\+Def \texorpdfstring{$\ast$}{*}}]{I2\+Cx }\end{DoxyParamCaption})}
+
+
+
+Calculate the real world sensor values. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em I2\+Cx} & Pointer to I2C structure config. \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line \mbox{\hyperlink{MPU9250__driver_8c_source_l00188}{188}} of file \mbox{\hyperlink{MPU9250__driver_8c_source}{MPU9250\+\_\+driver.\+c}}.
+
+Here is the call graph for this function\+:
+% FIG 5
+Here is the caller graph for this function\+:
+% FIG 6
+\Hypertarget{MPU9250__driver_8h_a9c3d9fc8303a931dd23be6debffaa598}\label{MPU9250__driver_8h_a9c3d9fc8303a931dd23be6debffaa598} 
+\index{MPU9250\_driver.h@{MPU9250\_driver.h}!MPU\_readRawData@{MPU\_readRawData}}
+\index{MPU\_readRawData@{MPU\_readRawData}!MPU9250\_driver.h@{MPU9250\_driver.h}}
+\doxysubsubsection{\texorpdfstring{MPU\_readRawData()}{MPU\_readRawData()}}
+{\footnotesize\ttfamily void MPU\+\_\+read\+Raw\+Data (\begin{DoxyParamCaption}\item[{I2\+C\+\_\+\+Handle\+Type\+Def \texorpdfstring{$\ast$}{*}}]{I2\+Cx }\end{DoxyParamCaption})}
+
+
+
+Read raw data from IMU. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em I2\+Cx} & Pointer to I2C structure config. \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line \mbox{\hyperlink{MPU9250__driver_8c_source_l00136}{136}} of file \mbox{\hyperlink{MPU9250__driver_8c_source}{MPU9250\+\_\+driver.\+c}}.
+
+Here is the caller graph for this function\+:
+% FIG 7
+\Hypertarget{MPU9250__driver_8h_af7b16d00e6f5e3d9585a920cb33584bd}\label{MPU9250__driver_8h_af7b16d00e6f5e3d9585a920cb33584bd} 
+\index{MPU9250\_driver.h@{MPU9250\_driver.h}!MPU\_writeAccFullScaleRange@{MPU\_writeAccFullScaleRange}}
+\index{MPU\_writeAccFullScaleRange@{MPU\_writeAccFullScaleRange}!MPU9250\_driver.h@{MPU9250\_driver.h}}
+\doxysubsubsection{\texorpdfstring{MPU\_writeAccFullScaleRange()}{MPU\_writeAccFullScaleRange()}}
+{\footnotesize\ttfamily void MPU\+\_\+write\+Acc\+Full\+Scale\+Range (\begin{DoxyParamCaption}\item[{I2\+C\+\_\+\+Handle\+Type\+Def \texorpdfstring{$\ast$}{*}}]{I2\+Cx,  }\item[{uint8\+\_\+t}]{a\+Scale }\end{DoxyParamCaption})}
+
+
+
+Set the accelerometer full scale range. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em I2\+Cx} & Pointer to I2C structure config. \\
+\hline
+{\em a\+Scale} & Set 0 for ±2g, 1 for ±4g, 2 for ±8g, and 3 for ±16g. \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line \mbox{\hyperlink{MPU9250__driver_8c_source_l00059}{59}} of file \mbox{\hyperlink{MPU9250__driver_8c_source}{MPU9250\+\_\+driver.\+c}}.
+
+Here is the caller graph for this function\+:
+% FIG 8
+\Hypertarget{MPU9250__driver_8h_a93c5414a16ec3a8bb315a9ce5ac2ebfb}\label{MPU9250__driver_8h_a93c5414a16ec3a8bb315a9ce5ac2ebfb} 
+\index{MPU9250\_driver.h@{MPU9250\_driver.h}!MPU\_writeGyroFullScaleRange@{MPU\_writeGyroFullScaleRange}}
+\index{MPU\_writeGyroFullScaleRange@{MPU\_writeGyroFullScaleRange}!MPU9250\_driver.h@{MPU9250\_driver.h}}
+\doxysubsubsection{\texorpdfstring{MPU\_writeGyroFullScaleRange()}{MPU\_writeGyroFullScaleRange()}}
+{\footnotesize\ttfamily void MPU\+\_\+write\+Gyro\+Full\+Scale\+Range (\begin{DoxyParamCaption}\item[{I2\+C\+\_\+\+Handle\+Type\+Def \texorpdfstring{$\ast$}{*}}]{I2\+Cx,  }\item[{uint8\+\_\+t}]{g\+Scale }\end{DoxyParamCaption})}
+
+
+
+Set the gyroscope full scale range. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em I2\+Cx} & Pointer to I2C structure config. \\
+\hline
+{\em g\+Scale} & Set 0 for ±250°/s, 1 for ±500°/s, 2 for ±1000°/s, and 3 for ±2000°/s. \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line \mbox{\hyperlink{MPU9250__driver_8c_source_l00098}{98}} of file \mbox{\hyperlink{MPU9250__driver_8c_source}{MPU9250\+\_\+driver.\+c}}.
+
+Here is the caller graph for this function\+:
+% FIG 9
+
+
+\doxysubsection{Variable Documentation}
+\Hypertarget{MPU9250__driver_8h_a40c3631fb89cc3c36fd2261fc11c7037}\label{MPU9250__driver_8h_a40c3631fb89cc3c36fd2261fc11c7037} 
+\index{MPU9250\_driver.h@{MPU9250\_driver.h}!\_tau@{\_tau}}
+\index{\_tau@{\_tau}!MPU9250\_driver.h@{MPU9250\_driver.h}}
+\doxysubsubsection{\texorpdfstring{\_tau}{\_tau}}
+{\footnotesize\ttfamily float \+\_\+tau}
+
+
+
+Definition at line \mbox{\hyperlink{MPU9250__driver_8h_source_l00077}{77}} of file \mbox{\hyperlink{MPU9250__driver_8h_source}{MPU9250\+\_\+driver.\+h}}.
+
+\Hypertarget{MPU9250__driver_8h_a4f1ebfd683d8999b56b5d6fddb46855a}\label{MPU9250__driver_8h_a4f1ebfd683d8999b56b5d6fddb46855a} 
+\index{MPU9250\_driver.h@{MPU9250\_driver.h}!gScaleFactor@{gScaleFactor}}
+\index{gScaleFactor@{gScaleFactor}!MPU9250\_driver.h@{MPU9250\_driver.h}}
+\doxysubsubsection{\texorpdfstring{gScaleFactor}{gScaleFactor}}
+{\footnotesize\ttfamily float g\+Scale\+Factor}
+
+
+
+Definition at line \mbox{\hyperlink{MPU9250__driver_8h_source_l00078}{78}} of file \mbox{\hyperlink{MPU9250__driver_8h_source}{MPU9250\+\_\+driver.\+h}}.
+

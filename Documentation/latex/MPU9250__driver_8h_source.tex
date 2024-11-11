@@ -1,0 +1,83 @@
+\doxysection{MPU9250\+\_\+driver.\+h}
+\hypertarget{MPU9250__driver_8h_source}{}\label{MPU9250__driver_8h_source}\index{/home/oliver/Documents/3A/capteurs\_reseaux\_VO\_ESE\_TP2/capteurs\_reseaux\_VO/Core/Inc/MPU9250\_driver.h@{/home/oliver/Documents/3A/capteurs\_reseaux\_VO\_ESE\_TP2/capteurs\_reseaux\_VO/Core/Inc/MPU9250\_driver.h}}
+\mbox{\hyperlink{MPU9250__driver_8h}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\Hypertarget{MPU9250__driver_8h_source_l00001}00001\ }
+\DoxyCodeLine{\Hypertarget{MPU9250__driver_8h_source_l00014}00014\ \textcolor{preprocessor}{\#ifndef\ INC\_MPU9250\_DRIVER\_H\_}}
+\DoxyCodeLine{\Hypertarget{MPU9250__driver_8h_source_l00015}00015\ \textcolor{preprocessor}{\#define\ INC\_MPU9250\_DRIVER\_H\_}}
+\DoxyCodeLine{\Hypertarget{MPU9250__driver_8h_source_l00016}00016\ }
+\DoxyCodeLine{\Hypertarget{MPU9250__driver_8h_source_l00017}00017\ \textcolor{comment}{//\ Libs}}
+\DoxyCodeLine{\Hypertarget{MPU9250__driver_8h_source_l00018}00018\ \textcolor{preprocessor}{\#include\ <stdint.h>}}
+\DoxyCodeLine{\Hypertarget{MPU9250__driver_8h_source_l00019}00019\ \textcolor{preprocessor}{\#include\ <math.h>}}
+\DoxyCodeLine{\Hypertarget{MPU9250__driver_8h_source_l00020}00020\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{i2c_8h}{i2c.h}}"{}}}
+\DoxyCodeLine{\Hypertarget{MPU9250__driver_8h_source_l00021}00021\ }
+\DoxyCodeLine{\Hypertarget{MPU9250__driver_8h_source_l00022}00022\ \textcolor{comment}{//\ Constants}}
+\DoxyCodeLine{\Hypertarget{MPU9250__driver_8h_source_l00023}00023\ \textcolor{preprocessor}{\#define\ RAD2DEG\ 57.2957795131}}
+\DoxyCodeLine{\Hypertarget{MPU9250__driver_8h_source_l00024}00024\ }
+\DoxyCodeLine{\Hypertarget{MPU9250__driver_8h_source_l00025}00025\ \textcolor{comment}{//\ Defines}}
+\DoxyCodeLine{\Hypertarget{MPU9250__driver_8h_source_l00026}00026\ \textcolor{preprocessor}{\#define\ WHO\_AM\_I\_6050\_ANS\ 0x68}}
+\DoxyCodeLine{\Hypertarget{MPU9250__driver_8h_source_l00027}00027\ \textcolor{preprocessor}{\#define\ WHO\_AM\_I\_9250\_ANS\ 0x71}}
+\DoxyCodeLine{\Hypertarget{MPU9250__driver_8h_source_l00028}00028\ \textcolor{preprocessor}{\#define\ WHO\_AM\_I\ \ \ \ \ \ \ \ \ \ 0x75}}
+\DoxyCodeLine{\Hypertarget{MPU9250__driver_8h_source_l00029}00029\ \textcolor{preprocessor}{\#define\ AD0\_LOW\ \ \ \ \ \ \ \ \ \ \ 0x68}}
+\DoxyCodeLine{\Hypertarget{MPU9250__driver_8h_source_l00030}00030\ \textcolor{preprocessor}{\#define\ AD0\_HIGH\ \ \ \ \ \ \ \ \ \ 0x69}}
+\DoxyCodeLine{\Hypertarget{MPU9250__driver_8h_source_l00031}00031\ \textcolor{preprocessor}{\#define\ GYRO\_CONFIG\ \ \ \ \ \ \ 0x1B}}
+\DoxyCodeLine{\Hypertarget{MPU9250__driver_8h_source_l00032}00032\ \textcolor{preprocessor}{\#define\ ACCEL\_CONFIG\ \ \ \ \ \ 0x1C}}
+\DoxyCodeLine{\Hypertarget{MPU9250__driver_8h_source_l00033}00033\ \textcolor{preprocessor}{\#define\ PWR\_MGMT\_1\ \ \ \ \ \ \ \ 0x6B}}
+\DoxyCodeLine{\Hypertarget{MPU9250__driver_8h_source_l00034}00034\ \textcolor{preprocessor}{\#define\ ACCEL\_XOUT\_H\ \ \ \ \ \ 0x3B}}
+\DoxyCodeLine{\Hypertarget{MPU9250__driver_8h_source_l00035}00035\ \textcolor{preprocessor}{\#define\ I2C\_TIMOUT\_MS\ \ \ \ \ 1000}}
+\DoxyCodeLine{\Hypertarget{MPU9250__driver_8h_source_l00036}00036\ }
+\DoxyCodeLine{\Hypertarget{MPU9250__driver_8h_source_l00037}00037\ \textcolor{comment}{//\ Full\ scale\ ranges}}
+\DoxyCodeLine{\Hypertarget{MPU9250__driver_8h_source_l00038}00038\ \textcolor{keyword}{enum}\ gyroscopeFullScaleRange}
+\DoxyCodeLine{\Hypertarget{MPU9250__driver_8h_source_l00039}00039\ \{}
+\DoxyCodeLine{\Hypertarget{MPU9250__driver_8h_source_l00040}00040\ \ \ \ \ GFSR\_250DPS,}
+\DoxyCodeLine{\Hypertarget{MPU9250__driver_8h_source_l00041}00041\ \ \ \ \ GFSR\_500DPS,}
+\DoxyCodeLine{\Hypertarget{MPU9250__driver_8h_source_l00042}00042\ \ \ \ \ GFSR\_1000DPS,}
+\DoxyCodeLine{\Hypertarget{MPU9250__driver_8h_source_l00043}00043\ \ \ \ \ GFSR\_2000DPS}
+\DoxyCodeLine{\Hypertarget{MPU9250__driver_8h_source_l00044}00044\ \};}
+\DoxyCodeLine{\Hypertarget{MPU9250__driver_8h_source_l00045}00045\ }
+\DoxyCodeLine{\Hypertarget{MPU9250__driver_8h_source_l00046}00046\ \textcolor{keyword}{enum}\ accelerometerFullScaleRange}
+\DoxyCodeLine{\Hypertarget{MPU9250__driver_8h_source_l00047}00047\ \{}
+\DoxyCodeLine{\Hypertarget{MPU9250__driver_8h_source_l00048}00048\ \ \ \ \ AFSR\_2G,}
+\DoxyCodeLine{\Hypertarget{MPU9250__driver_8h_source_l00049}00049\ \ \ \ \ AFSR\_4G,}
+\DoxyCodeLine{\Hypertarget{MPU9250__driver_8h_source_l00050}00050\ \ \ \ \ AFSR\_8G,}
+\DoxyCodeLine{\Hypertarget{MPU9250__driver_8h_source_l00051}00051\ \ \ \ \ AFSR\_16G}
+\DoxyCodeLine{\Hypertarget{MPU9250__driver_8h_source_l00052}00052\ \};}
+\DoxyCodeLine{\Hypertarget{MPU9250__driver_8h_source_l00053}00053\ }
+\DoxyCodeLine{\Hypertarget{MPU9250__driver_8h_source_l00054}00054\ \textcolor{comment}{//\ Structures}}
+\DoxyCodeLine{\Hypertarget{MPU9250__driver_8h_source_l00055}\mbox{\hyperlink{structRawData}{00055}}\ \textcolor{keyword}{extern}\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structRawData}{RawData}}}
+\DoxyCodeLine{\Hypertarget{MPU9250__driver_8h_source_l00056}00056\ \{}
+\DoxyCodeLine{\Hypertarget{MPU9250__driver_8h_source_l00057}00057\ \ \ \ \ int16\_t\ ax,\ ay,\ az,\ gx,\ gy,\ gz;}
+\DoxyCodeLine{\Hypertarget{MPU9250__driver_8h_source_l00058}00058\ \}\ rawData;}
+\DoxyCodeLine{\Hypertarget{MPU9250__driver_8h_source_l00059}00059\ }
+\DoxyCodeLine{\Hypertarget{MPU9250__driver_8h_source_l00060}\mbox{\hyperlink{structSensorData}{00060}}\ \textcolor{keyword}{extern}\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structSensorData}{SensorData}}}
+\DoxyCodeLine{\Hypertarget{MPU9250__driver_8h_source_l00061}00061\ \{}
+\DoxyCodeLine{\Hypertarget{MPU9250__driver_8h_source_l00062}00062\ \ \ \ \ \textcolor{keywordtype}{float}\ ax,\ ay,\ az,\ gx,\ gy,\ gz;}
+\DoxyCodeLine{\Hypertarget{MPU9250__driver_8h_source_l00063}00063\ \}\ sensorData;}
+\DoxyCodeLine{\Hypertarget{MPU9250__driver_8h_source_l00064}00064\ }
+\DoxyCodeLine{\Hypertarget{MPU9250__driver_8h_source_l00065}\mbox{\hyperlink{structGyroCal}{00065}}\ \textcolor{keyword}{extern}\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structGyroCal}{GyroCal}}}
+\DoxyCodeLine{\Hypertarget{MPU9250__driver_8h_source_l00066}00066\ \{}
+\DoxyCodeLine{\Hypertarget{MPU9250__driver_8h_source_l00067}00067\ \ \ \ \ \textcolor{keywordtype}{float}\ x,\ y,\ z;}
+\DoxyCodeLine{\Hypertarget{MPU9250__driver_8h_source_l00068}00068\ \}\ gyroCal;}
+\DoxyCodeLine{\Hypertarget{MPU9250__driver_8h_source_l00069}00069\ }
+\DoxyCodeLine{\Hypertarget{MPU9250__driver_8h_source_l00070}\mbox{\hyperlink{structAttitude}{00070}}\ \textcolor{keyword}{extern}\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structAttitude}{Attitude}}}
+\DoxyCodeLine{\Hypertarget{MPU9250__driver_8h_source_l00071}00071\ \{}
+\DoxyCodeLine{\Hypertarget{MPU9250__driver_8h_source_l00072}00072\ \ \ \ \ \textcolor{keywordtype}{float}\ r,\ p,\ y;}
+\DoxyCodeLine{\Hypertarget{MPU9250__driver_8h_source_l00073}00073\ \}\ attitude;}
+\DoxyCodeLine{\Hypertarget{MPU9250__driver_8h_source_l00074}00074\ }
+\DoxyCodeLine{\Hypertarget{MPU9250__driver_8h_source_l00075}00075\ \textcolor{comment}{//\ Variables}}
+\DoxyCodeLine{\Hypertarget{MPU9250__driver_8h_source_l00076}00076\ \textcolor{keyword}{extern}\ uint8\_t\ \_addr;}
+\DoxyCodeLine{\Hypertarget{MPU9250__driver_8h_source_l00077}00077\ \textcolor{keyword}{extern}\ \textcolor{keywordtype}{float}\ \_dt,\ \_tau;}
+\DoxyCodeLine{\Hypertarget{MPU9250__driver_8h_source_l00078}00078\ \textcolor{keyword}{extern}\ \textcolor{keywordtype}{float}\ aScaleFactor,\ gScaleFactor;}
+\DoxyCodeLine{\Hypertarget{MPU9250__driver_8h_source_l00079}00079\ }
+\DoxyCodeLine{\Hypertarget{MPU9250__driver_8h_source_l00080}00080\ \textcolor{comment}{//\ Functions}}
+\DoxyCodeLine{\Hypertarget{MPU9250__driver_8h_source_l00081}00081\ uint8\_t\ \mbox{\hyperlink{MPU9250__driver_8h_a5cc20d149521bd728225436e0e8245bd}{MPU\_begin}}(I2C\_HandleTypeDef\ *I2Cx,\ uint8\_t\ addr,\ uint8\_t\ aScale,\ uint8\_t\ gScale,\ \textcolor{keywordtype}{float}\ tau,\ \textcolor{keywordtype}{float}\ dt);}
+\DoxyCodeLine{\Hypertarget{MPU9250__driver_8h_source_l00082}00082\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{MPU9250__driver_8h_aa847c36df2da652d7fa796696a056758}{MPU\_calibrateGyro}}(I2C\_HandleTypeDef\ *I2Cx,\ uint16\_t\ numCalPoints);}
+\DoxyCodeLine{\Hypertarget{MPU9250__driver_8h_source_l00083}00083\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{MPU9250__driver_8h_a9e48249ac6c48ba5b4e1816e67d8807f}{MPU\_calcAttitude}}(I2C\_HandleTypeDef\ *I2Cx);}
+\DoxyCodeLine{\Hypertarget{MPU9250__driver_8h_source_l00084}00084\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{MPU9250__driver_8h_a9c3d9fc8303a931dd23be6debffaa598}{MPU\_readRawData}}(I2C\_HandleTypeDef\ *I2Cx);}
+\DoxyCodeLine{\Hypertarget{MPU9250__driver_8h_source_l00085}00085\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{MPU9250__driver_8h_a0b9572bcd1f2755e895204e9bdcc313f}{MPU\_readProcessedData}}(I2C\_HandleTypeDef\ *I2Cx);}
+\DoxyCodeLine{\Hypertarget{MPU9250__driver_8h_source_l00086}00086\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{MPU9250__driver_8h_a93c5414a16ec3a8bb315a9ce5ac2ebfb}{MPU\_writeGyroFullScaleRange}}(I2C\_HandleTypeDef\ *I2Cx,\ uint8\_t\ gScale);}
+\DoxyCodeLine{\Hypertarget{MPU9250__driver_8h_source_l00087}00087\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{MPU9250__driver_8h_af7b16d00e6f5e3d9585a920cb33584bd}{MPU\_writeAccFullScaleRange}}(I2C\_HandleTypeDef\ *I2Cx,\ uint8\_t\ aScale);}
+\DoxyCodeLine{\Hypertarget{MPU9250__driver_8h_source_l00088}00088\ }
+\DoxyCodeLine{\Hypertarget{MPU9250__driver_8h_source_l00089}00089\ \textcolor{preprocessor}{\#endif\ }\textcolor{comment}{/*\ INC\_MPU9250\_DRIVER\_H\_\ */}\textcolor{preprocessor}{}}
+
+\end{DoxyCode}

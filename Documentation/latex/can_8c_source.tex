@@ -1,0 +1,98 @@
+\doxysection{can.\+c}
+\hypertarget{can_8c_source}{}\label{can_8c_source}\index{/home/oliver/Documents/3A/capteurs\_reseaux\_VO\_ESE\_TP2/capteurs\_reseaux\_VO/Core/Src/can.c@{/home/oliver/Documents/3A/capteurs\_reseaux\_VO\_ESE\_TP2/capteurs\_reseaux\_VO/Core/Src/can.c}}
+\mbox{\hyperlink{can_8c}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\Hypertarget{can_8c_source_l00001}00001\ \textcolor{comment}{/*\ USER\ CODE\ BEGIN\ Header\ */}}
+\DoxyCodeLine{\Hypertarget{can_8c_source_l00019}00019\ \textcolor{comment}{/*\ USER\ CODE\ END\ Header\ */}}
+\DoxyCodeLine{\Hypertarget{can_8c_source_l00020}00020\ \textcolor{comment}{/*\ Includes\ -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/*/}}
+\DoxyCodeLine{\Hypertarget{can_8c_source_l00021}00021\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{can_8h}{can.h}}"{}}}
+\DoxyCodeLine{\Hypertarget{can_8c_source_l00022}00022\ }
+\DoxyCodeLine{\Hypertarget{can_8c_source_l00023}00023\ \textcolor{comment}{/*\ USER\ CODE\ BEGIN\ 0\ */}}
+\DoxyCodeLine{\Hypertarget{can_8c_source_l00024}00024\ }
+\DoxyCodeLine{\Hypertarget{can_8c_source_l00025}00025\ \textcolor{comment}{/*\ USER\ CODE\ END\ 0\ */}}
+\DoxyCodeLine{\Hypertarget{can_8c_source_l00026}00026\ }
+\DoxyCodeLine{\Hypertarget{can_8c_source_l00027}00027\ CAN\_HandleTypeDef\ hcan1;}
+\DoxyCodeLine{\Hypertarget{can_8c_source_l00028}00028\ }
+\DoxyCodeLine{\Hypertarget{can_8c_source_l00029}00029\ \textcolor{comment}{/*\ CAN1\ init\ function\ */}}
+\DoxyCodeLine{\Hypertarget{can_8c_source_l00030}00030\ \textcolor{keywordtype}{void}\ MX\_CAN1\_Init(\textcolor{keywordtype}{void})}
+\DoxyCodeLine{\Hypertarget{can_8c_source_l00031}00031\ \{}
+\DoxyCodeLine{\Hypertarget{can_8c_source_l00032}00032\ }
+\DoxyCodeLine{\Hypertarget{can_8c_source_l00033}00033\ \ \ \textcolor{comment}{/*\ USER\ CODE\ BEGIN\ CAN1\_Init\ 0\ */}}
+\DoxyCodeLine{\Hypertarget{can_8c_source_l00034}00034\ }
+\DoxyCodeLine{\Hypertarget{can_8c_source_l00035}00035\ \ \ \textcolor{comment}{/*\ USER\ CODE\ END\ CAN1\_Init\ 0\ */}}
+\DoxyCodeLine{\Hypertarget{can_8c_source_l00036}00036\ }
+\DoxyCodeLine{\Hypertarget{can_8c_source_l00037}00037\ \ \ \textcolor{comment}{/*\ USER\ CODE\ BEGIN\ CAN1\_Init\ 1\ */}}
+\DoxyCodeLine{\Hypertarget{can_8c_source_l00038}00038\ }
+\DoxyCodeLine{\Hypertarget{can_8c_source_l00039}00039\ \ \ \textcolor{comment}{/*\ USER\ CODE\ END\ CAN1\_Init\ 1\ */}}
+\DoxyCodeLine{\Hypertarget{can_8c_source_l00040}00040\ \ \ hcan1.Instance\ =\ CAN1;}
+\DoxyCodeLine{\Hypertarget{can_8c_source_l00041}00041\ \ \ hcan1.Init.Prescaler\ =\ 10;}
+\DoxyCodeLine{\Hypertarget{can_8c_source_l00042}00042\ \ \ hcan1.Init.Mode\ =\ CAN\_MODE\_NORMAL;}
+\DoxyCodeLine{\Hypertarget{can_8c_source_l00043}00043\ \ \ hcan1.Init.SyncJumpWidth\ =\ CAN\_SJW\_1TQ;}
+\DoxyCodeLine{\Hypertarget{can_8c_source_l00044}00044\ \ \ hcan1.Init.TimeSeg1\ =\ CAN\_BS1\_6TQ;}
+\DoxyCodeLine{\Hypertarget{can_8c_source_l00045}00045\ \ \ hcan1.Init.TimeSeg2\ =\ CAN\_BS2\_1TQ;}
+\DoxyCodeLine{\Hypertarget{can_8c_source_l00046}00046\ \ \ hcan1.Init.TimeTriggeredMode\ =\ DISABLE;}
+\DoxyCodeLine{\Hypertarget{can_8c_source_l00047}00047\ \ \ hcan1.Init.AutoBusOff\ =\ DISABLE;}
+\DoxyCodeLine{\Hypertarget{can_8c_source_l00048}00048\ \ \ hcan1.Init.AutoWakeUp\ =\ DISABLE;}
+\DoxyCodeLine{\Hypertarget{can_8c_source_l00049}00049\ \ \ hcan1.Init.AutoRetransmission\ =\ DISABLE;}
+\DoxyCodeLine{\Hypertarget{can_8c_source_l00050}00050\ \ \ hcan1.Init.ReceiveFifoLocked\ =\ DISABLE;}
+\DoxyCodeLine{\Hypertarget{can_8c_source_l00051}00051\ \ \ hcan1.Init.TransmitFifoPriority\ =\ DISABLE;}
+\DoxyCodeLine{\Hypertarget{can_8c_source_l00052}00052\ \ \ \textcolor{keywordflow}{if}\ (HAL\_CAN\_Init(\&hcan1)\ !=\ HAL\_OK)}
+\DoxyCodeLine{\Hypertarget{can_8c_source_l00053}00053\ \ \ \{}
+\DoxyCodeLine{\Hypertarget{can_8c_source_l00054}00054\ \ \ \ \ \mbox{\hyperlink{main_8h_a1730ffe1e560465665eb47d9264826f9}{Error\_Handler}}();}
+\DoxyCodeLine{\Hypertarget{can_8c_source_l00055}00055\ \ \ \}}
+\DoxyCodeLine{\Hypertarget{can_8c_source_l00056}00056\ \ \ \textcolor{comment}{/*\ USER\ CODE\ BEGIN\ CAN1\_Init\ 2\ */}}
+\DoxyCodeLine{\Hypertarget{can_8c_source_l00057}00057\ }
+\DoxyCodeLine{\Hypertarget{can_8c_source_l00058}00058\ \ \ \textcolor{comment}{/*\ USER\ CODE\ END\ CAN1\_Init\ 2\ */}}
+\DoxyCodeLine{\Hypertarget{can_8c_source_l00059}00059\ }
+\DoxyCodeLine{\Hypertarget{can_8c_source_l00060}00060\ \}}
+\DoxyCodeLine{\Hypertarget{can_8c_source_l00061}00061\ }
+\DoxyCodeLine{\Hypertarget{can_8c_source_l00062}\mbox{\hyperlink{can_8c_a2778ce7f3a2de42769b6de9fec4cedb9}{00062}}\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{can_8c_a2778ce7f3a2de42769b6de9fec4cedb9}{HAL\_CAN\_MspInit}}(CAN\_HandleTypeDef*\ canHandle)}
+\DoxyCodeLine{\Hypertarget{can_8c_source_l00063}00063\ \{}
+\DoxyCodeLine{\Hypertarget{can_8c_source_l00064}00064\ }
+\DoxyCodeLine{\Hypertarget{can_8c_source_l00065}00065\ \ \ GPIO\_InitTypeDef\ GPIO\_InitStruct\ =\ \{0\};}
+\DoxyCodeLine{\Hypertarget{can_8c_source_l00066}00066\ \ \ \textcolor{keywordflow}{if}(canHandle-\/>Instance==CAN1)}
+\DoxyCodeLine{\Hypertarget{can_8c_source_l00067}00067\ \ \ \{}
+\DoxyCodeLine{\Hypertarget{can_8c_source_l00068}00068\ \ \ \textcolor{comment}{/*\ USER\ CODE\ BEGIN\ CAN1\_MspInit\ 0\ */}}
+\DoxyCodeLine{\Hypertarget{can_8c_source_l00069}00069\ }
+\DoxyCodeLine{\Hypertarget{can_8c_source_l00070}00070\ \ \ \textcolor{comment}{/*\ USER\ CODE\ END\ CAN1\_MspInit\ 0\ */}}
+\DoxyCodeLine{\Hypertarget{can_8c_source_l00071}00071\ \ \ \ \ \textcolor{comment}{/*\ CAN1\ clock\ enable\ */}}
+\DoxyCodeLine{\Hypertarget{can_8c_source_l00072}00072\ \ \ \ \ \_\_HAL\_RCC\_CAN1\_CLK\_ENABLE();}
+\DoxyCodeLine{\Hypertarget{can_8c_source_l00073}00073\ }
+\DoxyCodeLine{\Hypertarget{can_8c_source_l00074}00074\ \ \ \ \ \_\_HAL\_RCC\_GPIOB\_CLK\_ENABLE();}
+\DoxyCodeLine{\Hypertarget{can_8c_source_l00079}00079\ \ \ \ \ GPIO\_InitStruct.Pin\ =\ GPIO\_PIN\_8|GPIO\_PIN\_9;}
+\DoxyCodeLine{\Hypertarget{can_8c_source_l00080}00080\ \ \ \ \ GPIO\_InitStruct.Mode\ =\ GPIO\_MODE\_AF\_PP;}
+\DoxyCodeLine{\Hypertarget{can_8c_source_l00081}00081\ \ \ \ \ GPIO\_InitStruct.Pull\ =\ GPIO\_NOPULL;}
+\DoxyCodeLine{\Hypertarget{can_8c_source_l00082}00082\ \ \ \ \ GPIO\_InitStruct.Speed\ =\ GPIO\_SPEED\_FREQ\_VERY\_HIGH;}
+\DoxyCodeLine{\Hypertarget{can_8c_source_l00083}00083\ \ \ \ \ GPIO\_InitStruct.Alternate\ =\ GPIO\_AF9\_CAN1;}
+\DoxyCodeLine{\Hypertarget{can_8c_source_l00084}00084\ \ \ \ \ HAL\_GPIO\_Init(GPIOB,\ \&GPIO\_InitStruct);}
+\DoxyCodeLine{\Hypertarget{can_8c_source_l00085}00085\ }
+\DoxyCodeLine{\Hypertarget{can_8c_source_l00086}00086\ \ \ \textcolor{comment}{/*\ USER\ CODE\ BEGIN\ CAN1\_MspInit\ 1\ */}}
+\DoxyCodeLine{\Hypertarget{can_8c_source_l00087}00087\ }
+\DoxyCodeLine{\Hypertarget{can_8c_source_l00088}00088\ \ \ \textcolor{comment}{/*\ USER\ CODE\ END\ CAN1\_MspInit\ 1\ */}}
+\DoxyCodeLine{\Hypertarget{can_8c_source_l00089}00089\ \ \ \}}
+\DoxyCodeLine{\Hypertarget{can_8c_source_l00090}00090\ \}}
+\DoxyCodeLine{\Hypertarget{can_8c_source_l00091}00091\ }
+\DoxyCodeLine{\Hypertarget{can_8c_source_l00092}\mbox{\hyperlink{can_8c_a4b39e42353b2781bc75d83c018640b67}{00092}}\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{can_8c_a4b39e42353b2781bc75d83c018640b67}{HAL\_CAN\_MspDeInit}}(CAN\_HandleTypeDef*\ canHandle)}
+\DoxyCodeLine{\Hypertarget{can_8c_source_l00093}00093\ \{}
+\DoxyCodeLine{\Hypertarget{can_8c_source_l00094}00094\ }
+\DoxyCodeLine{\Hypertarget{can_8c_source_l00095}00095\ \ \ \textcolor{keywordflow}{if}(canHandle-\/>Instance==CAN1)}
+\DoxyCodeLine{\Hypertarget{can_8c_source_l00096}00096\ \ \ \{}
+\DoxyCodeLine{\Hypertarget{can_8c_source_l00097}00097\ \ \ \textcolor{comment}{/*\ USER\ CODE\ BEGIN\ CAN1\_MspDeInit\ 0\ */}}
+\DoxyCodeLine{\Hypertarget{can_8c_source_l00098}00098\ }
+\DoxyCodeLine{\Hypertarget{can_8c_source_l00099}00099\ \ \ \textcolor{comment}{/*\ USER\ CODE\ END\ CAN1\_MspDeInit\ 0\ */}}
+\DoxyCodeLine{\Hypertarget{can_8c_source_l00100}00100\ \ \ \ \ \textcolor{comment}{/*\ Peripheral\ clock\ disable\ */}}
+\DoxyCodeLine{\Hypertarget{can_8c_source_l00101}00101\ \ \ \ \ \_\_HAL\_RCC\_CAN1\_CLK\_DISABLE();}
+\DoxyCodeLine{\Hypertarget{can_8c_source_l00102}00102\ }
+\DoxyCodeLine{\Hypertarget{can_8c_source_l00107}00107\ \ \ \ \ HAL\_GPIO\_DeInit(GPIOB,\ GPIO\_PIN\_8|GPIO\_PIN\_9);}
+\DoxyCodeLine{\Hypertarget{can_8c_source_l00108}00108\ }
+\DoxyCodeLine{\Hypertarget{can_8c_source_l00109}00109\ \ \ \textcolor{comment}{/*\ USER\ CODE\ BEGIN\ CAN1\_MspDeInit\ 1\ */}}
+\DoxyCodeLine{\Hypertarget{can_8c_source_l00110}00110\ }
+\DoxyCodeLine{\Hypertarget{can_8c_source_l00111}00111\ \ \ \textcolor{comment}{/*\ USER\ CODE\ END\ CAN1\_MspDeInit\ 1\ */}}
+\DoxyCodeLine{\Hypertarget{can_8c_source_l00112}00112\ \ \ \}}
+\DoxyCodeLine{\Hypertarget{can_8c_source_l00113}00113\ \}}
+\DoxyCodeLine{\Hypertarget{can_8c_source_l00114}00114\ }
+\DoxyCodeLine{\Hypertarget{can_8c_source_l00115}00115\ \textcolor{comment}{/*\ USER\ CODE\ BEGIN\ 1\ */}}
+\DoxyCodeLine{\Hypertarget{can_8c_source_l00116}00116\ }
+\DoxyCodeLine{\Hypertarget{can_8c_source_l00117}00117\ \textcolor{comment}{/*\ USER\ CODE\ END\ 1\ */}}
+
+\end{DoxyCode}

@@ -1,0 +1,204 @@
+\doxysection{/home/oliver/\+Documents/3\+A/capteurs\+\_\+reseaux\+\_\+\+VO\+\_\+\+ESE\+\_\+\+TP2/capteurs\+\_\+reseaux\+\_\+\+VO/\+Core/\+Src/\+MPU9250\+\_\+driver.c File Reference}
+\hypertarget{MPU9250__driver_8c}{}\label{MPU9250__driver_8c}\index{/home/oliver/Documents/3A/capteurs\_reseaux\_VO\_ESE\_TP2/capteurs\_reseaux\_VO/Core/Src/MPU9250\_driver.c@{/home/oliver/Documents/3A/capteurs\_reseaux\_VO\_ESE\_TP2/capteurs\_reseaux\_VO/Core/Src/MPU9250\_driver.c}}
+
+
+\+: Driver for the MPU9250  
+
+
+{\ttfamily \#include "{}MPU9250\+\_\+driver.\+h"{}}\newline
+Include dependency graph for MPU9250\+\_\+driver.\+c\+:
+% FIG 0
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+uint8\+\_\+t \mbox{\hyperlink{MPU9250__driver_8c_a5cc20d149521bd728225436e0e8245bd}{MPU\+\_\+begin}} (I2\+C\+\_\+\+Handle\+Type\+Def \texorpdfstring{$\ast$}{*}I2\+Cx, uint8\+\_\+t addr, uint8\+\_\+t a\+Scale, uint8\+\_\+t g\+Scale, float tau, float dt)
+\begin{DoxyCompactList}\small\item\em Set the IMU address, check for connection, reset IMU, and set full range scale. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{MPU9250__driver_8c_af7b16d00e6f5e3d9585a920cb33584bd}{MPU\+\_\+write\+Acc\+Full\+Scale\+Range}} (I2\+C\+\_\+\+Handle\+Type\+Def \texorpdfstring{$\ast$}{*}I2\+Cx, uint8\+\_\+t a\+Scale)
+\begin{DoxyCompactList}\small\item\em Set the accelerometer full scale range. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{MPU9250__driver_8c_a93c5414a16ec3a8bb315a9ce5ac2ebfb}{MPU\+\_\+write\+Gyro\+Full\+Scale\+Range}} (I2\+C\+\_\+\+Handle\+Type\+Def \texorpdfstring{$\ast$}{*}I2\+Cx, uint8\+\_\+t g\+Scale)
+\begin{DoxyCompactList}\small\item\em Set the gyroscope full scale range. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{MPU9250__driver_8c_a9c3d9fc8303a931dd23be6debffaa598}{MPU\+\_\+read\+Raw\+Data}} (I2\+C\+\_\+\+Handle\+Type\+Def \texorpdfstring{$\ast$}{*}I2\+Cx)
+\begin{DoxyCompactList}\small\item\em Read raw data from IMU. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{MPU9250__driver_8c_aa847c36df2da652d7fa796696a056758}{MPU\+\_\+calibrate\+Gyro}} (I2\+C\+\_\+\+Handle\+Type\+Def \texorpdfstring{$\ast$}{*}I2\+Cx, uint16\+\_\+t num\+Cal\+Points)
+\begin{DoxyCompactList}\small\item\em Find offsets for each axis of gyroscope. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{MPU9250__driver_8c_a0b9572bcd1f2755e895204e9bdcc313f}{MPU\+\_\+read\+Processed\+Data}} (I2\+C\+\_\+\+Handle\+Type\+Def \texorpdfstring{$\ast$}{*}I2\+Cx)
+\begin{DoxyCompactList}\small\item\em Calculate the real world sensor values. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{MPU9250__driver_8c_a9e48249ac6c48ba5b4e1816e67d8807f}{MPU\+\_\+calc\+Attitude}} (I2\+C\+\_\+\+Handle\+Type\+Def \texorpdfstring{$\ast$}{*}I2\+Cx)
+\begin{DoxyCompactList}\small\item\em Calculate the attitude of the sensor in degrees using a complementary filter. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+\+: Driver for the MPU9250 
+
+Created on\+: Oct 25, 2024 Author\+: oliver Source\+: \href{https://github.com/MarkSherstan/STM32-MPU6050-MPU9250-I2C-SPI}{\texttt{ https\+://github.\+com/\+Mark\+Sherstan/\+STM32-\/\+MPU6050-\/\+MPU9250-\/\+I2\+C-\/\+SPI}} 
+
+Definition in file \mbox{\hyperlink{MPU9250__driver_8c_source}{MPU9250\+\_\+driver.\+c}}.
+
+
+
+\doxysubsection{Function Documentation}
+\Hypertarget{MPU9250__driver_8c_a5cc20d149521bd728225436e0e8245bd}\label{MPU9250__driver_8c_a5cc20d149521bd728225436e0e8245bd} 
+\index{MPU9250\_driver.c@{MPU9250\_driver.c}!MPU\_begin@{MPU\_begin}}
+\index{MPU\_begin@{MPU\_begin}!MPU9250\_driver.c@{MPU9250\_driver.c}}
+\doxysubsubsection{\texorpdfstring{MPU\_begin()}{MPU\_begin()}}
+{\footnotesize\ttfamily uint8\+\_\+t MPU\+\_\+begin (\begin{DoxyParamCaption}\item[{I2\+C\+\_\+\+Handle\+Type\+Def \texorpdfstring{$\ast$}{*}}]{I2\+Cx,  }\item[{uint8\+\_\+t}]{addr,  }\item[{uint8\+\_\+t}]{a\+Scale,  }\item[{uint8\+\_\+t}]{g\+Scale,  }\item[{float}]{tau,  }\item[{float}]{dt }\end{DoxyParamCaption})}
+
+
+
+Set the IMU address, check for connection, reset IMU, and set full range scale. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em I2\+Cx} & Pointer to I2C structure config. \\
+\hline
+{\em addr} & Hex address based on AD0 pin -\/ 0x68 low or 0x69 high. \\
+\hline
+{\em a\+Scale} & Set accelerometer full scale range\+: 0 for ±2g, 1 for ±4g, 2 for ±8g, and 3 for ±16g. \\
+\hline
+{\em g\+Scale} & Set gyroscope full scale range\+: 0 for ±250°/s, 1 for ±500°/s, 2 for ±1000°/s, and 3 for ±2000°/s. \\
+\hline
+{\em tau} & Set tau value for the complementary filter (typically 0.\+98). \\
+\hline
+{\em dt} & Set sampling rate in seconds determined by the timer interrupt. \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line \mbox{\hyperlink{MPU9250__driver_8c_source_l00023}{23}} of file \mbox{\hyperlink{MPU9250__driver_8c_source}{MPU9250\+\_\+driver.\+c}}.
+
+Here is the call graph for this function\+:
+% FIG 1
+\Hypertarget{MPU9250__driver_8c_a9e48249ac6c48ba5b4e1816e67d8807f}\label{MPU9250__driver_8c_a9e48249ac6c48ba5b4e1816e67d8807f} 
+\index{MPU9250\_driver.c@{MPU9250\_driver.c}!MPU\_calcAttitude@{MPU\_calcAttitude}}
+\index{MPU\_calcAttitude@{MPU\_calcAttitude}!MPU9250\_driver.c@{MPU9250\_driver.c}}
+\doxysubsubsection{\texorpdfstring{MPU\_calcAttitude()}{MPU\_calcAttitude()}}
+{\footnotesize\ttfamily void MPU\+\_\+calc\+Attitude (\begin{DoxyParamCaption}\item[{I2\+C\+\_\+\+Handle\+Type\+Def \texorpdfstring{$\ast$}{*}}]{I2\+Cx }\end{DoxyParamCaption})}
+
+
+
+Calculate the attitude of the sensor in degrees using a complementary filter. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em I2\+Cx} & Pointer to I2C structure config. \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line \mbox{\hyperlink{MPU9250__driver_8c_source_l00211}{211}} of file \mbox{\hyperlink{MPU9250__driver_8c_source}{MPU9250\+\_\+driver.\+c}}.
+
+Here is the call graph for this function\+:
+% FIG 2
+\Hypertarget{MPU9250__driver_8c_aa847c36df2da652d7fa796696a056758}\label{MPU9250__driver_8c_aa847c36df2da652d7fa796696a056758} 
+\index{MPU9250\_driver.c@{MPU9250\_driver.c}!MPU\_calibrateGyro@{MPU\_calibrateGyro}}
+\index{MPU\_calibrateGyro@{MPU\_calibrateGyro}!MPU9250\_driver.c@{MPU9250\_driver.c}}
+\doxysubsubsection{\texorpdfstring{MPU\_calibrateGyro()}{MPU\_calibrateGyro()}}
+{\footnotesize\ttfamily void MPU\+\_\+calibrate\+Gyro (\begin{DoxyParamCaption}\item[{I2\+C\+\_\+\+Handle\+Type\+Def \texorpdfstring{$\ast$}{*}}]{I2\+Cx,  }\item[{uint16\+\_\+t}]{num\+Cal\+Points }\end{DoxyParamCaption})}
+
+
+
+Find offsets for each axis of gyroscope. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em I2\+Cx} & Pointer to I2C structure config. \\
+\hline
+{\em num\+Cal\+Points} & Number of data points to average. \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line \mbox{\hyperlink{MPU9250__driver_8c_source_l00157}{157}} of file \mbox{\hyperlink{MPU9250__driver_8c_source}{MPU9250\+\_\+driver.\+c}}.
+
+Here is the call graph for this function\+:
+% FIG 3
+\Hypertarget{MPU9250__driver_8c_a0b9572bcd1f2755e895204e9bdcc313f}\label{MPU9250__driver_8c_a0b9572bcd1f2755e895204e9bdcc313f} 
+\index{MPU9250\_driver.c@{MPU9250\_driver.c}!MPU\_readProcessedData@{MPU\_readProcessedData}}
+\index{MPU\_readProcessedData@{MPU\_readProcessedData}!MPU9250\_driver.c@{MPU9250\_driver.c}}
+\doxysubsubsection{\texorpdfstring{MPU\_readProcessedData()}{MPU\_readProcessedData()}}
+{\footnotesize\ttfamily void MPU\+\_\+read\+Processed\+Data (\begin{DoxyParamCaption}\item[{I2\+C\+\_\+\+Handle\+Type\+Def \texorpdfstring{$\ast$}{*}}]{I2\+Cx }\end{DoxyParamCaption})}
+
+
+
+Calculate the real world sensor values. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em I2\+Cx} & Pointer to I2C structure config. \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line \mbox{\hyperlink{MPU9250__driver_8c_source_l00188}{188}} of file \mbox{\hyperlink{MPU9250__driver_8c_source}{MPU9250\+\_\+driver.\+c}}.
+
+Here is the call graph for this function\+:
+% FIG 4
+Here is the caller graph for this function\+:
+% FIG 5
+\Hypertarget{MPU9250__driver_8c_a9c3d9fc8303a931dd23be6debffaa598}\label{MPU9250__driver_8c_a9c3d9fc8303a931dd23be6debffaa598} 
+\index{MPU9250\_driver.c@{MPU9250\_driver.c}!MPU\_readRawData@{MPU\_readRawData}}
+\index{MPU\_readRawData@{MPU\_readRawData}!MPU9250\_driver.c@{MPU9250\_driver.c}}
+\doxysubsubsection{\texorpdfstring{MPU\_readRawData()}{MPU\_readRawData()}}
+{\footnotesize\ttfamily void MPU\+\_\+read\+Raw\+Data (\begin{DoxyParamCaption}\item[{I2\+C\+\_\+\+Handle\+Type\+Def \texorpdfstring{$\ast$}{*}}]{I2\+Cx }\end{DoxyParamCaption})}
+
+
+
+Read raw data from IMU. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em I2\+Cx} & Pointer to I2C structure config. \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line \mbox{\hyperlink{MPU9250__driver_8c_source_l00136}{136}} of file \mbox{\hyperlink{MPU9250__driver_8c_source}{MPU9250\+\_\+driver.\+c}}.
+
+Here is the caller graph for this function\+:
+% FIG 6
+\Hypertarget{MPU9250__driver_8c_af7b16d00e6f5e3d9585a920cb33584bd}\label{MPU9250__driver_8c_af7b16d00e6f5e3d9585a920cb33584bd} 
+\index{MPU9250\_driver.c@{MPU9250\_driver.c}!MPU\_writeAccFullScaleRange@{MPU\_writeAccFullScaleRange}}
+\index{MPU\_writeAccFullScaleRange@{MPU\_writeAccFullScaleRange}!MPU9250\_driver.c@{MPU9250\_driver.c}}
+\doxysubsubsection{\texorpdfstring{MPU\_writeAccFullScaleRange()}{MPU\_writeAccFullScaleRange()}}
+{\footnotesize\ttfamily void MPU\+\_\+write\+Acc\+Full\+Scale\+Range (\begin{DoxyParamCaption}\item[{I2\+C\+\_\+\+Handle\+Type\+Def \texorpdfstring{$\ast$}{*}}]{I2\+Cx,  }\item[{uint8\+\_\+t}]{a\+Scale }\end{DoxyParamCaption})}
+
+
+
+Set the accelerometer full scale range. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em I2\+Cx} & Pointer to I2C structure config. \\
+\hline
+{\em a\+Scale} & Set 0 for ±2g, 1 for ±4g, 2 for ±8g, and 3 for ±16g. \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line \mbox{\hyperlink{MPU9250__driver_8c_source_l00059}{59}} of file \mbox{\hyperlink{MPU9250__driver_8c_source}{MPU9250\+\_\+driver.\+c}}.
+
+Here is the caller graph for this function\+:
+% FIG 7
+\Hypertarget{MPU9250__driver_8c_a93c5414a16ec3a8bb315a9ce5ac2ebfb}\label{MPU9250__driver_8c_a93c5414a16ec3a8bb315a9ce5ac2ebfb} 
+\index{MPU9250\_driver.c@{MPU9250\_driver.c}!MPU\_writeGyroFullScaleRange@{MPU\_writeGyroFullScaleRange}}
+\index{MPU\_writeGyroFullScaleRange@{MPU\_writeGyroFullScaleRange}!MPU9250\_driver.c@{MPU9250\_driver.c}}
+\doxysubsubsection{\texorpdfstring{MPU\_writeGyroFullScaleRange()}{MPU\_writeGyroFullScaleRange()}}
+{\footnotesize\ttfamily void MPU\+\_\+write\+Gyro\+Full\+Scale\+Range (\begin{DoxyParamCaption}\item[{I2\+C\+\_\+\+Handle\+Type\+Def \texorpdfstring{$\ast$}{*}}]{I2\+Cx,  }\item[{uint8\+\_\+t}]{g\+Scale }\end{DoxyParamCaption})}
+
+
+
+Set the gyroscope full scale range. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em I2\+Cx} & Pointer to I2C structure config. \\
+\hline
+{\em g\+Scale} & Set 0 for ±250°/s, 1 for ±500°/s, 2 for ±1000°/s, and 3 for ±2000°/s. \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line \mbox{\hyperlink{MPU9250__driver_8c_source_l00098}{98}} of file \mbox{\hyperlink{MPU9250__driver_8c_source}{MPU9250\+\_\+driver.\+c}}.
+
+Here is the caller graph for this function\+:
+% FIG 8

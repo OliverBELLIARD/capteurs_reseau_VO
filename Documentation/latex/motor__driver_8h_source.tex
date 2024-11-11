@@ -1,0 +1,35 @@
+\doxysection{motor\+\_\+driver.\+h}
+\hypertarget{motor__driver_8h_source}{}\label{motor__driver_8h_source}\index{/home/oliver/Documents/3A/capteurs\_reseaux\_VO\_ESE\_TP2/capteurs\_reseaux\_VO/Core/Inc/motor\_driver.h@{/home/oliver/Documents/3A/capteurs\_reseaux\_VO\_ESE\_TP2/capteurs\_reseaux\_VO/Core/Inc/motor\_driver.h}}
+\mbox{\hyperlink{motor__driver_8h}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\Hypertarget{motor__driver_8h_source_l00001}00001\ }
+\DoxyCodeLine{\Hypertarget{motor__driver_8h_source_l00014}00014\ \textcolor{preprocessor}{\#ifndef\ INC\_MOTOR\_DRIVER\_H\_}}
+\DoxyCodeLine{\Hypertarget{motor__driver_8h_source_l00015}00015\ \textcolor{preprocessor}{\#define\ INC\_MOTOR\_DRIVER\_H\_}}
+\DoxyCodeLine{\Hypertarget{motor__driver_8h_source_l00016}00016\ }
+\DoxyCodeLine{\Hypertarget{motor__driver_8h_source_l00017}00017\ \textcolor{comment}{//\ Step\ Motor\ Config\ Constants}}
+\DoxyCodeLine{\Hypertarget{motor__driver_8h_source_l00018}00018\ \textcolor{preprocessor}{\#define\ MOT\_MODE\_MANUAL\_ID\ 0x60}}
+\DoxyCodeLine{\Hypertarget{motor__driver_8h_source_l00019}00019\ \textcolor{preprocessor}{\#define\ MOT\_MODE\_CLOCKWISE\ 0x01}}
+\DoxyCodeLine{\Hypertarget{motor__driver_8h_source_l00020}00020\ \textcolor{preprocessor}{\#define\ MOT\_MODE\_ANTICLOCKWISE\ 0x00}}
+\DoxyCodeLine{\Hypertarget{motor__driver_8h_source_l00021}00021\ }
+\DoxyCodeLine{\Hypertarget{motor__driver_8h_source_l00022}00022\ \textcolor{comment}{//\ Step\ Motor\ initial\ position}}
+\DoxyCodeLine{\Hypertarget{motor__driver_8h_source_l00023}00023\ \textcolor{preprocessor}{\#define\ MOT\_INIT\_POS\_ID\ 0x62}}
+\DoxyCodeLine{\Hypertarget{motor__driver_8h_source_l00024}00024\ }
+\DoxyCodeLine{\Hypertarget{motor__driver_8h_source_l00025}00025\ \textcolor{comment}{//\ Step\ Motor\ Angle\ constants}}
+\DoxyCodeLine{\Hypertarget{motor__driver_8h_source_l00026}00026\ \textcolor{preprocessor}{\#define\ MOT\_ANGLE\_ID\ 0x61}}
+\DoxyCodeLine{\Hypertarget{motor__driver_8h_source_l00027}00027\ \textcolor{preprocessor}{\#define\ MOT\_ANGLE\_POSITIVE\ 0x00}}
+\DoxyCodeLine{\Hypertarget{motor__driver_8h_source_l00028}00028\ \textcolor{preprocessor}{\#define\ MOT\_ANGLE\_NEGATIVE\ 0x01}}
+\DoxyCodeLine{\Hypertarget{motor__driver_8h_source_l00029}00029\ \textcolor{preprocessor}{\#define\ MOT\_ANGLE\_MIN\ 0x00}}
+\DoxyCodeLine{\Hypertarget{motor__driver_8h_source_l00030}00030\ \textcolor{preprocessor}{\#define\ MOT\_ANGLE\_MAX\ 0xFF}}
+\DoxyCodeLine{\Hypertarget{motor__driver_8h_source_l00031}00031\ \textcolor{preprocessor}{\#define\ MOT\_ANGLE\_SIZE\ 2}}
+\DoxyCodeLine{\Hypertarget{motor__driver_8h_source_l00032}00032\ }
+\DoxyCodeLine{\Hypertarget{motor__driver_8h_source_l00033}00033\ \textcolor{preprocessor}{\#define\ MOT\_REACTION\_TIME\_MIN\ 300}}
+\DoxyCodeLine{\Hypertarget{motor__driver_8h_source_l00034}00034\ }
+\DoxyCodeLine{\Hypertarget{motor__driver_8h_source_l00035}00035\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{motor__driver_8h_aaa44002d1db973d1d85edcd4625303ec}{CAN\_Init}}();}
+\DoxyCodeLine{\Hypertarget{motor__driver_8h_source_l00036}00036\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{motor__driver_8h_aa21e23544d89906e67b53d135864eeb5}{CAN\_Send}}(uint8\_t*,\ uint32\_t,\ uint32\_t);}
+\DoxyCodeLine{\Hypertarget{motor__driver_8h_source_l00037}00037\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{motor__driver_8h_ac5af04389b40ad641e83891374af67e8}{MOT\_Set\_mode}}(uint8\_t,\ uint8\_t,\ uint8\_t);}
+\DoxyCodeLine{\Hypertarget{motor__driver_8h_source_l00038}00038\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{motor__driver_8h_a34fe18199ea8d734f4c2322bbb8a1cd9}{MOT\_Set\_origin}}();}
+\DoxyCodeLine{\Hypertarget{motor__driver_8h_source_l00039}00039\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{motor__driver_8h_a68c19f4eb76eceeca25238fe3f96b3f5}{MOT\_Rotate}}(uint8\_t,\ uint8\_t);}
+\DoxyCodeLine{\Hypertarget{motor__driver_8h_source_l00040}00040\ }
+\DoxyCodeLine{\Hypertarget{motor__driver_8h_source_l00041}00041\ \textcolor{preprocessor}{\#endif\ }\textcolor{comment}{/*\ INC\_MOTOR\_DRIVER\_H\_\ */}\textcolor{preprocessor}{}}
+
+\end{DoxyCode}

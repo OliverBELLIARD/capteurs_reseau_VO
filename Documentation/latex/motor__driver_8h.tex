@@ -1,0 +1,288 @@
+\doxysection{/home/oliver/\+Documents/3\+A/capteurs\+\_\+reseaux\+\_\+\+VO\+\_\+\+ESE\+\_\+\+TP2/capteurs\+\_\+reseaux\+\_\+\+VO/\+Core/\+Inc/motor\+\_\+driver.h File Reference}
+\hypertarget{motor__driver_8h}{}\label{motor__driver_8h}\index{/home/oliver/Documents/3A/capteurs\_reseaux\_VO\_ESE\_TP2/capteurs\_reseaux\_VO/Core/Inc/motor\_driver.h@{/home/oliver/Documents/3A/capteurs\_reseaux\_VO\_ESE\_TP2/capteurs\_reseaux\_VO/Core/Inc/motor\_driver.h}}
+
+
+This file contains all the function prototypes for the \doxylink{motor__driver_8c}{motor\+\_\+driver.\+c} file.  
+
+
+This graph shows which files directly or indirectly include this file\+:
+% FIG 0
+\doxysubsubsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define \mbox{\hyperlink{motor__driver_8h_a1322e60551543538ba4d84d008bae3d4}{MOT\+\_\+\+MODE\+\_\+\+MANUAL\+\_\+\+ID}}~0x60
+\item 
+\#define \mbox{\hyperlink{motor__driver_8h_aeadf7531386099eda4d285e34d9d7efd}{MOT\+\_\+\+MODE\+\_\+\+CLOCKWISE}}~0x01
+\item 
+\#define \mbox{\hyperlink{motor__driver_8h_a2458524bec1d7836d6224d9e1092f661}{MOT\+\_\+\+MODE\+\_\+\+ANTICLOCKWISE}}~0x00
+\item 
+\#define \mbox{\hyperlink{motor__driver_8h_a731d5d15ced28f3b71c479b99069088f}{MOT\+\_\+\+INIT\+\_\+\+POS\+\_\+\+ID}}~0x62
+\item 
+\#define \mbox{\hyperlink{motor__driver_8h_ad86f90b4508fb327ef3dfb3589c3f3b6}{MOT\+\_\+\+ANGLE\+\_\+\+ID}}~0x61
+\item 
+\#define \mbox{\hyperlink{motor__driver_8h_a8dbb62f3f1ee967dc817c8a61cbb789a}{MOT\+\_\+\+ANGLE\+\_\+\+POSITIVE}}~0x00
+\item 
+\#define \mbox{\hyperlink{motor__driver_8h_a7d9f46c56c8fa97066257864023a618a}{MOT\+\_\+\+ANGLE\+\_\+\+NEGATIVE}}~0x01
+\item 
+\#define \mbox{\hyperlink{motor__driver_8h_afb3d8e0b6d1e56f1bcd378aa10d8c39d}{MOT\+\_\+\+ANGLE\+\_\+\+MIN}}~0x00
+\item 
+\#define \mbox{\hyperlink{motor__driver_8h_ae16b4b3ecc13d5551390543feb7f7c3f}{MOT\+\_\+\+ANGLE\+\_\+\+MAX}}~0x\+FF
+\item 
+\#define \mbox{\hyperlink{motor__driver_8h_a0929efa6743118cbffa2fe0df28e8b52}{MOT\+\_\+\+ANGLE\+\_\+\+SIZE}}~2
+\item 
+\#define \mbox{\hyperlink{motor__driver_8h_a59e43a4e8a382c19decfb00dbc487d92}{MOT\+\_\+\+REACTION\+\_\+\+TIME\+\_\+\+MIN}}~300
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{motor__driver_8h_aaa44002d1db973d1d85edcd4625303ec}{CAN\+\_\+\+Init}} ()
+\begin{DoxyCompactList}\small\item\em Initialises the CAN communication. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{motor__driver_8h_aa21e23544d89906e67b53d135864eeb5}{CAN\+\_\+\+Send}} (uint8\+\_\+t \texorpdfstring{$\ast$}{*}, uint32\+\_\+t, uint32\+\_\+t)
+\begin{DoxyCompactList}\small\item\em Sends a CAN message with retry logic. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{motor__driver_8h_ac5af04389b40ad641e83891374af67e8}{MOT\+\_\+\+Set\+\_\+mode}} (uint8\+\_\+t, uint8\+\_\+t, uint8\+\_\+t)
+\begin{DoxyCompactList}\small\item\em Sets up the Step motor with parameters. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{motor__driver_8h_a34fe18199ea8d734f4c2322bbb8a1cd9}{MOT\+\_\+\+Set\+\_\+origin}} ()
+\begin{DoxyCompactList}\small\item\em Sets the current position of the motor as the origin. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{motor__driver_8h_a68c19f4eb76eceeca25238fe3f96b3f5}{MOT\+\_\+\+Rotate}} (uint8\+\_\+t, uint8\+\_\+t)
+\begin{DoxyCompactList}\small\item\em Rotates the Step Motor of an angle in a defined direction. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+This file contains all the function prototypes for the \doxylink{motor__driver_8c}{motor\+\_\+driver.\+c} file. 
+
+Created on\+: Nov 9, 2024 Author\+: oliver 
+
+Definition in file \mbox{\hyperlink{motor__driver_8h_source}{motor\+\_\+driver.\+h}}.
+
+
+
+\doxysubsection{Macro Definition Documentation}
+\Hypertarget{motor__driver_8h_ad86f90b4508fb327ef3dfb3589c3f3b6}\label{motor__driver_8h_ad86f90b4508fb327ef3dfb3589c3f3b6} 
+\index{motor\_driver.h@{motor\_driver.h}!MOT\_ANGLE\_ID@{MOT\_ANGLE\_ID}}
+\index{MOT\_ANGLE\_ID@{MOT\_ANGLE\_ID}!motor\_driver.h@{motor\_driver.h}}
+\doxysubsubsection{\texorpdfstring{MOT\_ANGLE\_ID}{MOT\_ANGLE\_ID}}
+{\footnotesize\ttfamily \#define MOT\+\_\+\+ANGLE\+\_\+\+ID~0x61}
+
+
+
+Definition at line \mbox{\hyperlink{motor__driver_8h_source_l00026}{26}} of file \mbox{\hyperlink{motor__driver_8h_source}{motor\+\_\+driver.\+h}}.
+
+\Hypertarget{motor__driver_8h_ae16b4b3ecc13d5551390543feb7f7c3f}\label{motor__driver_8h_ae16b4b3ecc13d5551390543feb7f7c3f} 
+\index{motor\_driver.h@{motor\_driver.h}!MOT\_ANGLE\_MAX@{MOT\_ANGLE\_MAX}}
+\index{MOT\_ANGLE\_MAX@{MOT\_ANGLE\_MAX}!motor\_driver.h@{motor\_driver.h}}
+\doxysubsubsection{\texorpdfstring{MOT\_ANGLE\_MAX}{MOT\_ANGLE\_MAX}}
+{\footnotesize\ttfamily \#define MOT\+\_\+\+ANGLE\+\_\+\+MAX~0x\+FF}
+
+
+
+Definition at line \mbox{\hyperlink{motor__driver_8h_source_l00030}{30}} of file \mbox{\hyperlink{motor__driver_8h_source}{motor\+\_\+driver.\+h}}.
+
+\Hypertarget{motor__driver_8h_afb3d8e0b6d1e56f1bcd378aa10d8c39d}\label{motor__driver_8h_afb3d8e0b6d1e56f1bcd378aa10d8c39d} 
+\index{motor\_driver.h@{motor\_driver.h}!MOT\_ANGLE\_MIN@{MOT\_ANGLE\_MIN}}
+\index{MOT\_ANGLE\_MIN@{MOT\_ANGLE\_MIN}!motor\_driver.h@{motor\_driver.h}}
+\doxysubsubsection{\texorpdfstring{MOT\_ANGLE\_MIN}{MOT\_ANGLE\_MIN}}
+{\footnotesize\ttfamily \#define MOT\+\_\+\+ANGLE\+\_\+\+MIN~0x00}
+
+
+
+Definition at line \mbox{\hyperlink{motor__driver_8h_source_l00029}{29}} of file \mbox{\hyperlink{motor__driver_8h_source}{motor\+\_\+driver.\+h}}.
+
+\Hypertarget{motor__driver_8h_a7d9f46c56c8fa97066257864023a618a}\label{motor__driver_8h_a7d9f46c56c8fa97066257864023a618a} 
+\index{motor\_driver.h@{motor\_driver.h}!MOT\_ANGLE\_NEGATIVE@{MOT\_ANGLE\_NEGATIVE}}
+\index{MOT\_ANGLE\_NEGATIVE@{MOT\_ANGLE\_NEGATIVE}!motor\_driver.h@{motor\_driver.h}}
+\doxysubsubsection{\texorpdfstring{MOT\_ANGLE\_NEGATIVE}{MOT\_ANGLE\_NEGATIVE}}
+{\footnotesize\ttfamily \#define MOT\+\_\+\+ANGLE\+\_\+\+NEGATIVE~0x01}
+
+
+
+Definition at line \mbox{\hyperlink{motor__driver_8h_source_l00028}{28}} of file \mbox{\hyperlink{motor__driver_8h_source}{motor\+\_\+driver.\+h}}.
+
+\Hypertarget{motor__driver_8h_a8dbb62f3f1ee967dc817c8a61cbb789a}\label{motor__driver_8h_a8dbb62f3f1ee967dc817c8a61cbb789a} 
+\index{motor\_driver.h@{motor\_driver.h}!MOT\_ANGLE\_POSITIVE@{MOT\_ANGLE\_POSITIVE}}
+\index{MOT\_ANGLE\_POSITIVE@{MOT\_ANGLE\_POSITIVE}!motor\_driver.h@{motor\_driver.h}}
+\doxysubsubsection{\texorpdfstring{MOT\_ANGLE\_POSITIVE}{MOT\_ANGLE\_POSITIVE}}
+{\footnotesize\ttfamily \#define MOT\+\_\+\+ANGLE\+\_\+\+POSITIVE~0x00}
+
+
+
+Definition at line \mbox{\hyperlink{motor__driver_8h_source_l00027}{27}} of file \mbox{\hyperlink{motor__driver_8h_source}{motor\+\_\+driver.\+h}}.
+
+\Hypertarget{motor__driver_8h_a0929efa6743118cbffa2fe0df28e8b52}\label{motor__driver_8h_a0929efa6743118cbffa2fe0df28e8b52} 
+\index{motor\_driver.h@{motor\_driver.h}!MOT\_ANGLE\_SIZE@{MOT\_ANGLE\_SIZE}}
+\index{MOT\_ANGLE\_SIZE@{MOT\_ANGLE\_SIZE}!motor\_driver.h@{motor\_driver.h}}
+\doxysubsubsection{\texorpdfstring{MOT\_ANGLE\_SIZE}{MOT\_ANGLE\_SIZE}}
+{\footnotesize\ttfamily \#define MOT\+\_\+\+ANGLE\+\_\+\+SIZE~2}
+
+
+
+Definition at line \mbox{\hyperlink{motor__driver_8h_source_l00031}{31}} of file \mbox{\hyperlink{motor__driver_8h_source}{motor\+\_\+driver.\+h}}.
+
+\Hypertarget{motor__driver_8h_a731d5d15ced28f3b71c479b99069088f}\label{motor__driver_8h_a731d5d15ced28f3b71c479b99069088f} 
+\index{motor\_driver.h@{motor\_driver.h}!MOT\_INIT\_POS\_ID@{MOT\_INIT\_POS\_ID}}
+\index{MOT\_INIT\_POS\_ID@{MOT\_INIT\_POS\_ID}!motor\_driver.h@{motor\_driver.h}}
+\doxysubsubsection{\texorpdfstring{MOT\_INIT\_POS\_ID}{MOT\_INIT\_POS\_ID}}
+{\footnotesize\ttfamily \#define MOT\+\_\+\+INIT\+\_\+\+POS\+\_\+\+ID~0x62}
+
+
+
+Definition at line \mbox{\hyperlink{motor__driver_8h_source_l00023}{23}} of file \mbox{\hyperlink{motor__driver_8h_source}{motor\+\_\+driver.\+h}}.
+
+\Hypertarget{motor__driver_8h_a2458524bec1d7836d6224d9e1092f661}\label{motor__driver_8h_a2458524bec1d7836d6224d9e1092f661} 
+\index{motor\_driver.h@{motor\_driver.h}!MOT\_MODE\_ANTICLOCKWISE@{MOT\_MODE\_ANTICLOCKWISE}}
+\index{MOT\_MODE\_ANTICLOCKWISE@{MOT\_MODE\_ANTICLOCKWISE}!motor\_driver.h@{motor\_driver.h}}
+\doxysubsubsection{\texorpdfstring{MOT\_MODE\_ANTICLOCKWISE}{MOT\_MODE\_ANTICLOCKWISE}}
+{\footnotesize\ttfamily \#define MOT\+\_\+\+MODE\+\_\+\+ANTICLOCKWISE~0x00}
+
+
+
+Definition at line \mbox{\hyperlink{motor__driver_8h_source_l00020}{20}} of file \mbox{\hyperlink{motor__driver_8h_source}{motor\+\_\+driver.\+h}}.
+
+\Hypertarget{motor__driver_8h_aeadf7531386099eda4d285e34d9d7efd}\label{motor__driver_8h_aeadf7531386099eda4d285e34d9d7efd} 
+\index{motor\_driver.h@{motor\_driver.h}!MOT\_MODE\_CLOCKWISE@{MOT\_MODE\_CLOCKWISE}}
+\index{MOT\_MODE\_CLOCKWISE@{MOT\_MODE\_CLOCKWISE}!motor\_driver.h@{motor\_driver.h}}
+\doxysubsubsection{\texorpdfstring{MOT\_MODE\_CLOCKWISE}{MOT\_MODE\_CLOCKWISE}}
+{\footnotesize\ttfamily \#define MOT\+\_\+\+MODE\+\_\+\+CLOCKWISE~0x01}
+
+
+
+Definition at line \mbox{\hyperlink{motor__driver_8h_source_l00019}{19}} of file \mbox{\hyperlink{motor__driver_8h_source}{motor\+\_\+driver.\+h}}.
+
+\Hypertarget{motor__driver_8h_a1322e60551543538ba4d84d008bae3d4}\label{motor__driver_8h_a1322e60551543538ba4d84d008bae3d4} 
+\index{motor\_driver.h@{motor\_driver.h}!MOT\_MODE\_MANUAL\_ID@{MOT\_MODE\_MANUAL\_ID}}
+\index{MOT\_MODE\_MANUAL\_ID@{MOT\_MODE\_MANUAL\_ID}!motor\_driver.h@{motor\_driver.h}}
+\doxysubsubsection{\texorpdfstring{MOT\_MODE\_MANUAL\_ID}{MOT\_MODE\_MANUAL\_ID}}
+{\footnotesize\ttfamily \#define MOT\+\_\+\+MODE\+\_\+\+MANUAL\+\_\+\+ID~0x60}
+
+
+
+Definition at line \mbox{\hyperlink{motor__driver_8h_source_l00018}{18}} of file \mbox{\hyperlink{motor__driver_8h_source}{motor\+\_\+driver.\+h}}.
+
+\Hypertarget{motor__driver_8h_a59e43a4e8a382c19decfb00dbc487d92}\label{motor__driver_8h_a59e43a4e8a382c19decfb00dbc487d92} 
+\index{motor\_driver.h@{motor\_driver.h}!MOT\_REACTION\_TIME\_MIN@{MOT\_REACTION\_TIME\_MIN}}
+\index{MOT\_REACTION\_TIME\_MIN@{MOT\_REACTION\_TIME\_MIN}!motor\_driver.h@{motor\_driver.h}}
+\doxysubsubsection{\texorpdfstring{MOT\_REACTION\_TIME\_MIN}{MOT\_REACTION\_TIME\_MIN}}
+{\footnotesize\ttfamily \#define MOT\+\_\+\+REACTION\+\_\+\+TIME\+\_\+\+MIN~300}
+
+
+
+Definition at line \mbox{\hyperlink{motor__driver_8h_source_l00033}{33}} of file \mbox{\hyperlink{motor__driver_8h_source}{motor\+\_\+driver.\+h}}.
+
+
+
+\doxysubsection{Function Documentation}
+\Hypertarget{motor__driver_8h_aaa44002d1db973d1d85edcd4625303ec}\label{motor__driver_8h_aaa44002d1db973d1d85edcd4625303ec} 
+\index{motor\_driver.h@{motor\_driver.h}!CAN\_Init@{CAN\_Init}}
+\index{CAN\_Init@{CAN\_Init}!motor\_driver.h@{motor\_driver.h}}
+\doxysubsubsection{\texorpdfstring{CAN\_Init()}{CAN\_Init()}}
+{\footnotesize\ttfamily void CAN\+\_\+\+Init (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Initialises the CAN communication. 
+
+
+
+Definition at line \mbox{\hyperlink{motor__driver_8c_source_l00027}{27}} of file \mbox{\hyperlink{motor__driver_8c_source}{motor\+\_\+driver.\+c}}.
+
+Here is the call graph for this function\+:
+% FIG 1
+\Hypertarget{motor__driver_8h_aa21e23544d89906e67b53d135864eeb5}\label{motor__driver_8h_aa21e23544d89906e67b53d135864eeb5} 
+\index{motor\_driver.h@{motor\_driver.h}!CAN\_Send@{CAN\_Send}}
+\index{CAN\_Send@{CAN\_Send}!motor\_driver.h@{motor\_driver.h}}
+\doxysubsubsection{\texorpdfstring{CAN\_Send()}{CAN\_Send()}}
+{\footnotesize\ttfamily void CAN\+\_\+\+Send (\begin{DoxyParamCaption}\item[{uint8\+\_\+t \texorpdfstring{$\ast$}{*}}]{a\+Data,  }\item[{uint32\+\_\+t}]{size,  }\item[{uint32\+\_\+t}]{msg\+\_\+id }\end{DoxyParamCaption})}
+
+
+
+Sends a CAN message with retry logic. 
+
+This function attempts to send a message over the CAN bus to a specified message ID ({\ttfamily msg\+\_\+id}). If the CAN bus is busy, it will retry sending up to a maximum number of attempts ({\ttfamily max\+Retries}). In case of any other error (such as timeout or general error), the function will call {\ttfamily \doxylink{main_8h_a1730ffe1e560465665eb47d9264826f9}{Error\+\_\+\+Handler()}} to manage the failure.
+
+
+\begin{DoxyParams}{Parameters}
+{\em uint8\+\_\+t\texorpdfstring{$\ast$}{*}} & a\+Data Pointer to the data buffer containing the message to send. The data should be in the form of an array of {\ttfamily uint8\+\_\+t}. \\
+\hline
+{\em uint32\+\_\+t} & size Size of the data in bytes (must match the Data Length Code (DLC) field in the CAN frame). \\
+\hline
+{\em uint32\+\_\+t} & msg\+\_\+id CAN message identifier (11-\/bit standard ID) that defines the destination or type of the message being sent.\\
+\hline
+\end{DoxyParams}
+
+\begin{DoxyRetVals}{Return values}
+{\em None} & \\
+\hline
+\end{DoxyRetVals}
+
+
+Definition at line \mbox{\hyperlink{motor__driver_8c_source_l00076}{76}} of file \mbox{\hyperlink{motor__driver_8c_source}{motor\+\_\+driver.\+c}}.
+
+Here is the call graph for this function\+:
+% FIG 2
+Here is the caller graph for this function\+:
+% FIG 3
+\Hypertarget{motor__driver_8h_a68c19f4eb76eceeca25238fe3f96b3f5}\label{motor__driver_8h_a68c19f4eb76eceeca25238fe3f96b3f5} 
+\index{motor\_driver.h@{motor\_driver.h}!MOT\_Rotate@{MOT\_Rotate}}
+\index{MOT\_Rotate@{MOT\_Rotate}!motor\_driver.h@{motor\_driver.h}}
+\doxysubsubsection{\texorpdfstring{MOT\_Rotate()}{MOT\_Rotate()}}
+{\footnotesize\ttfamily void MOT\+\_\+\+Rotate (\begin{DoxyParamCaption}\item[{uint8\+\_\+t}]{angle,  }\item[{uint8\+\_\+t}]{sign }\end{DoxyParamCaption})}
+
+
+
+Rotates the Step Motor of an angle in a defined direction. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em uint8\+\_\+t} & angle Angle of rotation, range\+: 0x01 to 0x\+FF (1 unit = 1°). \\
+\hline
+{\em uint8\+\_\+t} & sign Angle sign, can be positive (0x00) or negative (0x01). \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line \mbox{\hyperlink{motor__driver_8c_source_l00175}{175}} of file \mbox{\hyperlink{motor__driver_8c_source}{motor\+\_\+driver.\+c}}.
+
+Here is the call graph for this function\+:
+% FIG 4
+Here is the caller graph for this function\+:
+% FIG 5
+\Hypertarget{motor__driver_8h_ac5af04389b40ad641e83891374af67e8}\label{motor__driver_8h_ac5af04389b40ad641e83891374af67e8} 
+\index{motor\_driver.h@{motor\_driver.h}!MOT\_Set\_mode@{MOT\_Set\_mode}}
+\index{MOT\_Set\_mode@{MOT\_Set\_mode}!motor\_driver.h@{motor\_driver.h}}
+\doxysubsubsection{\texorpdfstring{MOT\_Set\_mode()}{MOT\_Set\_mode()}}
+{\footnotesize\ttfamily void MOT\+\_\+\+Set\+\_\+mode (\begin{DoxyParamCaption}\item[{uint8\+\_\+t}]{direction,  }\item[{uint8\+\_\+t}]{steps,  }\item[{uint8\+\_\+t}]{speed }\end{DoxyParamCaption})}
+
+
+
+Sets up the Step motor with parameters. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em uint8\+\_\+t} & direction Rotation direction\+: Anti-\/clockwise (0x00) or Clockwise (0x01). \\
+\hline
+{\em uint8\+\_\+t} & steps Number of steps, range\+: 0x01 to 0x\+FF (1 unit = 1°). \\
+\hline
+{\em uint8\+\_\+t} & speed Speed of the motor, range\+: 0x01 = 1 ms / 1 k\+Hz to 0x\+FF = 255ms / 4 Hz \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line \mbox{\hyperlink{motor__driver_8c_source_l00148}{148}} of file \mbox{\hyperlink{motor__driver_8c_source}{motor\+\_\+driver.\+c}}.
+
+Here is the call graph for this function\+:
+% FIG 6
+\Hypertarget{motor__driver_8h_a34fe18199ea8d734f4c2322bbb8a1cd9}\label{motor__driver_8h_a34fe18199ea8d734f4c2322bbb8a1cd9} 
+\index{motor\_driver.h@{motor\_driver.h}!MOT\_Set\_origin@{MOT\_Set\_origin}}
+\index{MOT\_Set\_origin@{MOT\_Set\_origin}!motor\_driver.h@{motor\_driver.h}}
+\doxysubsubsection{\texorpdfstring{MOT\_Set\_origin()}{MOT\_Set\_origin()}}
+{\footnotesize\ttfamily void MOT\+\_\+\+Set\+\_\+origin (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Sets the current position of the motor as the origin. 
+
+
+
+Definition at line \mbox{\hyperlink{motor__driver_8c_source_l00162}{162}} of file \mbox{\hyperlink{motor__driver_8c_source}{motor\+\_\+driver.\+c}}.
+
+Here is the call graph for this function\+:
+% FIG 7
