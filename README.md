@@ -641,3 +641,9 @@ Cahier des charges:
 
 Les valeurs seront stockées dans des variables globales du serveur python.  
 Toutes les appels doivent générer une demande entre le Raspberry et la STM32.  
+
+# Aller plus loin
+## Doxygen
+
+Nous pouvons installer Doxygen et faire une première documentation (https://doxygen.nl/index.html)  
+> To launch Doxygen GUI: `doxywizard` must be typed in the terminal.
