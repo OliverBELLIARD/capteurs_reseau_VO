@@ -13,7 +13,6 @@
 
 I2C_HandleTypeDef* hi2c_user;
 
-
 /**
  * @brief Check the BMP280 sensor ID.
  *

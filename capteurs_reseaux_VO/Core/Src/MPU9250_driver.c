@@ -6,7 +6,7 @@
  *
  *  Created on: Oct 25, 2024
  *      Author: oliver
- *  Source: https://github.com/MarkSherstan/STM32-MPU6050-MPU9250-I2C-SPI
+ *  	Source: https://github.com/MarkSherstan/STM32-MPU6050-MPU9250-I2C-SPI
  *
  ******************************************************************************
  */
