@@ -3,6 +3,55 @@
 > *Enseignant encadrant : Christophe BARES*  
 > *Boite utilisée : n°6*
 
+## Table des matières
+
+> Générée automatiquement avec l'outil : [Markdown Table of Contents Generator - Free](https://www.docstomarkdown.pro/markdown-table-of-contents-generator-free/).
+
+- [***Projet Capteurs & reseaux***](#***projet-capteurs-&-reseaux***)
+- [1. Présentation](#1.-présentation)
+- [2. TP 1 - Bus I2C](#2.-tp-1---bus-i2c)
+  - [2.1. Capteur BMP280](#2.1.-capteur-bmp280)
+  - [2.2. Setup du STM32](#2.2.-setup-du-stm32)
+    - [Configuration du STM32](#configuration-du-stm32)
+    - [Redirection du print](#redirection-du-print)
+    - [Test de la chaîne de compilation et communication UART sur USB](#test-de-la-chaîne-de-compilation-et-communication-uart-sur-usb)
+  - [2.3. Communication I²C](#2.3.-communication-i²c)
+    - [Primitives I²C sous STM32_HAL](#primitives-i²c-sous-stm32_hal)
+    - [Communication avec le BMP280](#communication-avec-le-bmp280)
+      - [Identification du BMP280](#identification-du-bmp280)
+      - [Configuration du BMP280](#configuration-du-bmp280)
+      - [Récupération de l'étalonnage, de la température et de la pression](#récupération-de-l'étalonnage,-de-la-température-et-de-la-pression)
+      - [Calcul des températures et des pression compensées](#calcul-des-températures-et-des-pression-compensées)
+- [3. TP2 - Interfaçage STM32 - Raspberry](#3.-tp2---interfaçage-stm32---raspberry)
+  - [3.1. Mise en route du Raspberry PI Zéro](#3.1.-mise-en-route-du-raspberry-pi-zéro)
+    - [Préparation du Raspberry](#préparation-du-raspberry)
+    - [Premier démarrage](#premier-démarrage)
+- [4. TP3 - Interface REST](#4.-tp3---interface-rest)
+  - [4.1. Installation du serveur Python](#4.1.-installation-du-serveur-python)
+    - [Installation](#installation)
+    - [Premier fichier Web](#premier-fichier-web)
+  - [Télécharger des fichiers depuis le Raspberry](#télécharger-des-fichiers-depuis-le-raspberry)
+    - [Méthode manuelle](#méthode-manuelle)
+    - [Script bash pour télécharger un dossier et son contenu](#script-bash-pour-télécharger-un-dossier-et-son-contenu)
+  - [4.2. Première page REST](#4.2.-première-page-rest)
+    - [Première route](#première-route)
+    - [Première page REST](#première-page-rest)
+      - [Réponse JSON](#réponse-json)
+      - [1re solution](#1re-solution)
+      - [2e solution](#2e-solution)
+    - [Erreur 404](#erreur-404)
+  - [4.3. Nouvelles métodes HTTP](#4.3.-nouvelles-métodes-http)
+    - [Méthodes POST, PUT, DELETE…](#méthodes-post,-put,-delete…)
+    - [Méthode POST](#méthode-post)
+    - [API CRUD](#api-crud)
+  - [4.4. Et encore plus fort...](#4.4.-et-encore-plus-fort...)
+- [5. TP4 - Bus CAN](#5.-tp4---bus-can)
+  - [5.1. Pilotage du moteur](#5.1.-pilotage-du-moteur)
+  - [5.2. Interfaçage avec le capteur](#5.2.-interfaçage-avec-le-capteur)
+- [6. TP5 - Intégration I²C - Serial - REST - CAN](#6.-tp5---intégration-i²c---serial---rest---can)
+- [Aller plus loin](#aller-plus-loin)
+  - [Doxygen](#doxygen)
+
 # 1. Présentation
 Ensemble de TP de Bus & Réseaux. Ces TP seront réalisés en C pour la partie STM32, et Python pour la partie Raspberry Pi.  
   
