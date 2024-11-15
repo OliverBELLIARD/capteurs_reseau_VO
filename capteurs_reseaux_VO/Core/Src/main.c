@@ -143,10 +143,10 @@ void RaspberryPI_Request()
 	}
 
 	if (!strcmp("GET_T", (char*)cmd)) {
-		printf("La température est : %d\r\n", (int) BMP280_get_temperature());
+		printf("%d\r\n", (int) BMP280_get_temperature());
 	}
 	else if (!strcmp("GET_P", (char*)cmd)) {
-		printf("La pression est : %d\r\n", (int) BMP280_get_pressure());
+		printf("%d\r\n", (int) BMP280_get_pressure());
 	}
 	else if (!strcmp("SET_K", (char*)cmd)) {
 	}
