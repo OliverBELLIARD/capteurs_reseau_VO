@@ -69,6 +69,11 @@ void SystemClock_Config(void);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
+/**
+ * @brief  Transmit a character over UART.
+ * @param  ch: Character to transmit.
+ * @retval int: The transmitted character.
+ */
 int __io_putchar(int ch)
 {
 	HAL_UART_Transmit(&huart2, (uint8_t *)&ch, 1, 0xFFFF);
@@ -77,6 +82,10 @@ int __io_putchar(int ch)
 	return ch;
 }
 
+/**
+ * @brief  Initialize BMP280 sensor.
+ * @retval int: EXIT_SUCCESS if initialization is successful, EXIT_FAILURE if failed.
+ */
 int BMP280_init()
 {
 	if (BMP280_Check_id() == EXIT_FAILURE) return EXIT_FAILURE;			// Identification du BMP280
@@ -86,6 +95,10 @@ int BMP280_init()
 	return EXIT_SUCCESS;
 }
 
+/**
+ * @brief  Initialize the MPU9250 sensor.
+ * @retval None
+ */
 void MPU9250_init()
 {
 	// Vérifie si l'IMU est configuré correctement et bloque si ce n'est pas le cas
@@ -103,6 +116,10 @@ void MPU9250_init()
 	MPU_calibrateGyro(&hi2c3, 1500);
 }
 
+/**
+ * @brief  Initialize the motor driver and CAN interface.
+ * @retval None
+ */
 void MOT_Init()
 {
 	CAN_Init();
@@ -110,6 +127,10 @@ void MOT_Init()
 	MOT_Set_origin();
 }
 
+/**
+ * @brief  Process the command received from the Raspberry Pi over UART.
+ * @retval None
+ */
 void RaspberryPI_Request()
 {
 	char* cmd = (char*)serial_buff;
@@ -160,6 +181,12 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 	}
 }
 
+/**
+ * @brief  UART Receive Event callback function. It processes received data from USART1.
+ * @param  huart: Pointer to the UART handle.
+ * @param  Size: Size of received data.
+ * @retval None
+ */
 void HAL_UARTEx_RxEventCallback(UART_HandleTypeDef *huart, uint16_t Size)
 {
 	if (huart->Instance == USART1)
