@@ -308,11 +308,11 @@ On installe la carte SD dans le Raspberry puis on branche l'alimentation.
 
 > utilisateur : voese  
 > mdp : voese  
-> IP : 192.168.88.230
+> IP : 192.168.88.235
 
 Pour nous connecter en SSH au Raspberry nous utilisons la commande :
 ```bash
-ssh voese@192.168.88.230
+ssh voese@192.168.88.235
 ```
 
 Comment le Raspberry a obtenu son adresse IP ? 
@@ -444,7 +444,7 @@ Une fois la commande lancée, le serveur se démarre :
 WARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.
  * Running on all addresses (0.0.0.0)
  * Running on http://127.0.0.1:5000
- * Running on http://192.168.88.230:5000
+ * Running on http://192.168.88.235:5000
 Press CTRL+C to quit
 ```
 On nous y explique qu'on peut maintenant se connecter au serveur depuis le localhost (http://127.0.0.1:5000) ou depuis une adresse "externe", ce qui nous intéresse ici car on cherche à tester notre serveur depuis mon PC personnel.
@@ -481,9 +481,9 @@ Signifiant que mon ordinateur s'est bien connecté à notre serveur REST.
 ### Méthode manuelle
 On peut profiter de la connection en SSH pour téléchager des fichiers pour notre contrôle de version. Il suffit d'utiliser le protocole SFTP (SSH File Transfer System) avec la commande suivante :
 ```bash
-sftp vo@192.168.88.230
+sftp vo@192.168.88.235
 ```
-On rappelle qu'ici `vo` est notre utilisateur det `192.168.88.230` l'ip du Raspberry. Ensuite, pour télécharger le dossier de notre projet on utilise la commande :
+On rappelle qu'ici `vo` est notre utilisateur de `192.168.88.235` l'ip du Raspberry. Ensuite, pour télécharger le dossier de notre projet on utilise la commande :
 ```bash
 get -r <nom_du_dossier>/
 ```
@@ -496,7 +496,7 @@ Le script se présente comme ce ci :
 # Warning: you need the expect command: sudo apt install expect
 
 set timeout -1
-spawn sftp vo@192.168.88.230
+spawn sftp vo@192.168.88.235
 expect "password:"
 send -- "voese\n"
 expect "sftp>"
