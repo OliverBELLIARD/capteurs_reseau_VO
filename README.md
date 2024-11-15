@@ -329,6 +329,43 @@ Ensuite, dans la fichier cmdline.txt on doit retirer l'option "console=serial0,1
 Pour vérifier si le port série de la Raspberry fonctionne bien, on branche d'abord son TX et RX en loopback et on utilise la commande "minicom -D /dev/ttyAMA0" pour voir si les caractères qu'on rentre nous sont renvoyés, ce qui est vrai dans notre cas donc le port série de la Raspberry est correctement configuré. Pour voir l'attribution de notre arduino nous avons utilisé ce site : https://pinout.xyz/  
 
 On peut maintenant brancher les pins TX/RX de notre Raspberry sur le UART1 du STM32 et notre capteur en I2C sur la STM32. On pense au passage à ne pas oublier de ramener la masse commune à la Raspberry.
+## 3.2. Port Série
+### Loopback
+
+Branchez le port série du Raspberry en boucle: RX sur TX.
+
+Utilisez le logiciel minicom sur le raspberry pour tester le port série.
+
+minicom -D /dev/ttyAMA0 
+
+Une fois dans minicom configurer le port série en pressant CTRL+A suivi de O. Pensez à déactiver le contrôle de flux matériel (on utilise pas les lignes RTS/CTS).
+
+Écrire quelques lettres au clavier. Si elles s'affichent, le loopback fonctionne (essayez en le débranchant).
+
+CTRL+A Q pour quitter minicom.
+
+
+### Communication avec la STM32
+Attention: pour que le port UART utilisé pour la communication avec le PC (UART over USB) puisse fonctionner, les pins PA2 et PA3 ne sont pas par défaut connectées aux borniers CN9 et CN10. (C'est possible en jouant avec le fer à souder: doc Nucleo 64 page 27)
+
+C'est pourquoi vous devez utiliser un 2e port UART sur le STM32, qui servira à la communication avec le Raspberry Pi (comme indiqué lors du TP1). Vous pouvez modifier votre fonction printf pour quelle affiche sur les 2 ports série en même temps.
+
+Le protocole de communication entre le Raspberry et la STM32 est le suivant:  
+| Requête du RPi | Réponse du STM | Commentaire |
+|----------------|----------------|-------------|
+| GET_T |	T=+12.50_C |	Température compensée sur 10 caractères |
+| GET_P |	P=102300Pa |	Pression compensée sur 10 caractères |
+| SET_K=1234 |	SET_K=OK |	Fixe le coefficient K (en 1/100e) |
+| GET_K |	K=12.34000 |	Coefficient K sur 10 caractères |
+| GET_A |	A=125.7000 | Angle sur 10 caractères |
+
+Les valeurs compensées de P et T pourront être remplacées par les valeurs brutes hexadécimales sur 5 caractères  (20bits) suivis d'un "H", par exemple: T=7F54B2H
+
+Implémentez ce protocole dans le STM32.
+
+Branchez le STM32 sur le Raspberry en prenant soin de croiser les signaux RX et TX. Les 2 fonctionnent en 3,3V donc aucune adaptation de niveau est nécessaire.
+
+Testez ce protocole depuis le Raspberry à l'aide de minicom. Envoyez des ordres manuellement et vérifiez les valeurs renvoyées par le STM32.
 
 # 4. TP3 - Interface REST
 ## 4.1. Installation du serveur Python
