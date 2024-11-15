@@ -1,5 +1,5 @@
-../Core/Src/motor_driver.c:21:6:CAN_Init	16	static
-../Core/Src/motor_driver.c:70:6:CAN_Send	80	static
-../Core/Src/motor_driver.c:142:6:MOT_Set_mode	24	static
-../Core/Src/motor_driver.c:156:6:MOT_Set_origin	16	static
-../Core/Src/motor_driver.c:169:6:MOT_Rotate	24	static
+../Core/Src/motor_driver.c:27:6:CAN_Init	16	static
+../Core/Src/motor_driver.c:76:6:CAN_Send	80	static
+../Core/Src/motor_driver.c:148:6:MOT_Set_mode	24	static
+../Core/Src/motor_driver.c:162:6:MOT_Set_origin	16	static
+../Core/Src/motor_driver.c:175:6:MOT_Rotate	24	static

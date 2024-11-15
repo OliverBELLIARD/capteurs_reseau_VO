@@ -19,6 +19,7 @@
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
 #include "can.h"
+#include "dma.h"
 #include "i2c.h"
 #include "usart.h"
 #include "gpio.h"
@@ -27,6 +28,7 @@
 /* USER CODE BEGIN Includes */
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include "BMP280_driver.h"
 #include "MPU9250_driver.h"
 #include "motor_driver.h"
@@ -42,6 +44,7 @@
 /* USER CODE BEGIN PD */
 #define TRUE  1
 #define FALSE 0
+#define SERIAL_BUFF_SIZE 100
 
 /* USER CODE END PD */
 
@@ -53,7 +56,7 @@
 /* Private variables ---------------------------------------------------------*/
 
 /* USER CODE BEGIN PV */
-uint8_t serialBuf[100];
+uint8_t serial_buff[SERIAL_BUFF_SIZE];
 I2C_HandleTypeDef* hi2c_user;
 
 /* USER CODE END PV */
@@ -69,7 +72,7 @@ void SystemClock_Config(void);
 int __io_putchar(int ch)
 {
 	HAL_UART_Transmit(&huart2, (uint8_t *)&ch, 1, 0xFFFF);
-	HAL_UART_Transmit(hi2c_user, (uint8_t *)&ch, 1, 0xFFFF);
+	HAL_UART_Transmit(&huart1, (uint8_t *)&ch, 1, 0xFFFF);
 
 	return ch;
 }
@@ -108,6 +111,34 @@ void MOT_Init()
 	MOT_Set_origin();
 }
 
+void RaspberryPI_Request(char * msg)
+{
+	if (!strcmp("GET_T", msg)) {
+		printf("%d\r\n", (int) BMP280_get_temperature());
+	}
+	if (!strcmp("GET_P", msg)) {
+		printf("%d\r\n", (int) BMP280_get_pressure());
+	}
+	if (!strcmp("SET_K", msg)) {
+	}
+	if (!strcmp("GET_K", msg)) {
+	}
+	if (!strcmp("GET_A", msg)) {
+	}
+	else {
+		printf("Unknown request: %s\r\n", msg);
+	}
+}
+
+void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
+{
+	if (USART1 == huart->Instance)
+	{
+		HAL_UARTEx_ReceiveToIdle_DMA(&huart1, serial_buff, SERIAL_BUFF_SIZE);
+		printf("USART1 Rx: Interrupt working\r\n");
+	}
+}
+
 /* USER CODE END 0 */
 
 /**
@@ -142,6 +173,7 @@ int main(void)
 
 	/* Initialize all configured peripherals */
 	MX_GPIO_Init();
+	MX_DMA_Init();
 	MX_USART2_UART_Init();
 	MX_USART1_UART_Init();
 	MX_CAN1_Init();
@@ -150,7 +182,9 @@ int main(void)
 	printf("\r\n=== TP Capteurs & Reseaux ===\r\n");
 	BMP280_init();
 	MOT_Init();
+	MPU9250_init();
 
+	//HAL_UART_DMAResume(&huart1);
 	/* USER CODE END 2 */
 
 	/* Infinite loop */

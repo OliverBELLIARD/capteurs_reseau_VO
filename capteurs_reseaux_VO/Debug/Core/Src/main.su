@@ -1,7 +1,9 @@
-../Core/Src/main.c:67:5:__io_putchar	16	static
-../Core/Src/main.c:75:6:BMP280_init	8	static
-../Core/Src/main.c:85:6:MPU9250_init	8	static
-../Core/Src/main.c:102:6:MOT_Init	8	static
-../Core/Src/main.c:115:5:main	16	static
-../Core/Src/main.c:171:6:SystemClock_Config	88	static
-../Core/Src/main.c:222:6:Error_Handler	4	static,ignoring_inline_asm
+../Core/Src/main.c:72:5:__io_putchar	16	static
+../Core/Src/main.c:80:6:BMP280_init	8	static
+../Core/Src/main.c:90:6:MPU9250_init	8	static
+../Core/Src/main.c:107:6:MOT_Init	8	static
+../Core/Src/main.c:114:6:RaspberryPI_Request	16	static
+../Core/Src/main.c:133:6:HAL_UART_RxCpltCallback	16	static
+../Core/Src/main.c:148:5:main	48	static
+../Core/Src/main.c:214:6:SystemClock_Config	88	static
+../Core/Src/main.c:265:6:Error_Handler	4	static,ignoring_inline_asm

@@ -1,7 +1,7 @@
-../Core/Src/MPU9250_driver.c:18:9:MPU_begin	3
-../Core/Src/MPU9250_driver.c:54:6:MPU_writeAccFullScaleRange	5
-../Core/Src/MPU9250_driver.c:93:6:MPU_writeGyroFullScaleRange	5
-../Core/Src/MPU9250_driver.c:131:6:MPU_readRawData	1
-../Core/Src/MPU9250_driver.c:152:6:MPU_calibrateGyro	3
-../Core/Src/MPU9250_driver.c:183:6:MPU_readProcessedData	1
-../Core/Src/MPU9250_driver.c:206:6:MPU_calcAttitude	1
+../Core/Src/MPU9250_driver.c:24:9:MPU_begin	3
+../Core/Src/MPU9250_driver.c:60:6:MPU_writeAccFullScaleRange	5
+../Core/Src/MPU9250_driver.c:99:6:MPU_writeGyroFullScaleRange	5
+../Core/Src/MPU9250_driver.c:137:6:MPU_readRawData	1
+../Core/Src/MPU9250_driver.c:158:6:MPU_calibrateGyro	3
+../Core/Src/MPU9250_driver.c:189:6:MPU_readProcessedData	1
+../Core/Src/MPU9250_driver.c:212:6:MPU_calcAttitude	1
