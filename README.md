@@ -444,7 +444,7 @@ Une fois la commande lancée, le serveur se démarre :
 WARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.
  * Running on all addresses (0.0.0.0)
  * Running on http://127.0.0.1:5000
- * Running on http://192.168.88.235:5000
+ * Running on http://192.168.88.207:5000
 Press CTRL+C to quit
 ```
 On nous y explique qu'on peut maintenant se connecter au serveur depuis le localhost (http://127.0.0.1:5000) ou depuis une adresse "externe", ce qui nous intéresse ici car on cherche à tester notre serveur depuis mon PC personnel.
