@@ -41,7 +41,7 @@ typedef int64_t BMP280_S64_t;
 
 int BMP280_Check_id(void);
 int BMP280_Config(void);
-void BMP280_calibration(void);
+int BMP280_calibration(void);
 BMP280_S32_t BMP280_compensate_T_int32(BMP280_S32_t);
 BMP280_U32_t BMP280_compensate_P_int64(BMP280_S32_t);
 int BMP280_Write_Reg(uint8_t, uint8_t);

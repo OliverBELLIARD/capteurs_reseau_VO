@@ -45,7 +45,7 @@
 /* USER CODE BEGIN PD */
 #define TRUE  1
 #define FALSE 0
-#define SERIAL_BUFF_SIZE 100
+#define SERIAL_BUFF_SIZE 10
 
 /* USER CODE END PD */
 
@@ -77,14 +77,13 @@ int __io_putchar(int ch)
 	return ch;
 }
 
-void BMP280_init()
+int BMP280_init()
 {
-	BMP280_Check_id();			// Identification du BMP280
-	BMP280_Config();			// Configuration du BMP280
-	BMP280_calibration();		// Mise à jour des paramètres d'étalonage
+	if (BMP280_Check_id() == EXIT_FAILURE) return EXIT_FAILURE;			// Identification du BMP280
+	if (BMP280_Config() == EXIT_FAILURE) return EXIT_FAILURE;			// Configuration du BMP280
+	if (BMP280_calibration() == EXIT_FAILURE) return EXIT_FAILURE;		// Mise à jour des paramètres d'étalonage
 
-	//BMP280_get_temperature();	// Acquisition de la température
-	//BMP280_get_pressure();		// Acquisition de la pression
+	return EXIT_SUCCESS;
 }
 
 void MPU9250_init()
@@ -111,41 +110,38 @@ void MOT_Init()
 	MOT_Set_origin();
 }
 
-void RaspberryPI_Request(char * msg)
+void RaspberryPI_Request()
 {
-	if (!strcmp("GET_T", msg)) {
-		printf("%d\r\n", (int) BMP280_get_temperature());
+	char* cmd = (char*)serial_buff;
+	size_t len = strlen(cmd);
+
+	while (len > 0 && (cmd[len - 1] == '\r' || cmd[len - 1] == '\n'))
+	{
+		cmd[len - 1] = '\0';
+		len--;
 	}
-	if (!strcmp("GET_P", msg)) {
-		printf("%d\r\n", (int) BMP280_get_pressure());
+
+	if (!strcmp("GET_T", (char*)cmd)) {
+		printf("La température est : %d\r\n", (int) BMP280_get_temperature());
 	}
-	if (!strcmp("SET_K", msg)) {
+	else if (!strcmp("GET_P", (char*)cmd)) {
+		printf("La pression est : %d\r\n", (int) BMP280_get_pressure());
 	}
-	if (!strcmp("GET_K", msg)) {
+	else if (!strcmp("SET_K", (char*)cmd)) {
 	}
-	if (!strcmp("GET_A", msg)) {
+	else if (!strcmp("GET_K", (char*)cmd)) {
+	}
+	else if (!strcmp("GET_A", (char*)cmd)) {
 		MPU_calcAttitude(&hi2c3);
 		printf("A:%.1f;%.1f;%.1f\r\n", attitude.r, attitude.p, attitude.y);
 	}
 	else {
-		printf("Unknown request: %s\r\n", msg);
+		printf("Unknown request: %s\r\n", cmd);
 	}
 }
 
-void HAL_UARTEx_RxEventCallback(UART_HandleTypeDef *huart, uint16_t Size)
-{
-    if (huart->Instance == USART1)
-    {
-        // Process received data
-        serial_buff[Size] = '\0'; // Null-terminate the received string
-        printf("Received (%d bytes): %s\r\n", Size, serial_buff);
-
-        // Restart DMA Reception
-        HAL_UARTEx_ReceiveToIdle_DMA(&huart1, serial_buff, SERIAL_BUFF_SIZE);
-    }
-}
-
 int angle = 0;
+const float proportional_coeff = 0.001;
 /**
  * @brief  Period elapsed callback in non-blocking mode.
  * @param  htim: TIM handle
@@ -153,15 +149,40 @@ int angle = 0;
  */
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 {
-	float proportional_coeff = 0.001;
-
 	if (htim->Instance == TIM2) // Check if the interrupt is from Timer 2
 	{
-		// Asservissement du moteur proportionel à la température
+		// Motor movement proportional to the temperature
 		angle += (int)(BMP280_get_temperature() * proportional_coeff)%360;
 
+		// Sign and angle change to do complete rotations
 		if (angle>180) MOT_Rotate(angle-180, MOT_ANGLE_NEGATIVE);
 		if (angle<=180) MOT_Rotate(angle, MOT_ANGLE_POSITIVE);
+	}
+}
+
+void HAL_UARTEx_RxEventCallback(UART_HandleTypeDef *huart, uint16_t Size)
+{
+	if (huart->Instance == USART1)
+	{
+		// Process received data
+		// Null-terminate the received string (prevent overflow)
+		if (Size < SERIAL_BUFF_SIZE) {
+			serial_buff[Size] = '\0';  // Null-terminate based on actual data size
+		} else {
+			serial_buff[SERIAL_BUFF_SIZE - 1] = '\0';
+		}
+
+		printf("Received (%d bytes): %s\r\n", Size, serial_buff);
+
+		if (strchr((char*)serial_buff, '\r') != NULL || strchr((char*)serial_buff, '\n') != NULL)
+		{
+			RaspberryPI_Request();
+			// Clear the buffer after processing
+			memset(serial_buff, 0, SERIAL_BUFF_SIZE);
+		}
+
+		// Restart DMA Reception
+		HAL_UARTEx_ReceiveToIdle_DMA(&huart1, serial_buff, SERIAL_BUFF_SIZE);
 	}
 }
 
@@ -204,7 +225,8 @@ int main(void)
 	MX_TIM2_Init();
 	/* USER CODE BEGIN 2 */
 	printf("\r\n=== TP Capteurs & Reseaux ===\r\n");
-	BMP280_init();
+	// Initialize external peripherals
+	if (BMP280_init() == EXIT_FAILURE) return EXIT_FAILURE;
 	MOT_Init();
 	MPU9250_init();
 

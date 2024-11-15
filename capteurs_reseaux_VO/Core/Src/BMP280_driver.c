@@ -76,7 +76,7 @@ int BMP280_Config(void)
 	}
 
 	if(buff[0] == BMP280_CONFIG){
-		printf("La config envoyée reçue avec succès\r\n");
+		printf("La config BMP280 envoyée reçue avec succès\r\n");
 		return EXIT_SUCCESS;
 	}
 
@@ -104,7 +104,7 @@ BMP280_S32_t t_fine;
  * Reads calibration data from the BMP280 sensor and stores it in global
  * variables for temperature and pressure compensation calculations.
  */
-void BMP280_calibration(void)
+int BMP280_calibration(void)
 {
 	uint8_t buff[BUFF_SIZE];
 	uint8_t receive_buf[24];
@@ -115,11 +115,13 @@ void BMP280_calibration(void)
 	ret = HAL_I2C_Master_Transmit(hi2c_user, BMP280_ADDR, buff, 1, HAL_MAX_DELAY);
 	if(ret != HAL_OK){
 		printf("I2C Transmit failure\r\n");
+		return EXIT_FAILURE;
 	}
 
 	ret = HAL_I2C_Master_Receive(hi2c_user, BMP280_ADDR, receive_buf, 24, HAL_MAX_DELAY);
 	if(ret != HAL_OK){
 		printf("I2C Receive failure\r\n");
+		return EXIT_FAILURE;
 	}
 
 	if (VERBOSE) {
@@ -141,6 +143,8 @@ void BMP280_calibration(void)
 	dig_P7 = receive_buf[18]|(receive_buf[19]<<8);
 	dig_P8 = receive_buf[20]|(receive_buf[21]<<8);
 	dig_P9 = receive_buf[22]|(receive_buf[23]<<8);
+
+	return EXIT_SUCCESS;
 }
 
 /**
