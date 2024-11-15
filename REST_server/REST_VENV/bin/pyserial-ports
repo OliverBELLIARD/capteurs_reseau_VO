@@ -1,0 +1,8 @@
+#!/home/valerian/Documents/ENSEA/TP/Bus_et_reseaux/capteurs_reseaux_VO_ESE_TP2/REST_server/REST_VENV/bin/python3
+# -*- coding: utf-8 -*-
+import re
+import sys
+from serial.tools.list_ports import main
+if __name__ == '__main__':
+    sys.argv[0] = re.sub(r'(-script\.pyw|\.exe)?$', '', sys.argv[0])
+    sys.exit(main())
