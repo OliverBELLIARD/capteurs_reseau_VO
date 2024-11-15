@@ -12,7 +12,17 @@
  */
 
 #include "MPU9250_driver.h"
-#include "i2c.h"
+
+// Structures
+struct RawData rawData;
+struct SensorData sensorData;
+struct GyroCal gyroCal;
+struct Attitude attitude;
+
+// Variables
+uint8_t _addr;
+float _dt, _tau;
+float aScaleFactor, gScaleFactor;
 
 /// @brief Set the IMU address, check for connection, reset IMU, and set full range scale.
 /// @param I2Cx Pointer to I2C structure config.

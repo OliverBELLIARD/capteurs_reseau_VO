@@ -21,6 +21,7 @@
 #include "can.h"
 #include "dma.h"
 #include "i2c.h"
+#include "tim.h"
 #include "usart.h"
 #include "gpio.h"
 
@@ -57,7 +58,6 @@
 
 /* USER CODE BEGIN PV */
 uint8_t serial_buff[SERIAL_BUFF_SIZE];
-I2C_HandleTypeDef* hi2c_user;
 
 /* USER CODE END PV */
 
@@ -90,7 +90,7 @@ void BMP280_init()
 void MPU9250_init()
 {
 	// Vérifie si l'IMU est configuré correctement et bloque si ce n'est pas le cas
-	if (MPU_begin(hi2c_user, AD0_LOW, AFSR_4G, GFSR_500DPS, 0.98, 0.004) == TRUE)
+	if (MPU_begin(&hi2c3, AD0_LOW, AFSR_4G, GFSR_500DPS, 0.98, 0.004) == TRUE)
 	{
 		printf("Centrale inertielle configurée correctement\r\n");
 	}
@@ -101,7 +101,7 @@ void MPU9250_init()
 
 	// Calibre l'IMU
 	printf("CALIBRATION EN COURS...\r\n");
-	MPU_calibrateGyro(hi2c_user, 1500);
+	MPU_calibrateGyro(&hi2c3, 1500);
 }
 
 void MOT_Init()
@@ -124,18 +124,44 @@ void RaspberryPI_Request(char * msg)
 	if (!strcmp("GET_K", msg)) {
 	}
 	if (!strcmp("GET_A", msg)) {
+		MPU_calcAttitude(&hi2c3);
+		printf("A:%.1f;%.1f;%.1f\r\n", attitude.r, attitude.p, attitude.y);
 	}
 	else {
 		printf("Unknown request: %s\r\n", msg);
 	}
 }
 
-void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
+void HAL_UARTEx_RxEventCallback(UART_HandleTypeDef *huart, uint16_t Size)
 {
-	if (USART1 == huart->Instance)
+    if (huart->Instance == USART1)
+    {
+        // Process received data
+        serial_buff[Size] = '\0'; // Null-terminate the received string
+        printf("Received (%d bytes): %s\r\n", Size, serial_buff);
+
+        // Restart DMA Reception
+        HAL_UARTEx_ReceiveToIdle_DMA(&huart1, serial_buff, SERIAL_BUFF_SIZE);
+    }
+}
+
+int angle = 0;
+/**
+ * @brief  Period elapsed callback in non-blocking mode.
+ * @param  htim: TIM handle
+ * @retval None
+ */
+void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
+{
+	float proportional_coeff = 0.001;
+
+	if (htim->Instance == TIM2) // Check if the interrupt is from Timer 2
 	{
-		HAL_UARTEx_ReceiveToIdle_DMA(&huart1, serial_buff, SERIAL_BUFF_SIZE);
-		printf("USART1 Rx: Interrupt working\r\n");
+		// Asservissement du moteur proportionel à la température
+		angle += (int)(BMP280_get_temperature() * proportional_coeff)%360;
+
+		if (angle>180) MOT_Rotate(angle-180, MOT_ANGLE_NEGATIVE);
+		if (angle<=180) MOT_Rotate(angle, MOT_ANGLE_POSITIVE);
 	}
 }
 
@@ -149,9 +175,6 @@ int main(void)
 {
 
 	/* USER CODE BEGIN 1 */
-	hi2c_user = &hi2c3;	// I2C Handler used by the user
-	int angle = 0;
-	float proportional_coeff = 0.2;
 
 	/* USER CODE END 1 */
 
@@ -178,11 +201,20 @@ int main(void)
 	MX_USART1_UART_Init();
 	MX_CAN1_Init();
 	MX_I2C3_Init();
+	MX_TIM2_Init();
 	/* USER CODE BEGIN 2 */
 	printf("\r\n=== TP Capteurs & Reseaux ===\r\n");
 	BMP280_init();
 	MOT_Init();
 	MPU9250_init();
+
+	// Enable Timer 2 IT
+	HAL_TIM_Base_Start_IT(&htim2);
+
+	// Start USART1 DMA reception
+	HAL_UARTEx_ReceiveToIdle_DMA(&huart1, serial_buff, SERIAL_BUFF_SIZE);
+	// Enable UART IDLE interrupt
+	__HAL_UART_ENABLE_IT(&huart1, UART_IT_IDLE);
 
 	//HAL_UART_DMAResume(&huart1);
 	/* USER CODE END 2 */
@@ -191,15 +223,6 @@ int main(void)
 	/* USER CODE BEGIN WHILE */
 	while (1)
 	{
-		// Mouvement du moteur proportionel à la température
-		angle += (int)(BMP280_get_temperature() * proportional_coeff)%180;
-		MOT_Rotate(angle, MOT_ANGLE_POSITIVE);
-		HAL_Delay(MOT_REACTION_TIME_MIN);
-
-		// Envoi des données de la centrale inertielle
-		MPU_calcAttitude(hi2c_user);
-		printf("Attitude: %.1f, %.1f, %.1f\r\n", attitude.r, attitude.p, attitude.y);
-
 		/* USER CODE END WHILE */
 
 		/* USER CODE BEGIN 3 */

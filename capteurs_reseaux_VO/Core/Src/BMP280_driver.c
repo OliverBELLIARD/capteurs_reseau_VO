@@ -10,6 +10,7 @@
 #include "i2c.h"
 #include "BMP280_driver.h"
 
+#define VERBOSE 0
 
 I2C_HandleTypeDef* hi2c_user;
 
@@ -121,9 +122,11 @@ void BMP280_calibration(void)
 		printf("I2C Receive failure\r\n");
 	}
 
-	printf("Current calibration values:\r\n");
-	for(int i=0;i<24;i++){
-		printf("calib %2d = 0x%x\r\n",i, receive_buf[i]);
+	if (VERBOSE) {
+		printf("Current calibration values:\r\n");
+		for(int i=0;i<24;i++){
+			printf("calib %2d = 0x%x\r\n",i, receive_buf[i]);
+		}
 	}
 
 	dig_T1 = receive_buf[0]|(receive_buf[1]<<8);
@@ -271,18 +274,22 @@ BMP280_S32_t BMP280_get_temperature() {
 	buf = BMP280_Read_Reg(BMP280_REG_TEMP_MSB, BMP280_LEN_TEMP);
 
 	adc_T = ((BMP280_S32_t) (buf[0]) << 12) | ((BMP280_S32_t) (buf[1]) << 4)
-			| ((BMP280_S32_t) (buf[2]) >> 4);
+							| ((BMP280_S32_t) (buf[2]) >> 4);
 
 	free(buf);
 
-	printf("Temperature: ");
-	printf("0x%05lX = %d°C", adc_T, adc_T);
-	printf("\r\n");
+	if (VERBOSE) {
+		printf("Temperature: ");
+		printf("0x%05lX = %d°C", adc_T, adc_T);
+		printf("\r\n");
+	}
 
-	adc_T = BMP280_compensate_T_int32(adc_T);
-	printf("Compensated temperature: ");
-	printf("0x%05lX = %d°C", adc_T, adc_T);
-	printf("\r\n");
+	if (VERBOSE) {
+		adc_T = BMP280_compensate_T_int32(adc_T);
+		printf("Compensated temperature: ");
+		printf("0x%05lX = %d°C", adc_T, adc_T);
+		printf("\r\n");
+	}
 
 	return adc_T;
 }
@@ -302,18 +309,22 @@ BMP280_S32_t BMP280_get_pressure() {
 	buf = BMP280_Read_Reg(BMP280_REG_PRES_MSB, BMP280_LEN_PRES);
 
 	adc_P = ((BMP280_S32_t) (buf[0]) << 12) | ((BMP280_S32_t) (buf[1]) << 4)
-			| ((BMP280_S32_t) (buf[2]) >> 4);
+							| ((BMP280_S32_t) (buf[2]) >> 4);
 
 	free(buf);
 
-	printf("Pressure: ");
-	printf("0x%05lX = %ld Pa", adc_P, adc_P);
-	printf("\r\n");
+	if (VERBOSE) {
+		printf("Pressure: ");
+		printf("0x%05lX = %ld Pa", adc_P, adc_P);
+		printf("\r\n");
+	}
 
-	adc_P = BMP280_compensate_P_int64(adc_P);
-	printf("Compensated pressure: ");
-	printf("0x%05lX = %ld Pa", adc_P, adc_P);
-	printf("\r\n");
+	if (VERBOSE) {
+		adc_P = BMP280_compensate_P_int64(adc_P);
+		printf("Compensated pressure: ");
+		printf("0x%05lX = %ld Pa", adc_P, adc_P);
+		printf("\r\n");
+	}
 
 	return adc_P;
 }

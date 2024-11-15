@@ -52,30 +52,30 @@ enum accelerometerFullScaleRange
 };
 
 // Structures
-struct RawData
+extern struct RawData
 {
     int16_t ax, ay, az, gx, gy, gz;
 } rawData;
 
-struct SensorData
+extern struct SensorData
 {
     float ax, ay, az, gx, gy, gz;
 } sensorData;
 
-struct GyroCal
+extern struct GyroCal
 {
     float x, y, z;
 } gyroCal;
 
-struct Attitude
+extern struct Attitude
 {
     float r, p, y;
 } attitude;
 
 // Variables
-uint8_t _addr;
-float _dt, _tau;
-float aScaleFactor, gScaleFactor;
+extern uint8_t _addr;
+extern float _dt, _tau;
+extern float aScaleFactor, gScaleFactor;
 
 // Functions
 uint8_t MPU_begin(I2C_HandleTypeDef *I2Cx, uint8_t addr, uint8_t aScale, uint8_t gScale, float tau, float dt);

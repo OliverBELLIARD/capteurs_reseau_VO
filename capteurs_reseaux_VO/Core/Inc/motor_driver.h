@@ -30,7 +30,7 @@
 #define MOT_ANGLE_MAX 0xFF
 #define MOT_ANGLE_SIZE 2
 
-#define MOT_REACTION_TIME_MIN 300
+#define MOT_REACTION_TIME_MIN 15
 
 void CAN_Init();
 void CAN_Send(uint8_t*, uint32_t, uint32_t);

@@ -27,7 +27,7 @@ int logs;	// Boolean to choose to display logs or not
 void CAN_Init()
 {
 	HAL_StatusTypeDef status;
-	logs = TRUE;
+	logs = FALSE;
 
 	status = HAL_CAN_Start(&hcan1);
 
