@@ -323,8 +323,8 @@ par rapport aux autres élèves de la classe.
 
 On doit ensuite effectuer des modifications dans le fichier config.txt pour ajouter à la fin du fichier les lignes suivantes :  
 enable_uart=1  
-dtoverlay=disable-bt
-Ensuite, dans la fichier cmdline.txt on doit retirer l'option "console=serial0,115200".
+dtoverlay=disable-bt  
+Ensuite, dans la fichier cmdline.txt on doit retirer l'option "console=serial0,115200".  
 
 Pour vérifier si le port série de la Raspberry fonctionne bien, on branche d'abord son TX et RX en loopback et on utilise la commande "minicom -D /dev/ttyAMA0" pour voir si les caractères qu'on rentre nous sont renvoyés, ce qui est vrai dans notre cas donc le port série de la Raspberry est correctement configuré. Pour voir l'attribution de notre arduino nous avons utilisé ce site : https://pinout.xyz/  
 
