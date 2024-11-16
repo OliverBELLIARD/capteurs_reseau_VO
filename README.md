@@ -367,6 +367,24 @@ Branchez le STM32 sur le Raspberry en prenant soin de croiser les signaux RX et 
 
 Testez ce protocole depuis le Raspberry à l'aide de minicom. Envoyez des ordres manuellement et vérifiez les valeurs renvoyées par le STM32.
 
+## 3.3. Commande depuis Python
+
+Installez pip pour python3 sur le Raspberry:
+```c
+sudo apt update
+sudo apt install python3-pip
+```
+Installez ensuite la bibliothèque pyserial:
+```c
+pip3 install pyserial
+```
+À partir de là, la bibliothèque est accessible après: `import serial`
+  
+Plus d'info: https://pyserial.readthedocs.io/en/latest/shortintro.html  
+  
+
+Réalisez un script en Python3 qui permet communiquer avec le STM32. Idéalement, réalisez une fonction par ordre du protocole.  
+
 # 4. TP3 - Interface REST
 ## 4.1. Installation du serveur Python
 
