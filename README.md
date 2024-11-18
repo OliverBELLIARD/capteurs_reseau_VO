@@ -153,47 +153,52 @@ Prenez soin de bien choisir les ports associés à chacun de ces bus.
 Afin de pouvoir facilement déboguer votre programme STM32, faites en sorte que la fonction printf renvoie bien ses chaînes de caractères sur la liaison UART sur USB, en ajoutant le code suivant au fichier `stm32f4xx_hal_msp.c` :  
 
 ```c
-    /* USER CODE BEGIN PV */
-    extern UART_HandleTypeDef huart2;
-    /* USER CODE END PV */
+/* USER CODE BEGIN PV */
+extern UART_HandleTypeDef huart2;
+/* USER CODE END PV */
 
-    /* USER CODE BEGIN Macro */
-    #ifdef __GNUC__ /* With GCC/RAISONANCE, small printf (option LD Linker->Libraries->Small printf    set to 'Yes') calls __io_putchar() */
-    #define PUTCHAR_PROTOTYPE int __io_putchar(int ch)
-    #else
-    #define PUTCHAR_PROTOTYPE int fputc(int ch, FILE *f)
-    #endif /* __GNUC__ */
-    /* USER CODE END Macro */
+/* USER CODE BEGIN Macro */
+#ifdef __GNUC__ /* With GCC/RAISONANCE, small printf (option LD Linker->Libraries->Small printf    set to 'Yes') calls __io_putchar() */
+#define PUTCHAR_PROTOTYPE int __io_putchar(int ch)
+#else
+#define PUTCHAR_PROTOTYPE int fputc(int ch, FILE *f)
+#endif /* __GNUC__ */
+/* USER CODE END Macro */
 
-    /* USER CODE BEGIN 1 */
-    /**
-    * @brief  Retargets the C library printf function to the USART.
-    * @param  None
-    * @retval None
-    */
-    PUTCHAR_PROTOTYPE
-    {
-    /* Place your implementation of fputc here */
-    /* e.g. write a character to the USART2 and Loop until the end of transmission */
-    HAL_UART_Transmit(&huart2, (uint8_t *)&ch, 1, 0xFFFF);
+/* USER CODE BEGIN 1 */
+/**
+* @brief  Retargets the C library printf function to the USART.
+* @param  None
+* @retval None
+*/
+PUTCHAR_PROTOTYPE
+{
+/* Place your implementation of fputc here */
+/* e.g. write a character to the USART2 and Loop until the end of transmission */
+HAL_UART_Transmit(&huart2, (uint8_t *)&ch, 1, 0xFFFF);
 
-    return ch;
-    }
-    /* USER CODE END 1 */
+return ch;
+}
+/* USER CODE END 1 */
 ```
 
 Il est aussi possibe de réécrire la fonction `__io_putchar` en reprenant son prototype, c'est la méthode que nous avons choisi :
 ```c
-    /* Private user code ---------------------------------------------------------*/
-    /* USER CODE BEGIN 0 */
-    int __io_putchar(int ch)
-    {
-        HAL_UART_Transmit(&huart2, (uint8_t *)&ch, 1, 0xFFFF);
+/* Private user code ---------------------------------------------------------*/
+/* USER CODE BEGIN 0 */
+/**
+* @brief  Transmit a character over UART.
+* @param  ch: Character to transmit.
+* @retval int: The transmitted character.
+*/
+int __io_putchar(int ch)
+{
+    HAL_UART_Transmit(&huart2, (uint8_t *)&ch, 1, 0xFFFF);
 
-        return ch;
-    }
+    return ch;
+}
 
-    /* USER CODE END 0 */
+/* USER CODE END 0 */
 ```
 Cette approche permet de ne pas aller modifier d'autres fichiers et de centraliser cette unique fonction de liaison série spécialisée dans le `main.c`.  
 
@@ -224,22 +229,15 @@ Press CTRL-A Z for help on special keys
 ### Primitives I²C sous STM32_HAL
 
 L'API HAL (Hardware Abstraction Layer) fournit par ST propose entre autres 2 primitives permettant d'interagir avec le bus I²C en mode Master:
-
-    HAL_StatusTypeDef HAL_I2C_Master_Transmit(I2C_HandleTypeDef *hi2c, uint16_t DevAddress, uint8_t *pData, uint16_t Size, uint32_t Timeout)
-
-    HAL_StatusTypeDef HAL_I2C_Master_Receive(I2C_HandleTypeDef *hi2c, uint16_t DevAddress, uint8_t *pData, uint16_t Size, uint32_t Timeout)
-
+- `HAL_StatusTypeDef HAL_I2C_Master_Transmit(I2C_HandleTypeDef *hi2c, uint16_t DevAddress, uint8_t *pData, uint16_t Size, uint32_t Timeout)`  
+- `HAL_StatusTypeDef HAL_I2C_Master_Receive(I2C_HandleTypeDef *hi2c, uint16_t DevAddress, uint8_t *pData, uint16_t Size, uint32_t Timeout)`  
+  
 où:
-
-    I2C_HandleTypeDef hi2c: structure stockant les informations du contrôleur I²C
-
-    uint16_t DevAddress: adresse I³C du périphérique Slave avec lequel on souhaite interagir.
-
-    uint8_t *pData: buffer de données
-
-    uint16_t Size: taille du buffer de données
-
-    uint32_t Timeout: peut prendre la valeur HAL_MAX_DELAY
+- `I2C_HandleTypeDef hi2c` : structure stockant les informations du contrôleur I²C
+- `uint16_t DevAddress` : adresse I³C du périphérique Slave avec lequel on souhaite interagir.
+- `uint8_t *pData` : buffer de données
+- `uint16_t Size` : taille du buffer de données
+- `uint32_t Timeout` : peut prendre la valeur `HAL_MAX_DELAY`
 
 ### Communication avec le BMP280
 
@@ -346,9 +344,23 @@ CTRL+A Q pour quitter minicom.
 
 
 ### Communication avec la STM32
-Attention: pour que le port UART utilisé pour la communication avec le PC (UART over USB) puisse fonctionner, les pins PA2 et PA3 ne sont pas par défaut connectées aux borniers CN9 et CN10. (C'est possible en jouant avec le fer à souder: doc Nucleo 64 page 27)
+/!\\ Attention : pour que le port UART utilisé pour la communication avec le PC (UART over USB) puisse fonctionner, les pins PA2 et PA3 ne sont pas par défaut connectés aux borniers CN9 et CN10. (C'est possible en jouant avec le fer à souder : doc Nucleo 64 page 27).
 
-C'est pourquoi vous devez utiliser un 2e port UART sur le STM32, qui servira à la communication avec le Raspberry Pi (comme indiqué lors du TP1). Vous pouvez modifier votre fonction printf pour quelle affiche sur les 2 ports série en même temps.
+C'est pourquoi nous devons utiliser un 2ᵉ port UART sur le STM32, qui servira à la communication avec le Raspberry Pi (comme indiqué lors du TP1). Nous avons modifié notre fonction `printf` pour quelle affiche sur les 2 ports série en même temps.
+```c
+/**
+ * @brief  Transmit a character over UART.
+ * @param  ch: Character to transmit.
+ * @retval int: The transmitted character.
+ */
+int __io_putchar(int ch)
+{
+	HAL_UART_Transmit(&huart2, (uint8_t *)&ch, 1, 0xFFFF);
+	HAL_UART_Transmit(&huart1, (uint8_t *)&ch, 1, 0xFFFF);
+
+	return ch;
+}
+```
 
 Le protocole de communication entre le Raspberry et la STM32 est le suivant:  
 | Requête du RPi | Réponse du STM | Commentaire |
