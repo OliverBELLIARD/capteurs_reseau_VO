@@ -557,17 +557,18 @@ C’est ce que nous allons voir maintenant.
 ### Première page REST
 #### Réponse JSON
 
-Un module JSON est disponible dans la librairie standard de python: https://docs.python.org/3/library/json.html Le plus simple pour générer du JSON est d’utiliser la fonction `json.dumps()` sur un objet Python. Vous pouvez par exemple remplacer la dernière ligne de la fonction api_welcome_index par:
+Un module JSON est disponible dans la librairie standard de python: https://docs.python.org/3/library/json.html Le plus simple pour générer du JSON est d’utiliser la fonction `json.dumps()` sur un objet Python. On peut par exemple remplacer la dernière ligne de la fonction api_welcome_index par:
 ```python
 return json.dumps({"index": index, "val": welcome[index]})
 ```
-(oubliez pas le import json en début de fichier!)
+Evidemment sans oublier le "import json" en début de fichier.
 ```python
-import json`
+import json
 ```
 
 **Est-ce suffisant pour dire que la réponse est bien du JSON?**  
 Non, car la page n'a pas encore été "JSONifiée", en Flask, pour indiquer explicitement que le contenu est de type JSON, il est préférable d’utiliser `jsonify`, qui va non seulement convertir les données en JSON mais aussi définir l’en-tête `Content-Type` à `application/json`, ce qui aide les clients à reconnaître le format de la réponse.  
+
 On peut observer en particulier les entêtes de la réponse: sous Firefox ou Chrome il faut ouvrir les outils de développement (F12), en selectionnant l’onglet “réseau” et en rechargeant la page. On peut alors normalement trouver l’entête de réponse Content-Type: ce n’est effectivement pas du JSON!
 
 #### 1re solution
@@ -577,15 +578,14 @@ Il faut modifier la réponse renvoyée par flask, car la réponse par défaut es
 return json.dumps({"index": index, "val": welcome[index]}), {"Content-Type": "application/json"}
 ```
 
-À partir de maintenant la réponse est bien du JSON, et Firefox vous présente le résultat de manière différente (Chrome aussi, mais c’est moins visible).
+À partir de maintenant la réponse est bien en JSON, et Firefox nous présente le résultat de manière différente (Chrome aussi, mais c’est moins visible).
 
 #### 2e solution
 
-L’utilisation de json avec flask étant très fréquente, une fonction jsonify() existe dans la bibliothèque. Elle est accessible après un from flask import jsonify. Cette fonction gère à la fois la conversion en json et l’ajout de l’entête.
+L’utilisation de json avec flask étant très fréquente, une fonction jsonify() existe dans la bibliothèque. Elle est accessible après un "from flask import jsonify". Cette fonction gère à la fois la conversion en json et l’ajout de l’entête.
 
-Modifiez votre code pour utiliser jsonify et testez le.
+Nous avons donc modifié notre code avant de le tester, dans le but d'implémenter jsonify() en ecrivant notre code de cette façon :
 
-En ecrivant notre code de cette façon :  
 ```python
 return jsonify({"message": 'Hello, World!'})
 ```
@@ -595,19 +595,19 @@ nous obtenons bel et bien un résultat en json si nous le vérifions sur firefox
 
 Il arrive souvent que les URL demandées soient fausses, il faut donc que votre serveur renvoie une erreur 404.
 
-Téléchargez le fichiers [page_not_found.html](https://github.com/OliverBELLIARD/capteurs_reseaux_VO_ESE_TP2/blob/main/REST_server/templates/page_not_found.html) (en ressource) et placez le dans un nouveau répertoire `templates` (nom de chemin imposé par flask). Le plus simple pour créer ce fichier est de créer un fichier vide, puis de copier-coller son contenu (<shift>+<insert> sous windows). Une autre solution est d'utiliser un utilitaire de copie sur ssh: scp (pscp sous windows, à télécharger sur le site: https://www.chiark.greenend.org.uk/~sgtatham/putty/latest.html ).
+En créant un fichier vide en .html, en le nommant `page_not_found.html` et en copiant-collant le contenu du fichier suivant : [page_not_found.html](https://github.com/OliverBELLIARD/capteurs_reseaux_VO_ESE_TP2/blob/main/REST_server/templates/page_not_found.html) dedans, nous avons créé un template vers lequel nous sommes redirigés lorsque l'url entrée est fausse. Il est nécessaire de créer ce fichier dans un répertoire qu'on vient de créer et de nommer `templates`, cette nomenclature étant imposée par flask.
 
-Ajoutez les lignes suivantes à votre hello.py:
+En ajoutant les lignes suivantes à notre hello.py, nous pouvons maintenant orienter le client vers la page d'erreur voulue :
+
 ```python
 @app.errorhandler(404)
 def page_not_found(error):
     return render_template('page_not_found.html'), 404
 ```
-Ainsi vous contrôlez la page d’erreur 404.  
-  
-Modifiez la fonctions `api_welcome_index` de manière à retourner cette page 404 si jamais l’index n’est pas correct. Flask fournit une fonction pour cela : `abort(404)`.
-  
-Une autre méthode aurai pu être utilisée: `redirect` avec `url_for`. Plus d’info: https://flask.palletsprojects.com/en/1.1.x/quickstart/#redirects-and-errors
+
+On modifie donc notre fonction `api_welcome_index` pour implémenter cette fonction sur notre page d'accueil, celle-ci devient utile si l'index entré n'est pas correct, on utilise par ailleurs une fonction fournie par Flask à cet effet : `abort(404)`
+
+D'autres méthodes auraient pu être utilisées, notamment `redirect` avec `url_for`.
 
 ## 4.3. Nouvelles métodes HTTP
 ### Méthodes POST, PUT, DELETE…
