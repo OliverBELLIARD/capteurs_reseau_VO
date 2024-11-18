@@ -20,9 +20,6 @@ app = Flask(__name__)
 ##########################
 # Core application pages #
 ##########################
-ser = serial.serial_for_url(f'socket://192.168.88.235:5000', timeout=1)
-
-
 @app.route('/')
 def hello_world():
     return jsonify({"message": 'Hello, World!'})
@@ -45,53 +42,6 @@ def api_welcome_index(index):
     #elif request.method == 'POST' :
 
     #return jsonify({"index": index, "val": welcome[index]})
-
-def get_temp() :
-    try:
-        ser.write(b'GET_T\n')  # Envoie la commande série "GET_T" pour obtenir la température
-        temp = ser.readline().decode().strip()  # Lit et décode la réponse
-        return temp
-    except serial.SerialException as e:
-        print(f"Erreur de connexion série pour la température : {e}")
-        return None
-
-
-def get_pres() :
-    try:
-        ser.write(b'GET_P\n')  # Envoie la commande série "GET_P" pour obtenir la pression
-        pres = ser.readline().decode().strip()  # Lit et décode la réponse
-        return pres
-    except serial.SerialException as e:
-        print(f"Erreur de connexion série pour la pression : {e}")
-        return None
-
-
-@app.route('/api/<path>', methods=['GET','POST','DELETE'])
-def api_data(path) :
-    if path == 'temp' and request.method == 'GET' :
-        temp = get_temp()
-        if temp is not None :
-            return jsonify({"temperature" : temp})
-        else :
-            return jsonify({"error" : "get_temp() ne fonctionne pas."})
-
-    elif path == 'pres' and request.method == 'GET' :
-        pres = get_pres()
-        if pres is not None :
-            return jsonify({"pressure" : pres})
-        else :
-            return jsonify({"error" : "get_pres() ne fonctionne pas."})
-
-    else :
-        return jsonify({"error" : "path inconnu."})
-
-
-
-
-
-
-
-
 
 @app.errorhandler(404)
 def page_not_found(error):
@@ -123,7 +73,9 @@ SERIAL_BUFFER_SIZE = 10
 tab_T = []  # Array for temperatures
 tab_P = []  # Array for pressures
 
-ser = serial.Serial("/dev/ttyAMA0",115200,timeout=1)
+# To test with another device
+ser = serial.Serial("/dev/ttyACM0",115200,timeout=1)
+#ser = serial.Serial("/dev/ttyAMA0",115200,timeout=1)
 ser.reset_output_buffer()
 ser.reset_input_buffer()
 
