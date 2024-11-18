@@ -5,7 +5,7 @@
 # Warning: you need the expect command: sudo apt  install expect
 
 set timeout -1
-spawn sftp vo@192.168.88.230
+spawn sftp vo@192.168.88.235
 expect "password:"
 send -- "voese\n"
 expect "sftp>"

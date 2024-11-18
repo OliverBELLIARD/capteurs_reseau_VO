@@ -1,11 +1,29 @@
+'''
+This Flask application exposes a RESTful API for interfacing with a BMP280 sensor connected to an STM32 microcontroller. It manages:
+    - Temperature: Reading and storing temperature values.
+    - Pressure: Reading and storing pressure values.
+'''
+
 import json
 from flask import Flask
+import serial
+
 from flask import jsonify
 from flask import render_template
 from flask import abort
 from flask import request
 import serial
+
 app = Flask(__name__)
+
+
+tab_T = []  # Array for temperatures
+tab_P = []  # Array for pressures
+
+
+##########################
+# Core application pages #
+##########################
 ser = serial.serial_for_url(f'socket://192.168.88.235:5000', timeout=1)
 
 
@@ -98,3 +116,93 @@ def api_request(path=None):
                 "data" : request.get_json(),
                 }
     return jsonify(resp)
+
+
+################################
+# Communication with the STM32 #
+################################
+'''
+ser = serial.Serial("/dev/ttyAMA0",115200,timeout=1)
+ser.reset_output_buffer()
+ser.reset_input_buffer()
+
+# Temperature endpoint
+@app.route('/api/temp/', methods=['GET', 'POST'])
+def api_temp():
+    ser.reset_output_buffer()
+    ser.reset_input_buffer()
+    resp = {
+        "method": request.method,
+        "url": request.url,
+        "args": request.args,
+        "headers": dict(request.headers),
+    }
+    if request.method == 'POST':
+        ser.write(b'GET_T')  # Sends to the STM32 that we want to perform a GET_T
+        tempo = ser.readline().decode()  # Retrieve the value sent by the STM32
+        tab_T.append(tempo[:9])  # Remove '\r\n' and add it to the array
+        return jsonify(tab_T[-1])  # Return the last value
+    if request.method == 'GET':
+        return jsonify(tab_T)  # Return the entire temperature array
+
+@app.route('/api/temp/<int:index>', methods=['GET', 'DELETE'])
+def api_temp_index(index=None):
+    resp = {
+        "method": request.method,
+        "url": request.url,
+        "index": index,
+        "args": request.args,
+        "headers": dict(request.headers),
+    }
+    if request.method == 'GET':
+        if index < len(tab_T):
+            return jsonify(tab_T[index])  # Retrieve the value from the array at the index
+        else:
+            return jsonify("error: index out of range")
+    if request.method == 'DELETE':
+        if index < len(tab_T):
+            return jsonify(f"The value {tab_T.pop(index)} has been removed")  # Remove value from the array
+        else:
+            return jsonify("error: index out of range")
+
+
+# Pressure endpoint
+@app.route('/api/pres/', methods=['GET', 'POST'])
+def api_pres():
+    ser.reset_output_buffer()
+    ser.reset_input_buffer()
+    resp = {
+        "method": request.method,
+        "url": request.url,
+        "args": request.args,
+        "headers": dict(request.headers),
+    }
+    if request.method == 'POST':
+        ser.write(b'GET_P')  # Sends to the STM32 that we want to perform a GET_P
+        tempo = ser.readline().decode()  # Retrieve the value sent by the STM32
+        tab_P.append(tempo[:20])  # Remove '\r\n' and add it to the array
+        return jsonify(tab_P[-1])  # Return the last value
+    if request.method == 'GET':
+        return jsonify(tab_P)  # Return the entire pressure array
+
+@app.route('/api/pres/<int:index>', methods=['GET', 'DELETE'])
+def api_pres_index(index=None):
+    resp = {
+        "method": request.method,
+        "url": request.url,
+        "index": index,
+        "args": request.args,
+        "headers": dict(request.headers),
+    }
+    if request.method == 'GET':
+        if index < len(tab_P):
+            return jsonify(tab_P[index])  # Retrieve the value from the array at the index
+        else:
+            return jsonify("error: index out of range")
+    if request.method == 'DELETE':
+        if index < len(tab_P):
+            return jsonify(f"The value {tab_P.pop(index)} has been removed")  # Remove value from the array
+        else:
+            return jsonify("error: index out of range")
+            
+'''
