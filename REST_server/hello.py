@@ -4,21 +4,17 @@ This Flask application exposes a RESTful API for interfacing with a BMP280 senso
     - Pressure: Reading and storing pressure values.
 '''
 
+import serial
+
 import json
 from flask import Flask
-import serial
 
 from flask import jsonify
 from flask import render_template
 from flask import abort
 from flask import request
-import serial
 
 app = Flask(__name__)
-
-
-tab_T = []  # Array for temperatures
-tab_P = []  # Array for pressures
 
 
 ##########################
@@ -121,11 +117,25 @@ def api_request(path=None):
 ################################
 # Communication with the STM32 #
 ################################
-'''
+
+SERIAL_BUFFER_SIZE = 10
+
+tab_T = []  # Array for temperatures
+tab_P = []  # Array for pressures
+
 ser = serial.Serial("/dev/ttyAMA0",115200,timeout=1)
 ser.reset_output_buffer()
 ser.reset_input_buffer()
 
+def fill_serial_buffer(msg:str):
+    if msg.__len__ < SERIAL_BUFFER_SIZE-2:
+        return f"msg{' '*msg.__len__ - SERIAL_BUFFER_SIZE-2}"
+    
+    elif msg.__len__ > SERIAL_BUFFER_SIZE-2:
+        return msg[:SERIAL_BUFFER_SIZE-2]
+    else:
+        return msg
+    
 # Temperature endpoint
 @app.route('/api/temp/', methods=['GET', 'POST'])
 def api_temp():
@@ -138,7 +148,7 @@ def api_temp():
         "headers": dict(request.headers),
     }
     if request.method == 'POST':
-        ser.write(b'GET_T')  # Sends to the STM32 that we want to perform a GET_T
+        ser.write(b'GET_T   ')  # Sends to the STM32 that we want to perform a GET_T
         tempo = ser.readline().decode()  # Retrieve the value sent by the STM32
         tab_T.append(tempo[:9])  # Remove '\r\n' and add it to the array
         return jsonify(tab_T[-1])  # Return the last value
@@ -178,7 +188,7 @@ def api_pres():
         "headers": dict(request.headers),
     }
     if request.method == 'POST':
-        ser.write(b'GET_P')  # Sends to the STM32 that we want to perform a GET_P
+        ser.write(b'GET_P   ')  # Sends to the STM32 that we want to perform a GET_P
         tempo = ser.readline().decode()  # Retrieve the value sent by the STM32
         tab_P.append(tempo[:20])  # Remove '\r\n' and add it to the array
         return jsonify(tab_P[-1])  # Return the last value
@@ -205,4 +215,3 @@ def api_pres_index(index=None):
         else:
             return jsonify("error: index out of range")
             
-'''
