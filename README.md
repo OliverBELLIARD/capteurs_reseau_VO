@@ -5,7 +5,7 @@
 
 ## Table des matières
 
-> Générée automatiquement avec l'outil : [Markdown TOC generator](https://bitdowntoc.derlin.ch/).
+> Générée automatiquement avec l'outil : [Markdown TOC generator](https://bitdowntoc.derlin.ch/). Il faut choisir l'optimisation pour GitHub.
 
 <!-- TOC start (generated with https://github.com/derlin/bitdowntoc) -->
 
@@ -76,70 +76,73 @@ L'échelonnement des TP est le suivant:
 
 ## 2.1. Capteur BMP280
 À partir de la datasheet du [BMP280](https://moodle.ensea.fr/mod/resource/view.php?id=1910), on identifie les éléments suivants:
-1. les adresses I²C possibles pour ce composant :  
+**1. les adresses I²C possibles pour ce composant :**  
 Ce composant dispose de deux adresses sur 7 bits 111011x disponibles en slave mode: 0x76 et 0x77. On peut changer cette adresse en mettant à 0 ou 1 le bit "SDO".
 
-2. le registre et la valeur permettant d'identifier ce composant :  
+**2. le registre et la valeur permettant d'identifier ce composant :**  
 Le registre permettant d'identifier ce composant est à l'adresse 0xD0,  il doit contenir un chip_id à la valeur "0x58".
 
-3. le registre et la valeur permettant de placer le composant en mode normal :  
+**3. le registre et la valeur permettant de placer le composant en mode normal :**  
 Le mode normal peut être activé en modifiant le registre de control à l'adresse
 0xF4, c'est un registre de 2 bits qu'il faut mettre à la valeur "11".
 
-4. les registres contenant l'étalonnage du composant :  
+**4. les registres contenant l'étalonnage du composant :**  
 Les registres d'étalonnage du composant sont situés aux adresses "0x88, ..., 0xA1"
 
-5. les registres contenant la température (ainsi que le format) :  
+**5. les registres contenant la température (ainsi que le format) :**  
 Les registres contenant les valeurs de température sont présents aux adresses
 "0xFA, 0xFB, 0xFC". La température est codée sur 20 bits, d'où la necessité d'avoir 
 plusieurs adresses. FA le MSB, FB le LSB et FC le XLSB.
 
-6. les registres contenant la pression (ainsi que le format) :  
+**6. les registres contenant la pression (ainsi que le format) :**  
 Les registres contenant les valeurs de pression sont présents aux adresses
 "0xF7, 0xF8, 0xF9". La pression est codée sur 20 bits, d'où la necessité d'avoir 
 plusieurs adresses. F7 le MSB, F8 le LSB et F9 le XLSB.
 
-7. les fonctions permettant le calcul de la température et de la pression compensées, en format entier 32 bits :    
+**7. les fonctions permettant le calcul de la température et de la pression compensées, en format entier 32 bits :**    
 Les fonctions permettant les calculs compensés de la température et de la pression
 sont données dans la datasheet page 22. On doit se servir de coefficients de compensation
 qui sont détaillés dans le code qui y est donné :
 
-```C
+```c
 // Returns temperature in DegC, resolution is 0.01 DegC. Output value of “5123” equals 51.23 DegC.
 // t_fine carries fine temperature as global value
 BMP280_S32_t t_fine;
 BMP280_S32_t bmp280_compensate_T_int32(BMP280_S32_t adc_T)
 {
-BMP280_S32_t var1, var2, T;
-var1 = ((((adc_T>>3) – ((BMP280_S32_t)dig_T1<<1))) * ((BMP280_S32_t)dig_T2)) >> 11;
-var2 = (((((adc_T>>4) – ((BMP280_S32_t)dig_T1)) * ((adc_T>>4) – ((BMP280_S32_t)dig_T1))) >> 12) *
-((BMP280_S32_t)dig_T3)) >> 14;
-t_fine = var1 + var2;
-T = (t_fine * 5 + 128) >> 8;
-return T;
+	BMP280_S32_t var1, var2, T;
+	var1 = ((((adc_T>>3) – ((BMP280_S32_t)dig_T1<<1))) * ((BMP280_S32_t)dig_T2)) >> 11;
+	var2 = (((((adc_T>>4) – ((BMP280_S32_t)dig_T1)) * ((adc_T>>4) – ((BMP280_S32_t)dig_T1))) >> 12) *
+	((BMP280_S32_t)dig_T3)) >> 14;
+	t_fine = var1 + var2;
+	T = (t_fine * 5 + 128) >> 8;
+	return T;
 }
-“”–
+
 // Returns pressure in Pa as unsigned 32 bit integer in Q24.8 format (24 integer bits and 8 fractional bits).
 // Output value of “24674867” represents 24674867/256 = 96386.2 Pa = 963.862 hPa
 BMP280_U32_t bmp280_compensate_P_int64(BMP280_S32_t adc_P)
 {
-BMP280_S64_t var1, var2, p;
-var1 = ((BMP280_S64_t)t_fine) – 128000;
-var2 = var1 * var1 * (BMP280_S64_t)dig_P6;
-var2 = var2 + ((var1*(BMP280_S64_t)dig_P5)<<17);
-var2 = var2 + (((BMP280_S64_t)dig_P4)<<35);
-var1 = ((var1 * var1 * (BMP280_S64_t)dig_P3)>>8) + ((var1 * (BMP280_S64_t)dig_P2)<<12);
-var1 = (((((BMP280_S64_t)1)<<47)+var1))*((BMP280_S64_t)dig_P1)>>33;
-if (var1 == 0)
-{
-return 0; // avoid exception caused by division by zero
+	BMP280_S64_t var1, var2, p;
+	var1 = ((BMP280_S64_t)t_fine) – 128000;
+	var2 = var1 * var1 * (BMP280_S64_t)dig_P6;
+	var2 = var2 + ((var1*(BMP280_S64_t)dig_P5)<<17);
+	var2 = var2 + (((BMP280_S64_t)dig_P4)<<35);
+	var1 = ((var1 * var1 * (BMP280_S64_t)dig_P3)>>8) + ((var1 * (BMP280_S64_t)dig_P2)<<12);
+	var1 = (((((BMP280_S64_t)1)<<47)+var1))*((BMP280_S64_t)dig_P1)>>33;
+
+	if (var1 == 0)
+	{
+		return 0; // avoid exception caused by division by zero
+	}
+
+	p = 1048576-adc_P;
+	p = (((p<<31)-var2)*3125)/var1;
+	var1 = (((BMP280_S64_t)dig_P9) * (p>>13) * (p>>13)) >> 25;
+	var2 = (((BMP280_S64_t)dig_P8) * p) >> 19;
+	p = ((p + var1 + var2) >> 8) + (((BMP280_S64_t)dig_P7)<<4);
+	return (BMP280_U32_t)p;
 }
-p = 1048576-adc_P;
-p = (((p<<31)-var2)*3125)/var1;
-var1 = (((BMP280_S64_t)dig_P9) * (p>>13) * (p>>13)) >> 25;
-var2 = (((BMP280_S64_t)dig_P8) * p) >> 19;
-p = ((p + var1 + var2) >> 8) + (((BMP280_S64_t)dig_P7)<<4);
-return (BMP280_U32_t)p;
 ```
 
 ## 2.2. Setup du STM32
@@ -180,11 +183,11 @@ extern UART_HandleTypeDef huart2;
 */
 PUTCHAR_PROTOTYPE
 {
-/* Place your implementation of fputc here */
-/* e.g. write a character to the USART2 and Loop until the end of transmission */
-HAL_UART_Transmit(&huart2, (uint8_t *)&ch, 1, 0xFFFF);
-
-return ch;
+	/* Place your implementation of fputc here */
+	/* e.g. write a character to the USART2 and Loop until the end of transmission */
+	HAL_UART_Transmit(&huart2, (uint8_t *)&ch, 1, 0xFFFF);
+	
+	return ch;
 }
 /* USER CODE END 1 */
 ```
@@ -207,17 +210,17 @@ int __io_putchar(int ch)
 
 /* USER CODE END 0 */
 ```
-Cette approche permet de ne pas aller modifier d'autres fichiers et de centraliser cette unique fonction de liaison série spécialisée dans le `main.c`.  
+Cette approche permet de ne pas aller modifier d'autres fichiers et de centraliser cette unique fonction de comportement de la fonction `printf` dans le `main.c`.  
 
 ### Test de la chaîne de compilation et communication UART sur USB
-> Testez ce printf avec un programme de type echo.  
+*Testez ce printf avec un programme de type echo.*  
 
 Pour voir le retour de la lisaison série USB (USART2) nous utilisons le programme "minicom" sur linux (Ubuntu) qui permet de tout gérer depuis un terminal. Une fois le paquet installé, il suffit de lancer la communication avec la commande suivante sur un terminal :
 ```bash
 minicom -D dev/ttyACM0
 ```
 
-Ici notre périphérique est le `ttyACM0` mais il peut varier selon les postes. Une fois lancée la commande et la carte redémarée, on observe sur notre terminal :
+Ici notre périphérique est le `ttyACM0` mais il peut varier selon les postes ou l'appareil depuis lequel il est lancé. Une fois lancée la commande et la carte redémarée, on observe sur notre terminal :
 
 ```
 Welcome to minicom 2.9
@@ -231,6 +234,7 @@ Press CTRL-A Z for help on special keys
 === TP Capteurs & Réseaux ===
 
 ```
+la ligne `=== TP Capteurs & Réseaux ===` correspond au premier `printf` de notre programme, on sait alors que notre redirection du flux de la fonction a bien été pris en compte.
 
 ## 2.3. Communication I²C
 ### Primitives I²C sous STM32_HAL
@@ -250,15 +254,22 @@ où:
 
 #### Identification du BMP280
 
-L'identification du BMP280 consiste en la lecture du registre ID
+L'identification du BMP280 consiste en la lecture du registre ID.
 
 En I²C, la lecture se déroule de la manière suivante :
 
 1. envoyer l'adresse du registre ID
 2. recevoir 1 octet correspondant au contenu du registre
 
-Vérifiez que le contenu du registre correspond bien à la datasheet.
-Vérifiez à l'oscilloscope que la formes des trames I²C est conforme.
+**Vérifiez que le contenu du registre correspond bien à la datasheet :**  
+Lorsque nous faisons une requete I2C à notre capteur, nous recevons bien `0x58`, l'ID du chip.  
+  
+**Vérifiez à l'oscilloscope que la formes des trames I²C est conforme :**  
+N'ayant pas eu le temps de visualiser nos signaux à l'oscilloscope, nous avons emprunté cette capture d'écran prise avec un oscilloscope comme ceux présent à l'ENSEA de [ce site](https://www.embedded.com/efficient-i2c-bus-debug-using-mixed-signal-oscilloscopes/)  
+  
+![image](https://github.com/user-attachments/assets/76091292-7284-4d64-a21b-ddd019e7f2ad)
+
+On observe bien le signal d'orloge en jaune et la trame de données en cyan.
 
 #### Configuration du BMP280
 
