@@ -45,6 +45,7 @@
 /* USER CODE BEGIN PD */
 #define TRUE  1
 #define FALSE 0
+#define VERBOSE 0 // Enables debugging
 
 #define SERIAL_BUFF_SIZE 7
 
@@ -117,7 +118,7 @@ void MPU9250_init()
 	}
 
 	// Calibre l'IMU
-	//printf("CALIBRATION EN COURS...\r\n");
+	if (VERBOSE) printf("CALIBRATION EN COURS...\r\n");
 	if (gyro_K == 0) gyro_K = GYRO_CAL_POINTS;
 	MPU_calibrateGyro(&hi2c1, gyro_K);
 }
@@ -175,7 +176,7 @@ void parse_RaspberryPI_Request(char* cmd)
 	}
 	else if (!strncmp(cmd, "GET_A", 5)) {
 		MPU_calcAttitude(&hi2c1);
-		printf("A:%.1f;%.1f;%.1f\r\n", attitude.r, attitude.p, attitude.y);
+		printf("A=%.1f;%.1f;%.1f\r\n", attitude.r, attitude.p, attitude.y);
 	}
 	else {
 		printf("Unknown request: %s\r\n", cmd);
@@ -245,18 +246,11 @@ int main(void)
 	// Enable Timer 2 IT
 	HAL_TIM_Base_Start_IT(&htim2);
 
-	/*
-	bufferIndex = 0;
 	// Start USART1 DMA reception
-	if (HAL_UARTEx_ReceiveToIdle_DMA(&huart1, rxByte, sizeof(rxByte)) != HAL_OK) {
-	    printf("DMA Reception Error!\r\n");
-	}
-	*/
 	HAL_UARTEx_ReceiveToIdle_DMA(&huart1, (uint8_t*)serial_buff, sizeof(serial_buff));
 	// Enable UART IDLE interrupt
 	__HAL_UART_ENABLE_IT(&huart1, UART_IT_IDLE);
 
-	//HAL_UART_DMAResume(&huart1);
 	/* USER CODE END 2 */
 
 	/* Infinite loop */

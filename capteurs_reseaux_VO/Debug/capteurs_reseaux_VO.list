@@ -35,17 +35,17 @@ Idx Name          Size      VMA       LMA       File off  Algn
                   CONTENTS, READONLY, DEBUGGING, OCTETS
  15 .debug_rnglists 00000efb  00000000  00000000  000294a8  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 16 .debug_macro  0002535d  00000000  00000000  0002a3a3  2**0
+ 16 .debug_macro  00025363  00000000  00000000  0002a3a3  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 17 .debug_line   00019648  00000000  00000000  0004f700  2**0
+ 17 .debug_line   00019648  00000000  00000000  0004f706  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 18 .debug_str    000d8d8d  00000000  00000000  00068d48  2**0
+ 18 .debug_str    000d8d8d  00000000  00000000  00068d4e  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 19 .comment      00000043  00000000  00000000  00141ad5  2**0
+ 19 .comment      00000043  00000000  00000000  00141adb  2**0
                   CONTENTS, READONLY
- 20 .debug_frame  00006660  00000000  00000000  00141b18  2**2
+ 20 .debug_frame  00006660  00000000  00000000  00141b20  2**2
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 21 .debug_line_str 00000078  00000000  00000000  00148178  2**0
+ 21 .debug_line_str 00000078  00000000  00000000  00148180  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
 
 Disassembly of section .text:
@@ -3462,7 +3462,7 @@ void MPU9250_init()
 	}
 
 	// Calibre l'IMU
-	//printf("CALIBRATION EN COURS...\r\n");
+	if (VERBOSE) printf("CALIBRATION EN COURS...\r\n");
 	if (gyro_K == 0) gyro_K = GYRO_CAL_POINTS;
  8001e9c:	4b0c      	ldr	r3, [pc, #48]	@ (8001ed0 <MPU9250_init+0x58>)
  8001e9e:	681b      	ldr	r3, [r3, #0]
@@ -3627,7 +3627,7 @@ void parse_RaspberryPI_Request(char* cmd)
  8001fca:	460b      	mov	r3, r1
  8001fcc:	483e      	ldr	r0, [pc, #248]	@ (80020c8 <parse_RaspberryPI_Request+0x13c>)
  8001fce:	f007 f81d 	bl	800900c <iprintf>
-		printf("A:%.1f;%.1f;%.1f\r\n", attitude.r, attitude.p, attitude.y);
+		printf("A=%.1f;%.1f;%.1f\r\n", attitude.r, attitude.p, attitude.y);
 	}
 	else {
 		printf("Unknown request: %s\r\n", cmd);
@@ -3708,7 +3708,7 @@ void parse_RaspberryPI_Request(char* cmd)
 		MPU_calcAttitude(&hi2c1);
  800206a:	481c      	ldr	r0, [pc, #112]	@ (80020dc <parse_RaspberryPI_Request+0x150>)
  800206c:	f7ff fc74 	bl	8001958 <MPU_calcAttitude>
-		printf("A:%.1f;%.1f;%.1f\r\n", attitude.r, attitude.p, attitude.y);
+		printf("A=%.1f;%.1f;%.1f\r\n", attitude.r, attitude.p, attitude.y);
  8002070:	4b20      	ldr	r3, [pc, #128]	@ (80020f4 <parse_RaspberryPI_Request+0x168>)
  8002072:	681b      	ldr	r3, [r3, #0]
  8002074:	4618      	mov	r0, r3
