@@ -807,6 +807,7 @@ void CAN_Send(uint8_t * aData, uint32_t size, uint32_t msg_id)
 }
 ```  
 pour envoyer un message, où:  
+
 `CAN_HandleTypeDef * hcan` pointe vers la structure stockant les infos du contrôleur CAN.
 `CAN_TxHeaderTypeDef * pHeader` pointe vers la structure contenant les infos du header de la trame CAN à envoyer.  
 `uint8_t aData[] buffer` contient les données à envoyer et.  
@@ -827,11 +828,7 @@ La gestion des priorités sur le bus CAN implique qu'il n'est pas garanti qu'un 
 
 ## 5.2. Interfaçage avec le capteur
 
-En reprenant le code des TP précédents, faites en sorte que le mouvement du moteur soit proportionnel à la valeur du capteur.  
-  
-Le coefficient de proportionnalité sera stocké dans une variable. Le calcul peut parfaitement se faire à partir de la donnée issue du capteur sous forme binaire (le calcul avec la calibration n'est pas nécessaire à ce stade).  
-  
-Attention: le shield utilisant les pin PB8 et PB9 pour le CAN, vous allez devoir changer les pins du bus I2C, voir même changer de contrôleur I2C. Dans ce dernier cas, il faudra changer les noms de vos variables hi2c1 vers hic2cX.  
+En reprenant le code des TP précédents, nous avons réussi à faire évoluer le curseur du moteur proportionnellement aux valeurs de température et de pression récupérées par notre capteur associé.
 
 # 6. TP5 - Intégration I²C - Serial - REST - CAN
 **Objectif: Faire marcher ensemble les TP 1, 2, 3 et 4**
