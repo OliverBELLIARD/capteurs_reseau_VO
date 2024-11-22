@@ -678,13 +678,13 @@ Si on avait eu un peu plus de temps on aurait aussi pu passer sur FASTAPI car il
 
 ![image](https://github.com/user-attachments/assets/2bcf4369-3ff1-4248-a1cd-389b651174c0)
 
-Nos cartes STM32L476 sont équipées d'un contrôleur CAN intégré. Pour pouvoir l'utiliser, il faut leur adjoindre un Tranceiver CAN. Ce rôle est donné à un TJA1050 (https://www.nxp.com/docs/en/data-sheet/TJA1050.pdf). Ce composant est alimenté en 5V, mais possède des Entrées / Sorties compatibles en 3,3V.
+Notre carte STM32L476 est équipée d'un contrôleur CAN intégré. Pour pouvoir l'utiliser, il faut lui adjoindre un Transceiver CAN. Ce rôle est donné à un TJA1050. Ce composant est alimenté en 5V, mais possède des Entrées / Sorties compatibles en 3,3V.
 
-Afin de faciliter sa mise en œuvre, ce composant a été installé sur une carte fille (shield) au format Arduino, qui peut donc s'insérer sur les cartes nucléo64:
+Afin de faciliter sa mise en œuvre, ce composant a été installé sur un shield au format Arduino, qui peut donc se brancher sur notre carte nucleo 64.
 
 ![image](https://github.com/user-attachments/assets/bec57e48-b6b1-43a0-a814-62f8f7d9217b) ![image](https://github.com/user-attachments/assets/c7fa8152-261c-42ae-977d-5071e3511d48)
 
-Ce shield possède un connecteur subd9, qui permet de connecter un câble au format CAN. Pour rappel, le brochage de ce connecteur est le suivant:  
+Ce shield possède un connecteur subd9, qui nous permet de relier notre STM32 à notre moteur. Pour rappel, le connecteur se broche de cette façon :  
 
 ![image](https://github.com/user-attachments/assets/10b2e4df-5e11-4b47-ac9c-2ce2b66b547c)
 
@@ -694,42 +694,136 @@ On voit notamment que les lignes CANL et CANH ont été routées en tant que pai
   
 Ce bus CAN va être utilisé pour communiquer avec un module de moteur pas-à-pas. Celui-ci s'alimente en 12v. 
   
-La carte moteur est un peu capricieuse et ne semble tolérer qu'une vitesse CAN de 500kbit/s. Pensez à régler CubeMx en conséquence.
-Edit 2022: Il semble que ce soit surtout le ratio seg2/(seg1+seg2), qui détermine l'instant de décision, qui doit être aux alentours de 87%. Vous pouvez utiliser le calculateur suivant: http://www.bittiming.can-wiki.info/
+La carte moteur tolère qu'une vitesse CAN de 500kbit/s. Nous avons effectué les rèlages nécessaires sur CubeMX pour atteindre cette vitesse en utilisant le calculateur suivant :  http://www.bittiming.can-wiki.info/
+
+Par ailleurs, les pins du shield qui étaient reliés au CAN tombaient sur l'emplacement qu'on avait d'abord aloué pour la communication I2C sur la STM32, on a donc dû déplacer les pins en conséquence.
 
 ## 5.1. Pilotage du moteur
 
-Commencez par mettre en place un code simple, qui fait bouger le moteur de 90° dans un sens, puis de 90° dans l'autre, avec une période de 1 seconde.
+Pour Piloter ce moteur nous avons cherché à lui faire exécuter plusieurs fonctions :  
 
-Vous utiliserez pour cela les primitives HAL suivantes:
+Dans un premier temps nous cherchons à initialiser la communication CAN :  
+
 ```c
-HAL_StatusTypeDef HAL_CAN_Start (CAN_HandleTypeDef * hcan)
-```
-pour activer le module CAN et
+void CAN_Init()
+{
+	HAL_StatusTypeDef status;
+	logs = FALSE;
+
+	status = HAL_CAN_Start(&hcan1);
+
+	switch (status)
+	{
+	case HAL_OK:
+		if (logs == TRUE) printf("CAN started successfully.\r\n");
+		break;
+	case HAL_ERROR:
+		if (logs == TRUE) printf("Error: CAN start failed.\r\n");
+		Error_Handler(); // Optional: Go to error handler
+		break;
+	case HAL_BUSY:
+		if (logs == TRUE) printf("Warning: CAN is busy. Retry later.\r\n");
+		// Optional: add retry logic if desired
+		break;
+	case HAL_TIMEOUT:
+		if (logs == TRUE) printf("Error: CAN start timed out.\r\n");
+		Error_Handler(); // Optional: Go to error handler
+		break;
+	default:
+		if (logs == TRUE) printf("Unknown status returned from HAL_CAN_Start.\r\n");
+		Error_Handler(); // Optional: Go to error handler
+		break;
+	}
+}
+```  
+
+Nous avons ici mis au point la fonction permettant d'envoyer nos messages en CAN jusqu'au moteur : 
+
 ```c
-HAL_StatusTypeDef HAL_CAN_AddTxMessage (CAN_HandleTypeDef * hcan, CAN_TxHeaderTypeDef * pHeader, uint8_t aData[], uint32_t * pTxMailbox)
-```
+void CAN_Send(uint8_t * aData, uint32_t size, uint32_t msg_id)
+{
+	HAL_StatusTypeDef status;
+	CAN_TxHeaderTypeDef header;
+	uint32_t txMailbox;
+	int retryCount = 0;
+	const int maxRetries = 5;
+
+	// Initialiser le header
+	header.StdId = msg_id;
+	header.IDE = CAN_ID_STD;
+	header.RTR = CAN_RTR_DATA;
+	header.DLC = size;
+	header.TransmitGlobalTime = DISABLE;
+
+	// Pointer vers les variables locales
+	CAN_TxHeaderTypeDef *pHeader = &header;
+	uint32_t *pTxMailbox = &txMailbox;
+
+	// Attempt to add the CAN message to the transmission mailbox with retry logic
+	do {
+		status = HAL_CAN_AddTxMessage(&hcan1, pHeader, aData, pTxMailbox);
+
+		switch (status)
+		{
+		case HAL_OK:
+			if (logs == TRUE)
+			{
+			printf("CAN message ");
+			for (int i = 0; i<size; i++)
+				printf(" 0x%X", aData[i]);
+			printf(" sent successfully to  0x%X.\r\n", (unsigned int)msg_id);
+			}
+			return;  // Exit the function if the message was sent successfully
+
+		case HAL_BUSY:
+			retryCount++;
+			if (logs == TRUE) printf("Warning: CAN bus is busy, retrying (%d/%d)...\r\n", retryCount, maxRetries);
+			HAL_Delay(10);  // Optional: Add a small delay between retries
+			break;
+
+		case HAL_ERROR:
+			if (logs == TRUE) printf("Error: Failed to send CAN message.\r\n");
+			Error_Handler();  // Optional: Go to error handler for critical failure
+			return;
+
+		case HAL_TIMEOUT:
+			if (logs == TRUE) printf("Error: CAN message send timed out.\r\n");
+			Error_Handler();  // Optional: Go to error handler for timeout
+			return;
+
+		default:
+			if (logs == TRUE) printf("Unknown status returned from HAL_CAN_AddTxMessage.\r\n");
+			Error_Handler();  // Optional: Handle unexpected status
+			return;
+		}
+
+	} while (status == HAL_BUSY && retryCount < maxRetries);
+
+	if (retryCount == maxRetries)
+	{
+		if (logs == TRUE) printf("Error: Exceeded maximum retries for CAN message send.\r\n");
+		Error_Handler();  // Optional: Go to error handler after max retries
+	}
+}
+```  
 pour envoyer un message, où:  
+`CAN_HandleTypeDef * hcan` pointe vers la structure stockant les infos du contrôleur CAN.
+`CAN_TxHeaderTypeDef * pHeader` pointe vers la structure contenant les infos du header de la trame CAN à envoyer.  
+`uint8_t aData[] buffer` contient les données à envoyer et.  
+`uint32_t * pTxMailbox` pointe vers la boite au lettre de transmission.
   
-- `CAN_HandleTypeDef * hcan` pointeur vers la structure stockant les informations du contrôleur CAN
-- `CAN_TxHeaderTypeDef * pHeader` pointeur vers une structure stockant les informations du header de la trame CAN à envoyer
-- `uint8_t aData[] buffer` contenant les données à envoyer
-- `uint32_t * pTxMailbox` pointeur vers la boite au lettre de transmission
-  
-  
-La variable `hcan` est celle définie par CubeMX, donc normalement ce sera `hcan1` .
+La variable `hcan` est elle définie par CubeMX, donc ce sera `hcan1`.
 
-La variable `pHeader` est une structure contenant les champs suivants, que vous devez remplir avant de faire appel à `HAL_CAN_AddTxMessage` :
+La variable `pHeader` est une structure contenant les champs suivants, que l'on remplit avant de faire appel à `HAL_CAN_AddTxMessage` :
   
-- `.StdId` contient le message ID quand celui-ci est standard (11 bits)
-- `.ExtId` contient le message ID quand celui-ci est étendu (29 bits) 
-- `.IDE` définit si la trame est standard (CAN_ID_STD) ou étendue (CAN_ID_EXT)
-- `.RTR` définit si la trame est du type standard (CAN_RTR_DATA) ou RTR (CAN_RTR_REMOTE) (voir le cours)
-- `.DLC` entier représentant la taille des données à transmettre (entre 0 et 8)
-- `.TransmitGlobal` dispositif permettant de mesurer les temps de réponse du bus CAN, qu'on utilisera pas. Le fixer à DISABLE
-  
-  
-La gestion de priorité du bus CAN fait que l'on ne peux pas être sûr que notre message puisse être envoyé. C'est pourquoi la fonction `HAL_StatusTypeDef` utilise une boîte au lettre: le message est stocké dans la boite au lettre, et sera envoyé dès que le bus le permettra. Cette fonction renvoie le numéro de boîte au lettre via l'argument `pTxMailbox` , qui permet d'interroger l'état de l'envoi du message à n'importe quel moment dan le code (`HAL_CAN_IsTxMessagePending`) et même d'annuler un message en attente (`HAL_CAN_AbortTxRequest`).
+`.StdId` contient le message ID quand celui-ci est standard (11 bits)  
+`.ExtId` contient le message ID quand celui-ci est étendu (29 bits)  
+ `.IDE` définit si la trame est standard (CAN_ID_STD) ou étendue (CAN_ID_EXT)  
+`.RTR` définit si la trame est du type standard (CAN_RTR_DATA) ou RTR (CAN_RTR_REMOTE) (voir le cours)  
+`.DLC` est un entier représentant la taille des données à transmettre (entre 0 et 8)  
+`.TransmitGlobal` dispositif permettant de mesurer les temps de réponse du bus CAN, qu'on utilisera pas. Le fixer à DISABLE
+
+La gestion des priorités sur le bus CAN implique qu'il n'est pas garanti qu'un message puisse être envoyé immédiatement. Pour gérer cela, la fonction `HAL_StatusTypeDef` utilise un mécanisme de boîtes aux lettres : le message est placé dans une boîte aux lettres, où il reste en attente d'être transmis dès que le bus devient disponible. Cette fonction retourne le numéro de la boîte aux lettres via l'argument `pTxMailbox`, ce qui permet de vérifier à tout moment l'état de l'envoi du message à l'aide de la fonction `HAL_CAN_IsTxMessagePending`. Il est également possible d'annuler un message en attente avec la fonction `HAL_CAN_AbortTxRequest`.
 
 ## 5.2. Interfaçage avec le capteur
 
