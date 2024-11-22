@@ -45,7 +45,10 @@
 /* USER CODE BEGIN PD */
 #define TRUE  1
 #define FALSE 0
-#define SERIAL_BUFF_SIZE 10
+
+#define SERIAL_BUFF_SIZE 7
+
+#define GYRO_CAL_POINTS 1500
 
 /* USER CODE END PD */
 
@@ -57,7 +60,9 @@
 /* Private variables ---------------------------------------------------------*/
 
 /* USER CODE BEGIN PV */
-uint8_t serial_buff[SERIAL_BUFF_SIZE];
+char serial_buff[SERIAL_BUFF_SIZE];
+
+int gyro_K = 0;
 
 /* USER CODE END PV */
 
@@ -88,9 +93,9 @@ int __io_putchar(int ch)
  */
 int BMP280_init()
 {
-	if (BMP280_Check_id() == EXIT_FAILURE) return EXIT_FAILURE;			// Identification du BMP280
-	if (BMP280_Config() == EXIT_FAILURE) return EXIT_FAILURE;			// Configuration du BMP280
-	if (BMP280_calibration() == EXIT_FAILURE) return EXIT_FAILURE;		// Mise à jour des paramètres d'étalonage
+	if (BMP280_Check_id() == EXIT_FAILURE) return EXIT_FAILURE;		// Identification du BMP280
+	if (BMP280_Config() == EXIT_FAILURE) return EXIT_FAILURE;		// Configuration du BMP280
+	if (BMP280_calibration() == EXIT_FAILURE) return EXIT_FAILURE;	// Mise à jour des paramètres d'étalonage
 
 	return EXIT_SUCCESS;
 }
@@ -102,9 +107,9 @@ int BMP280_init()
 void MPU9250_init()
 {
 	// Vérifie si l'IMU est configuré correctement et bloque si ce n'est pas le cas
-	if (MPU_begin(&hi2c3, AD0_LOW, AFSR_4G, GFSR_500DPS, 0.98, 0.004) == TRUE)
+	if (MPU_begin(&hi2c1, AD0_LOW, AFSR_4G, GFSR_500DPS, 0.98, 0.004) == TRUE)
 	{
-		printf("Centrale inertielle configurée correctement\r\n");
+		//printf("Centrale inertielle configurée correctement\r\n");
 	}
 	else
 	{
@@ -112,8 +117,9 @@ void MPU9250_init()
 	}
 
 	// Calibre l'IMU
-	printf("CALIBRATION EN COURS...\r\n");
-	MPU_calibrateGyro(&hi2c3, 1500);
+	//printf("CALIBRATION EN COURS...\r\n");
+	if (gyro_K == 0) gyro_K = GYRO_CAL_POINTS;
+	MPU_calibrateGyro(&hi2c1, gyro_K);
 }
 
 /**
@@ -127,42 +133,8 @@ void MOT_Init()
 	MOT_Set_origin();
 }
 
-/**
- * @brief  Process the command received from the Raspberry Pi over UART.
- * @retval None
- */
-void RaspberryPI_Request()
-{
-	char* cmd = (char*)serial_buff;
-	size_t len = strlen(cmd);
-
-	while (len > 0 && (cmd[len - 1] == '\r' || cmd[len - 1] == '\n'))
-	{
-		cmd[len - 1] = '\0';
-		len--;
-	}
-
-	if (!strcmp("GET_T", (char*)cmd)) {
-		printf("%d\r\n", (int) BMP280_get_temperature());
-	}
-	else if (!strcmp("GET_P", (char*)cmd)) {
-		printf("%d\r\n", (int) BMP280_get_pressure());
-	}
-	else if (!strcmp("SET_K", (char*)cmd)) {
-	}
-	else if (!strcmp("GET_K", (char*)cmd)) {
-	}
-	else if (!strcmp("GET_A", (char*)cmd)) {
-		MPU_calcAttitude(&hi2c3);
-		printf("A:%.1f;%.1f;%.1f\r\n", attitude.r, attitude.p, attitude.y);
-	}
-	else {
-		printf("Unknown request: %s\r\n", cmd);
-	}
-}
-
 int angle = 0;
-const float proportional_coeff = 0.001;
+const float proportional_coeff = 0.0001;
 /**
  * @brief  Period elapsed callback in non-blocking mode.
  * @param  htim: TIM handle
@@ -173,11 +145,40 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 	if (htim->Instance == TIM2) // Check if the interrupt is from Timer 2
 	{
 		// Motor movement proportional to the temperature
-		angle += (int)(BMP280_get_temperature() * proportional_coeff)%360;
+		angle += (int)(BMP280_get_temperature() * proportional_coeff)%360 - 180;
 
 		// Sign and angle change to do complete rotations
-		if (angle>180) MOT_Rotate(angle-180, MOT_ANGLE_NEGATIVE);
-		if (angle<=180) MOT_Rotate(angle, MOT_ANGLE_POSITIVE);
+		if (angle>0) MOT_Rotate(angle, MOT_ANGLE_POSITIVE);
+		else if (angle<0) MOT_Rotate(-angle, MOT_ANGLE_NEGATIVE);
+	}
+}
+
+/**
+ * @brief  Process the command received from the Raspberry Pi over UART.
+ * @param	String to parse, of type char
+ * @retval	None
+ */
+void parse_RaspberryPI_Request(char* cmd)
+{
+	if (!strncmp(cmd, "GET_T", 5)) {
+		printf("T=+%.2f_C\r\n", (float) (BMP280_get_temperature()/100));
+	}
+	else if (!strncmp(cmd, "GET_P", 5)) {
+		printf("P=%dPa\r\n", (int) (BMP280_get_pressure()/256));
+	}
+	else if (!strncmp(cmd, "SET_K", 5)) {
+		MPU_calibrateGyro(&hi2c1, gyro_K);
+		printf("SET_K=OK\r\n");
+	}
+	else if (!strncmp(cmd, "GET_K", 5)) {
+		printf("K=%.5f\r\n", (float) gyro_K/100);
+	}
+	else if (!strncmp(cmd, "GET_A", 5)) {
+		MPU_calcAttitude(&hi2c1);
+		printf("A:%.1f;%.1f;%.1f\r\n", attitude.r, attitude.p, attitude.y);
+	}
+	else {
+		printf("Unknown request: %s\r\n", cmd);
 	}
 }
 
@@ -191,25 +192,9 @@ void HAL_UARTEx_RxEventCallback(UART_HandleTypeDef *huart, uint16_t Size)
 {
 	if (huart->Instance == USART1)
 	{
-		// Process received data
-		// Null-terminate the received string (prevent overflow)
-		if (Size < SERIAL_BUFF_SIZE) {
-			serial_buff[Size] = '\0';  // Null-terminate based on actual data size
-		} else {
-			serial_buff[SERIAL_BUFF_SIZE - 1] = '\0';
-		}
-
-		printf("Received (%d bytes): %s\r\n", Size, serial_buff);
-
-		if (strchr((char*)serial_buff, '\r') != NULL || strchr((char*)serial_buff, '\n') != NULL)
-		{
-			RaspberryPI_Request();
-			// Clear the buffer after processing
-			memset(serial_buff, 0, SERIAL_BUFF_SIZE);
-		}
-
-		// Restart DMA Reception
-		HAL_UARTEx_ReceiveToIdle_DMA(&huart1, serial_buff, SERIAL_BUFF_SIZE);
+		// Restart reception for the next byte
+		HAL_UARTEx_ReceiveToIdle_DMA(&huart1, (uint8_t*)serial_buff, sizeof(serial_buff));
+		parse_RaspberryPI_Request(serial_buff);
 	}
 }
 
@@ -248,8 +233,8 @@ int main(void)
 	MX_USART2_UART_Init();
 	MX_USART1_UART_Init();
 	MX_CAN1_Init();
-	MX_I2C3_Init();
 	MX_TIM2_Init();
+	MX_I2C1_Init();
 	/* USER CODE BEGIN 2 */
 	printf("\r\n=== TP Capteurs & Reseaux ===\r\n");
 	// Initialize external peripherals
@@ -260,8 +245,14 @@ int main(void)
 	// Enable Timer 2 IT
 	HAL_TIM_Base_Start_IT(&htim2);
 
+	/*
+	bufferIndex = 0;
 	// Start USART1 DMA reception
-	HAL_UARTEx_ReceiveToIdle_DMA(&huart1, serial_buff, SERIAL_BUFF_SIZE);
+	if (HAL_UARTEx_ReceiveToIdle_DMA(&huart1, rxByte, sizeof(rxByte)) != HAL_OK) {
+	    printf("DMA Reception Error!\r\n");
+	}
+	*/
+	HAL_UARTEx_ReceiveToIdle_DMA(&huart1, (uint8_t*)serial_buff, sizeof(serial_buff));
 	// Enable UART IDLE interrupt
 	__HAL_UART_ENABLE_IT(&huart1, UART_IT_IDLE);
 

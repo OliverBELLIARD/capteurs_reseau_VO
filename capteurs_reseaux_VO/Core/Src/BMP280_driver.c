@@ -26,7 +26,7 @@ int BMP280_Check_id(void)
 {
 	uint8_t buff[BUFF_SIZE];	// Buffer for the I2C communication
 	HAL_StatusTypeDef ret; 		// I2C operations status
-	hi2c_user = &hi2c3;			// I2C Handler used by the user
+	hi2c_user = &hi2c1;			// I2C Handler used by the user
 
 	buff[0] = BMP280_REG_ID;
 
@@ -58,7 +58,7 @@ int BMP280_Config(void)
 {
 	uint8_t buff[BUFF_SIZE];	// Buffer for the I2C communication
 	HAL_StatusTypeDef ret; 		// I2C operations status
-	hi2c_user = &hi2c3;			// I2C Handler used by the user
+	hi2c_user = &hi2c1;			// I2C Handler used by the user
 
 	buff[0]= BMP280_REG_MODE;
 	buff[1]= BMP280_CONFIG;
