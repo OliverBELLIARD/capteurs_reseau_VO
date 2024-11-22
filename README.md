@@ -306,7 +306,7 @@ Le Pi Zero est suffisamment peu puissant pour être alimenté par le port USB de
 ### Préparation du Raspberry
 Téléchargez l'image "Raspberry Pi OS (32-bit) Lite" et installez la sur la carte SD, disponible à cette adresse:  https://www.raspberrypi.org/downloads/raspberry-pi-os/.  
 
-Pour l'installation sur la carte SD, nous avons utilise : Rpi_Imager: https://www.raspberrypi.com/software/  
+Pour l'installation sur la carte SD, nous avons utilisé : Rpi_Imager: https://www.raspberrypi.com/software/  
 
 Rpi_imager va nous permettre de choisir l'image, de la télécharger et de la configurer.
 
@@ -314,13 +314,14 @@ Configuration réseau du routeur utilisé en TP :
 SSID : ESE_Bus_Network  
 Password : ilovelinux  
 
-Pour activer le port série sur connecteur GPIO, sur la partition boot, modifiez le fichier config.txt pour ajouter à la fin les lignes suivantes :  
+Pour activer le port série sur connecteur GPIO, sur la partition boot, on a modifié le fichier config.txt pour ajouter à la fin les lignes suivantes :  
 ```
 enable_uart=1  
 dtoverlay=disable-bt  
 ```
 ### Premier démarrage
-On installe la carte SD dans le Raspberry puis on branche l'alimentation.
+On installe la carte SD dans le Raspberry puis on branche l'alimentation.  
+On peut alors se connecter à notre Raspberry via SSH en utilisant ces IDs : 
 
 > utilisateur : voese  
 > mdp : voese  
@@ -344,27 +345,13 @@ Ensuite, dans la fichier cmdline.txt on doit retirer l'option "console=serial0,1
 
 Pour vérifier si le port série de la Raspberry fonctionne bien, on branche d'abord son TX et RX en loopback et on utilise la commande "minicom -D /dev/ttyAMA0" pour voir si les caractères qu'on rentre nous sont renvoyés, ce qui est vrai dans notre cas donc le port série de la Raspberry est correctement configuré. Pour voir l'attribution de notre arduino nous avons utilisé ce site : https://pinout.xyz/  
 
-On peut maintenant brancher les pins TX/RX de notre Raspberry sur le UART1 du STM32 et notre capteur en I2C sur la STM32. On pense au passage à ne pas oublier de ramener la masse commune à la Raspberry.
+On peut maintenant brancher les pins TX/RX de notre Raspberry sur le UART1 du STM32 et notre capteur en I2C sur la STM32. On pense au passage à ne pas oublier de ramener la masse commune à la Raspberry.  
 ## 3.2. Port Série
-### Loopback
-
-Branchez le port série du Raspberry en boucle: RX sur TX.
-
-Utilisez le logiciel minicom sur le raspberry pour tester le port série.
-
-minicom -D /dev/ttyAMA0 
-
-Une fois dans minicom configurer le port série en pressant CTRL+A suivi de O. Pensez à déactiver le contrôle de flux matériel (on utilise pas les lignes RTS/CTS).
-
-Écrire quelques lettres au clavier. Si elles s'affichent, le loopback fonctionne (essayez en le débranchant).
-
-CTRL+A Q pour quitter minicom.
-
 
 ### Communication avec la STM32
 /!\\ Attention : pour que le port UART utilisé pour la communication avec le PC (UART over USB) puisse fonctionner, les pins PA2 et PA3 ne sont pas par défaut connectés aux borniers CN9 et CN10. (C'est possible en jouant avec le fer à souder : doc Nucleo 64 page 27).
 
-C'est pourquoi nous devons utiliser un 2ᵉ port UART sur le STM32, qui servira à la communication avec le Raspberry Pi (comme indiqué lors du TP1). Nous avons modifié notre fonction `printf` pour quelle affiche sur les 2 ports série en même temps.
+C'est pourquoi nous devons utiliser un 2ᵉ port UART sur le STM32, qui servira à la communication avec le Raspberry Pi (comme indiqué lors du TP1). Nous avons modifié notre fonction `printf` pour qu'elle print sur les 2 ports série en même temps.  
 ```c
 /**
  * @brief  Transmit a character over UART.
@@ -391,15 +378,10 @@ Le protocole de communication entre le Raspberry et la STM32 est le suivant:
 
 Les valeurs compensées de P et T pourront être remplacées par les valeurs brutes hexadécimales sur 5 caractères  (20bits) suivis d'un "H", par exemple: T=7F54B2H
 
-Implémentez ce protocole dans le STM32.
-
-Branchez le STM32 sur le Raspberry en prenant soin de croiser les signaux RX et TX. Les 2 fonctionnent en 3,3V donc aucune adaptation de niveau est nécessaire.
-
-Testez ce protocole depuis le Raspberry à l'aide de minicom. Envoyez des ordres manuellement et vérifiez les valeurs renvoyées par le STM32.
-
 ## 3.3. Commande depuis Python
 
-Installez pip pour python3 sur le Raspberry:
+Finalement pour que notre Raspberry puisse héberger une interface  REST nous devons dans un premier installer dessus python 3 et plusieurs librairies :  
+
 ```c
 sudo apt update
 sudo apt install python3-pip
@@ -407,13 +389,10 @@ sudo apt install python3-pip
 Installez ensuite la bibliothèque pyserial:
 ```c
 pip3 install pyserial
-```
-À partir de là, la bibliothèque est accessible après: `import serial`
+```  
+À partir de là, la bibliothèque est accessible après avoir effectué un : `import serial`
   
-Plus d'info: https://pyserial.readthedocs.io/en/latest/shortintro.html  
-  
-
-Réalisez un script en Python3 qui permet communiquer avec le STM32. Idéalement, réalisez une fonction par ordre du protocole.  
+Plus d'info: https://pyserial.readthedocs.io/en/latest/shortintro.html   
 
 # 4. TP3 - Interface REST
 ## 4.1. Installation du serveur Python
