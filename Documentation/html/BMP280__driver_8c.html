@@ -21,7 +21,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">Bus et Réseaux - VO
+   <div id="projectname">Bus et Réseaux - VO<span id="projectnumber">&#160;TP5</span>
    </div>
    <div id="projectbrief">Projet des TP de bus et réseaux</div>
   </td>
@@ -75,6 +75,7 @@ $(function() {
 </div><!-- top -->
 <div class="header">
   <div class="summary">
+<a href="#define-members">Macros</a> &#124;
 <a href="#func-members">Functions</a> &#124;
 <a href="#var-members">Variables</a>  </div>
   <div class="headertitle"><div class="title">BMP280_driver.c File Reference</div></div>
@@ -94,6 +95,11 @@ Include dependency graph for BMP280_driver.c:</div>
 </div>
 <p><a href="BMP280__driver_8c_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="define-members" name="define-members"></a>
+Macros</h2></td></tr>
+<tr class="memitem:a42f8c497a1968074f38bf5055c650dca" id="r_a42f8c497a1968074f38bf5055c650dca"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="BMP280__driver_8c.html#a42f8c497a1968074f38bf5055c650dca">VERBOSE</a>&#160;&#160;&#160;0</td></tr>
+<tr class="separator:a42f8c497a1968074f38bf5055c650dca"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
 <tr class="memitem:a7e2d8e132c60f4de59663255cc0b8987" id="r_a7e2d8e132c60f4de59663255cc0b8987"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="BMP280__driver_8c.html#a7e2d8e132c60f4de59663255cc0b8987">BMP280_Check_id</a> (void)</td></tr>
@@ -102,9 +108,9 @@ Functions</h2></td></tr>
 <tr class="memitem:a39319860004e0f63b0d14f2f33a0119b" id="r_a39319860004e0f63b0d14f2f33a0119b"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="BMP280__driver_8c.html#a39319860004e0f63b0d14f2f33a0119b">BMP280_Config</a> (void)</td></tr>
 <tr class="memdesc:a39319860004e0f63b0d14f2f33a0119b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Configure the BMP280 sensor.  <br /></td></tr>
 <tr class="separator:a39319860004e0f63b0d14f2f33a0119b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a36c96244995f846115c0357dd9bf5dcc" id="r_a36c96244995f846115c0357dd9bf5dcc"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="BMP280__driver_8c.html#a36c96244995f846115c0357dd9bf5dcc">BMP280_calibration</a> (void)</td></tr>
-<tr class="memdesc:a36c96244995f846115c0357dd9bf5dcc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Update the calibration parameters of BMP280.  <br /></td></tr>
-<tr class="separator:a36c96244995f846115c0357dd9bf5dcc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa05648d9008b19b92cdec2f60d4c237a" id="r_aa05648d9008b19b92cdec2f60d4c237a"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="BMP280__driver_8c.html#aa05648d9008b19b92cdec2f60d4c237a">BMP280_calibration</a> (void)</td></tr>
+<tr class="memdesc:aa05648d9008b19b92cdec2f60d4c237a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Update the calibration parameters of BMP280.  <br /></td></tr>
+<tr class="separator:aa05648d9008b19b92cdec2f60d4c237a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a834859c5ae69b3526a0b585923956c46" id="r_a834859c5ae69b3526a0b585923956c46"><td class="memItemLeft" align="right" valign="top">BMP280_S32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="BMP280__driver_8c.html#a834859c5ae69b3526a0b585923956c46">BMP280_compensate_T_int32</a> (BMP280_S32_t adc_T)</td></tr>
 <tr class="memdesc:a834859c5ae69b3526a0b585923956c46"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compensate temperature reading from BMP280.  <br /></td></tr>
 <tr class="separator:a834859c5ae69b3526a0b585923956c46"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -160,15 +166,32 @@ Variables</h2></td></tr>
 <p>Created on: Oct 18, 2024 Author: oliver </p>
 
 <p class="definition">Definition in file <a class="el" href="BMP280__driver_8c_source.html">BMP280_driver.c</a>.</p>
-</div><h2 class="groupheader">Function Documentation</h2>
-<a id="a36c96244995f846115c0357dd9bf5dcc" name="a36c96244995f846115c0357dd9bf5dcc"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a36c96244995f846115c0357dd9bf5dcc">&#9670;&#160;</a></span>BMP280_calibration()</h2>
+</div><h2 class="groupheader">Macro Definition Documentation</h2>
+<a id="a42f8c497a1968074f38bf5055c650dca" name="a42f8c497a1968074f38bf5055c650dca"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a42f8c497a1968074f38bf5055c650dca">&#9670;&#160;</a></span>VERBOSE</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void BMP280_calibration </td>
+          <td class="memname">#define VERBOSE&#160;&#160;&#160;0</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="BMP280__driver_8c_source.html#l00013">13</a> of file <a class="el" href="BMP280__driver_8c_source.html">BMP280_driver.c</a>.</p>
+
+</div>
+</div>
+<h2 class="groupheader">Function Documentation</h2>
+<a id="aa05648d9008b19b92cdec2f60d4c237a" name="aa05648d9008b19b92cdec2f60d4c237a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa05648d9008b19b92cdec2f60d4c237a">&#9670;&#160;</a></span>BMP280_calibration()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int BMP280_calibration </td>
           <td>(</td>
           <td class="paramtype">void&#160;</td>
           <td class="paramname"></td><td>)</td>
@@ -181,6 +204,11 @@ Variables</h2></td></tr>
 <p>Reads calibration data from the BMP280 sensor and stores it in global variables for temperature and pressure compensation calculations. </p>
 
 <p class="definition">Definition at line <a class="el" href="BMP280__driver_8c_source.html#l00107">107</a> of file <a class="el" href="BMP280__driver_8c_source.html">BMP280_driver.c</a>.</p>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="BMP280__driver_8c_aa05648d9008b19b92cdec2f60d4c237a_icgraph.png" border="0" usemap="#aBMP280__driver_8c_aa05648d9008b19b92cdec2f60d4c237a_icgraph" alt=""/></div>
+</div>
 
 </div>
 </div>
@@ -205,6 +233,11 @@ Variables</h2></td></tr>
 <dl class="section return"><dt>Returns</dt><dd>int Returns EXIT_SUCCESS if ID is read successfully, otherwise returns EXIT_FAILURE. </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="BMP280__driver_8c_source.html#l00025">25</a> of file <a class="el" href="BMP280__driver_8c_source.html">BMP280_driver.c</a>.</p>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="BMP280__driver_8c_a7e2d8e132c60f4de59663255cc0b8987_icgraph.png" border="0" usemap="#aBMP280__driver_8c_a7e2d8e132c60f4de59663255cc0b8987_icgraph" alt=""/></div>
+</div>
 
 </div>
 </div>
@@ -234,7 +267,7 @@ Variables</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>BMP280_U32_t Compensated pressure in Pascals as a unsigned 32 bit integer (Output value of “24674867” represents 24674867/256 = 96386.2 Pa = 963.862 hPa). </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="BMP280__driver_8c_source.html#l00175">175</a> of file <a class="el" href="BMP280__driver_8c_source.html">BMP280_driver.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="BMP280__driver_8c_source.html#l00181">181</a> of file <a class="el" href="BMP280__driver_8c_source.html">BMP280_driver.c</a>.</p>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
@@ -269,7 +302,7 @@ Here is the caller graph for this function:</div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>BMP280_S32_t Compensated temperature in degrees Celsius, scaled by 100 (e.g., 5123 represents 51.23°C). </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="BMP280__driver_8c_source.html#l00154">154</a> of file <a class="el" href="BMP280__driver_8c_source.html">BMP280_driver.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="BMP280__driver_8c_source.html#l00160">160</a> of file <a class="el" href="BMP280__driver_8c_source.html">BMP280_driver.c</a>.</p>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
@@ -299,6 +332,11 @@ Here is the caller graph for this function:</div>
 <dl class="section return"><dt>Returns</dt><dd>int Returns EXIT_SUCCESS if configuration is confirmed, otherwise returns EXIT_FAILURE. </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="BMP280__driver_8c_source.html#l00057">57</a> of file <a class="el" href="BMP280__driver_8c_source.html">BMP280_driver.c</a>.</p>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="BMP280__driver_8c_a39319860004e0f63b0d14f2f33a0119b_icgraph.png" border="0" usemap="#aBMP280__driver_8c_a39319860004e0f63b0d14f2f33a0119b_icgraph" alt=""/></div>
+</div>
 
 </div>
 </div>
@@ -322,11 +360,16 @@ Here is the caller graph for this function:</div>
 <p>Reads the raw pressure data from the BMP280, compensates it, and returns the result. Prints both raw and compensated pressure values.</p>
 <dl class="section return"><dt>Returns</dt><dd>BMP280_S32_t Compensated pressure in Pascals. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="BMP280__driver_8c_source.html#l00299">299</a> of file <a class="el" href="BMP280__driver_8c_source.html">BMP280_driver.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="BMP280__driver_8c_source.html#l00309">309</a> of file <a class="el" href="BMP280__driver_8c_source.html">BMP280_driver.c</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="BMP280__driver_8c_a5ee7cd62db9e5e3ae5a20073af186812_cgraph.png" border="0" usemap="#aBMP280__driver_8c_a5ee7cd62db9e5e3ae5a20073af186812_cgraph" alt=""/></div>
+</div>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="BMP280__driver_8c_a5ee7cd62db9e5e3ae5a20073af186812_icgraph.png" border="0" usemap="#aBMP280__driver_8c_a5ee7cd62db9e5e3ae5a20073af186812_icgraph" alt=""/></div>
 </div>
 
 </div>
@@ -351,7 +394,7 @@ Here is the call graph for this function:</div>
 <p>Reads the raw temperature data from the BMP280, compensates it, and returns the result. Prints both raw and compensated temperature values.</p>
 <dl class="section return"><dt>Returns</dt><dd>BMP280_S32_t Compensated temperature in degrees Celsius, scaled by 100. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="BMP280__driver_8c_source.html#l00268">268</a> of file <a class="el" href="BMP280__driver_8c_source.html">BMP280_driver.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="BMP280__driver_8c_source.html#l00274">274</a> of file <a class="el" href="BMP280__driver_8c_source.html">BMP280_driver.c</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -402,7 +445,7 @@ Here is the caller graph for this function:</div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>uint8_t* Pointer to buffer with read data. The caller is responsible for freeing the buffer. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="BMP280__driver_8c_source.html#l00241">241</a> of file <a class="el" href="BMP280__driver_8c_source.html">BMP280_driver.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="BMP280__driver_8c_source.html#l00247">247</a> of file <a class="el" href="BMP280__driver_8c_source.html">BMP280_driver.c</a>.</p>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
@@ -448,7 +491,7 @@ Here is the caller graph for this function:</div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>int Returns EXIT_SUCCESS if value is successfully written, otherwise returns EXIT_FAILURE. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="BMP280__driver_8c_source.html#l00207">207</a> of file <a class="el" href="BMP280__driver_8c_source.html">BMP280_driver.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="BMP280__driver_8c_source.html#l00213">213</a> of file <a class="el" href="BMP280__driver_8c_source.html">BMP280_driver.c</a>.</p>
 
 </div>
 </div>
@@ -657,7 +700,7 @@ Here is the caller graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="BMP280__driver_8c_source.html#l00014">14</a> of file <a class="el" href="BMP280__driver_8c_source.html">BMP280_driver.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="BMP280__driver_8c_source.html#l00015">15</a> of file <a class="el" href="BMP280__driver_8c_source.html">BMP280_driver.c</a>.</p>
 
 </div>
 </div>

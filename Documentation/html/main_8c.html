@@ -21,7 +21,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">Bus et Réseaux - VO
+   <div id="projectname">Bus et Réseaux - VO<span id="projectnumber">&#160;TP5</span>
    </div>
    <div id="projectbrief">Projet des TP de bus et réseaux</div>
   </td>
@@ -76,7 +76,8 @@ $(function() {
 <div class="header">
   <div class="summary">
 <a href="#define-members">Macros</a> &#124;
-<a href="#func-members">Functions</a>  </div>
+<a href="#func-members">Functions</a> &#124;
+<a href="#var-members">Variables</a>  </div>
   <div class="headertitle"><div class="title">main.c File Reference</div></div>
 </div><!--header-->
 <div class="contents">
@@ -85,11 +86,14 @@ $(function() {
 <a href="#details">More...</a></p>
 <div class="textblock"><code>#include &quot;<a class="el" href="main_8h_source.html">main.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="can_8h_source.html">can.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="dma_8h_source.html">dma.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="i2c_8h_source.html">i2c.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="tim_8h_source.html">tim.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="usart_8h_source.html">usart.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="gpio_8h_source.html">gpio.h</a>&quot;</code><br />
 <code>#include &lt;stdio.h&gt;</code><br />
 <code>#include &lt;stdlib.h&gt;</code><br />
+<code>#include &lt;string.h&gt;</code><br />
 <code>#include &quot;<a class="el" href="BMP280__driver_8h_source.html">BMP280_driver.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="MPU9250__driver_8h_source.html">MPU9250_driver.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="motor__driver_8h_source.html">motor_driver.h</a>&quot;</code><br />
@@ -107,6 +111,12 @@ Macros</h2></td></tr>
 <tr class="separator:aa8cecfc5c5c054d2875c03e77b7be15d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa93f0eb578d23995850d61f7d61c55c1" id="r_aa93f0eb578d23995850d61f7d61c55c1"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="main_8c.html#aa93f0eb578d23995850d61f7d61c55c1">FALSE</a>&#160;&#160;&#160;0</td></tr>
 <tr class="separator:aa93f0eb578d23995850d61f7d61c55c1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a42f8c497a1968074f38bf5055c650dca" id="r_a42f8c497a1968074f38bf5055c650dca"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="main_8c.html#a42f8c497a1968074f38bf5055c650dca">VERBOSE</a>&#160;&#160;&#160;0</td></tr>
+<tr class="separator:a42f8c497a1968074f38bf5055c650dca"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3378cada74dea34e3b772d7946e9978c" id="r_a3378cada74dea34e3b772d7946e9978c"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="main_8c.html#a3378cada74dea34e3b772d7946e9978c">SERIAL_BUFF_SIZE</a>&#160;&#160;&#160;7</td></tr>
+<tr class="separator:a3378cada74dea34e3b772d7946e9978c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a02d0e6ddbe27a99f97f19798427add2d" id="r_a02d0e6ddbe27a99f97f19798427add2d"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="main_8c.html#a02d0e6ddbe27a99f97f19798427add2d">GYRO_CAL_POINTS</a>&#160;&#160;&#160;1500</td></tr>
+<tr class="separator:a02d0e6ddbe27a99f97f19798427add2d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
@@ -114,19 +124,43 @@ Functions</h2></td></tr>
 <tr class="memdesc:a70af21c671abfcc773614a9a4f63d920"><td class="mdescLeft">&#160;</td><td class="mdescRight">System Clock Configuration.  <br /></td></tr>
 <tr class="separator:a70af21c671abfcc773614a9a4f63d920"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abc513dd972081ae765b6949a62872eb7" id="r_abc513dd972081ae765b6949a62872eb7"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="main_8c.html#abc513dd972081ae765b6949a62872eb7">__io_putchar</a> (int ch)</td></tr>
+<tr class="memdesc:abc513dd972081ae765b6949a62872eb7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Transmit a character over UART.  <br /></td></tr>
 <tr class="separator:abc513dd972081ae765b6949a62872eb7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae3168b9163675628a89fc1e422de4b5e" id="r_ae3168b9163675628a89fc1e422de4b5e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="main_8c.html#ae3168b9163675628a89fc1e422de4b5e">BMP280_init</a> ()</td></tr>
-<tr class="separator:ae3168b9163675628a89fc1e422de4b5e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa4bbab1f0ca72971d0db94c1287af007" id="r_aa4bbab1f0ca72971d0db94c1287af007"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="main_8c.html#aa4bbab1f0ca72971d0db94c1287af007">BMP280_init</a> ()</td></tr>
+<tr class="memdesc:aa4bbab1f0ca72971d0db94c1287af007"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize BMP280 sensor.  <br /></td></tr>
+<tr class="separator:aa4bbab1f0ca72971d0db94c1287af007"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aea5e73ce5da71b09a981bfa9118ba050" id="r_aea5e73ce5da71b09a981bfa9118ba050"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="main_8c.html#aea5e73ce5da71b09a981bfa9118ba050">MPU9250_init</a> ()</td></tr>
+<tr class="memdesc:aea5e73ce5da71b09a981bfa9118ba050"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize the MPU9250 sensor.  <br /></td></tr>
 <tr class="separator:aea5e73ce5da71b09a981bfa9118ba050"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2423e6b09704c3b8497e776a963ebf90" id="r_a2423e6b09704c3b8497e776a963ebf90"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="main_8c.html#a2423e6b09704c3b8497e776a963ebf90">MOT_Init</a> ()</td></tr>
+<tr class="memdesc:a2423e6b09704c3b8497e776a963ebf90"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize the motor driver and CAN interface.  <br /></td></tr>
 <tr class="separator:a2423e6b09704c3b8497e776a963ebf90"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8a3b0ad512a6e6c6157440b68d395eac" id="r_a8a3b0ad512a6e6c6157440b68d395eac"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="main_8c.html#a8a3b0ad512a6e6c6157440b68d395eac">HAL_TIM_PeriodElapsedCallback</a> (TIM_HandleTypeDef *htim)</td></tr>
+<tr class="memdesc:a8a3b0ad512a6e6c6157440b68d395eac"><td class="mdescLeft">&#160;</td><td class="mdescRight">Period elapsed callback in non-blocking mode.  <br /></td></tr>
+<tr class="separator:a8a3b0ad512a6e6c6157440b68d395eac"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a75af9e57cfa16fd38d92042718961e54" id="r_a75af9e57cfa16fd38d92042718961e54"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="main_8c.html#a75af9e57cfa16fd38d92042718961e54">parse_RaspberryPI_Request</a> (char *cmd)</td></tr>
+<tr class="memdesc:a75af9e57cfa16fd38d92042718961e54"><td class="mdescLeft">&#160;</td><td class="mdescRight">Process the command received from the Raspberry Pi over UART.  <br /></td></tr>
+<tr class="separator:a75af9e57cfa16fd38d92042718961e54"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a925534fb8bf7ca464fd05c982fe4bfa0" id="r_a925534fb8bf7ca464fd05c982fe4bfa0"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="main_8c.html#a925534fb8bf7ca464fd05c982fe4bfa0">HAL_UARTEx_RxEventCallback</a> (UART_HandleTypeDef *huart, uint16_t Size)</td></tr>
+<tr class="memdesc:a925534fb8bf7ca464fd05c982fe4bfa0"><td class="mdescLeft">&#160;</td><td class="mdescRight">UART Receive Event callback function. It processes received data from USART1.  <br /></td></tr>
+<tr class="separator:a925534fb8bf7ca464fd05c982fe4bfa0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a840291bc02cba5474a4cb46a9b9566fe" id="r_a840291bc02cba5474a4cb46a9b9566fe"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="main_8c.html#a840291bc02cba5474a4cb46a9b9566fe">main</a> (void)</td></tr>
 <tr class="memdesc:a840291bc02cba5474a4cb46a9b9566fe"><td class="mdescLeft">&#160;</td><td class="mdescRight">The application entry point.  <br /></td></tr>
 <tr class="separator:a840291bc02cba5474a4cb46a9b9566fe"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1730ffe1e560465665eb47d9264826f9" id="r_a1730ffe1e560465665eb47d9264826f9"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="main_8c.html#a1730ffe1e560465665eb47d9264826f9">Error_Handler</a> (void)</td></tr>
 <tr class="memdesc:a1730ffe1e560465665eb47d9264826f9"><td class="mdescLeft">&#160;</td><td class="mdescRight">This function is executed in case of error occurrence.  <br /></td></tr>
 <tr class="separator:a1730ffe1e560465665eb47d9264826f9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="var-members" name="var-members"></a>
+Variables</h2></td></tr>
+<tr class="memitem:aeb016710a7f49ee941c22d68f48e40e1" id="r_aeb016710a7f49ee941c22d68f48e40e1"><td class="memItemLeft" align="right" valign="top">char&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="main_8c.html#aeb016710a7f49ee941c22d68f48e40e1">serial_buff</a> [SERIAL_BUFF_SIZE]</td></tr>
+<tr class="separator:aeb016710a7f49ee941c22d68f48e40e1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aba786303f859db8c5a19c24994390c81" id="r_aba786303f859db8c5a19c24994390c81"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="main_8c.html#aba786303f859db8c5a19c24994390c81">gyro_K</a> = 0</td></tr>
+<tr class="separator:aba786303f859db8c5a19c24994390c81"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a63177970cacb40efba67ce501ea89210" id="r_a63177970cacb40efba67ce501ea89210"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="main_8c.html#a63177970cacb40efba67ce501ea89210">angle</a> = 0</td></tr>
+<tr class="separator:a63177970cacb40efba67ce501ea89210"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2c1544c90194616f5706c3a6df94f6d8" id="r_a2c1544c90194616f5706c3a6df94f6d8"><td class="memItemLeft" align="right" valign="top">const float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="main_8c.html#a2c1544c90194616f5706c3a6df94f6d8">proportional_coeff</a> = 0.0001</td></tr>
+<tr class="separator:a2c1544c90194616f5706c3a6df94f6d8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>: Main program body </p>
@@ -148,7 +182,39 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="main_8c_source.html#l00044">44</a> of file <a class="el" href="main_8c_source.html">main.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="main_8c_source.html#l00047">47</a> of file <a class="el" href="main_8c_source.html">main.c</a>.</p>
+
+</div>
+</div>
+<a id="a02d0e6ddbe27a99f97f19798427add2d" name="a02d0e6ddbe27a99f97f19798427add2d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a02d0e6ddbe27a99f97f19798427add2d">&#9670;&#160;</a></span>GYRO_CAL_POINTS</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define GYRO_CAL_POINTS&#160;&#160;&#160;1500</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="main_8c_source.html#l00052">52</a> of file <a class="el" href="main_8c_source.html">main.c</a>.</p>
+
+</div>
+</div>
+<a id="a3378cada74dea34e3b772d7946e9978c" name="a3378cada74dea34e3b772d7946e9978c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3378cada74dea34e3b772d7946e9978c">&#9670;&#160;</a></span>SERIAL_BUFF_SIZE</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define SERIAL_BUFF_SIZE&#160;&#160;&#160;7</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="main_8c_source.html#l00050">50</a> of file <a class="el" href="main_8c_source.html">main.c</a>.</p>
 
 </div>
 </div>
@@ -164,7 +230,23 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="main_8c_source.html#l00043">43</a> of file <a class="el" href="main_8c_source.html">main.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="main_8c_source.html#l00046">46</a> of file <a class="el" href="main_8c_source.html">main.c</a>.</p>
+
+</div>
+</div>
+<a id="a42f8c497a1968074f38bf5055c650dca" name="a42f8c497a1968074f38bf5055c650dca"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a42f8c497a1968074f38bf5055c650dca">&#9670;&#160;</a></span>VERBOSE</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define VERBOSE&#160;&#160;&#160;0</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="main_8c_source.html#l00048">48</a> of file <a class="el" href="main_8c_source.html">main.c</a>.</p>
 
 </div>
 </div>
@@ -185,18 +267,32 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="main_8c_source.html#l00067">67</a> of file <a class="el" href="main_8c_source.html">main.c</a>.</p>
+<p>Transmit a character over UART. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">ch</td><td>Character to transmit. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="retval"><dt>Return values</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">int</td><td>The transmitted character. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p class="definition">Definition at line <a class="el" href="main_8c_source.html#l00083">83</a> of file <a class="el" href="main_8c_source.html">main.c</a>.</p>
 
 </div>
 </div>
-<a id="ae3168b9163675628a89fc1e422de4b5e" name="ae3168b9163675628a89fc1e422de4b5e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae3168b9163675628a89fc1e422de4b5e">&#9670;&#160;</a></span>BMP280_init()</h2>
+<a id="aa4bbab1f0ca72971d0db94c1287af007" name="aa4bbab1f0ca72971d0db94c1287af007"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa4bbab1f0ca72971d0db94c1287af007">&#9670;&#160;</a></span>BMP280_init()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void BMP280_init </td>
+          <td class="memname">int BMP280_init </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -204,7 +300,25 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="main_8c_source.html#l00075">75</a> of file <a class="el" href="main_8c_source.html">main.c</a>.</p>
+<p>Initialize BMP280 sensor. </p>
+<dl class="retval"><dt>Return values</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">int</td><td>EXIT_SUCCESS if initialization is successful, EXIT_FAILURE if failed. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p class="definition">Definition at line <a class="el" href="main_8c_source.html#l00095">95</a> of file <a class="el" href="main_8c_source.html">main.c</a>.</p>
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="main_8c_aa4bbab1f0ca72971d0db94c1287af007_cgraph.png" border="0" usemap="#amain_8c_aa4bbab1f0ca72971d0db94c1287af007_cgraph" alt=""/></div>
+</div>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="main_8c_aa4bbab1f0ca72971d0db94c1287af007_icgraph.png" border="0" usemap="#amain_8c_aa4bbab1f0ca72971d0db94c1287af007_icgraph" alt=""/></div>
+</div>
 
 </div>
 </div>
@@ -232,11 +346,100 @@ Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="main_8c_source.html#l00223">223</a> of file <a class="el" href="main_8c_source.html">main.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="main_8c_source.html#l00322">322</a> of file <a class="el" href="main_8c_source.html">main.c</a>.</p>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="main_8c_a1730ffe1e560465665eb47d9264826f9_icgraph.png" border="0" usemap="#amain_8c_a1730ffe1e560465665eb47d9264826f9_icgraph" alt=""/></div>
+</div>
+
+</div>
+</div>
+<a id="a8a3b0ad512a6e6c6157440b68d395eac" name="a8a3b0ad512a6e6c6157440b68d395eac"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8a3b0ad512a6e6c6157440b68d395eac">&#9670;&#160;</a></span>HAL_TIM_PeriodElapsedCallback()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void HAL_TIM_PeriodElapsedCallback </td>
+          <td>(</td>
+          <td class="paramtype">TIM_HandleTypeDef *&#160;</td>
+          <td class="paramname"><em>htim</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Period elapsed callback in non-blocking mode. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">htim</td><td>TIM handle </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="retval"><dt>Return values</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">None</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p class="definition">Definition at line <a class="el" href="main_8c_source.html#l00144">144</a> of file <a class="el" href="main_8c_source.html">main.c</a>.</p>
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="main_8c_a8a3b0ad512a6e6c6157440b68d395eac_cgraph.png" border="0" usemap="#amain_8c_a8a3b0ad512a6e6c6157440b68d395eac_cgraph" alt=""/></div>
+</div>
+
+</div>
+</div>
+<a id="a925534fb8bf7ca464fd05c982fe4bfa0" name="a925534fb8bf7ca464fd05c982fe4bfa0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a925534fb8bf7ca464fd05c982fe4bfa0">&#9670;&#160;</a></span>HAL_UARTEx_RxEventCallback()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void HAL_UARTEx_RxEventCallback </td>
+          <td>(</td>
+          <td class="paramtype">UART_HandleTypeDef *&#160;</td>
+          <td class="paramname"><em>huart</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint16_t&#160;</td>
+          <td class="paramname"><em>Size</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>UART Receive Event callback function. It processes received data from USART1. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">huart</td><td>Pointer to the UART handle. </td></tr>
+    <tr><td class="paramname">Size</td><td>Size of received data. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="retval"><dt>Return values</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">None</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p class="definition">Definition at line <a class="el" href="main_8c_source.html#l00192">192</a> of file <a class="el" href="main_8c_source.html">main.c</a>.</p>
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="main_8c_a925534fb8bf7ca464fd05c982fe4bfa0_cgraph.png" border="0" usemap="#amain_8c_a925534fb8bf7ca464fd05c982fe4bfa0_cgraph" alt=""/></div>
 </div>
 
 </div>
@@ -265,7 +468,7 @@ Here is the caller graph for this function:</div>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="main_8c_source.html#l00115">115</a> of file <a class="el" href="main_8c_source.html">main.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="main_8c_source.html#l00208">208</a> of file <a class="el" href="main_8c_source.html">main.c</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -289,7 +492,25 @@ Here is the call graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="main_8c_source.html#l00102">102</a> of file <a class="el" href="main_8c_source.html">main.c</a>.</p>
+<p>Initialize the motor driver and CAN interface. </p>
+<dl class="retval"><dt>Return values</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">None</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p class="definition">Definition at line <a class="el" href="main_8c_source.html#l00130">130</a> of file <a class="el" href="main_8c_source.html">main.c</a>.</p>
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="main_8c_a2423e6b09704c3b8497e776a963ebf90_cgraph.png" border="0" usemap="#amain_8c_a2423e6b09704c3b8497e776a963ebf90_cgraph" alt=""/></div>
+</div>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="main_8c_a2423e6b09704c3b8497e776a963ebf90_icgraph.png" border="0" usemap="#amain_8c_a2423e6b09704c3b8497e776a963ebf90_icgraph" alt=""/></div>
+</div>
 
 </div>
 </div>
@@ -308,7 +529,69 @@ Here is the call graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="main_8c_source.html#l00085">85</a> of file <a class="el" href="main_8c_source.html">main.c</a>.</p>
+<p>Initialize the MPU9250 sensor. </p>
+<dl class="retval"><dt>Return values</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">None</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p class="definition">Definition at line <a class="el" href="main_8c_source.html#l00108">108</a> of file <a class="el" href="main_8c_source.html">main.c</a>.</p>
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="main_8c_aea5e73ce5da71b09a981bfa9118ba050_cgraph.png" border="0" usemap="#amain_8c_aea5e73ce5da71b09a981bfa9118ba050_cgraph" alt=""/></div>
+</div>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="main_8c_aea5e73ce5da71b09a981bfa9118ba050_icgraph.png" border="0" usemap="#amain_8c_aea5e73ce5da71b09a981bfa9118ba050_icgraph" alt=""/></div>
+</div>
+
+</div>
+</div>
+<a id="a75af9e57cfa16fd38d92042718961e54" name="a75af9e57cfa16fd38d92042718961e54"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a75af9e57cfa16fd38d92042718961e54">&#9670;&#160;</a></span>parse_RaspberryPI_Request()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void parse_RaspberryPI_Request </td>
+          <td>(</td>
+          <td class="paramtype">char *&#160;</td>
+          <td class="paramname"><em>cmd</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Process the command received from the Raspberry Pi over UART. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">String</td><td>to parse, of type char </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="retval"><dt>Return values</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">None</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p class="definition">Definition at line <a class="el" href="main_8c_source.html#l00162">162</a> of file <a class="el" href="main_8c_source.html">main.c</a>.</p>
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="main_8c_a75af9e57cfa16fd38d92042718961e54_cgraph.png" border="0" usemap="#amain_8c_a75af9e57cfa16fd38d92042718961e54_cgraph" alt=""/></div>
+</div>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="main_8c_a75af9e57cfa16fd38d92042718961e54_icgraph.png" border="0" usemap="#amain_8c_a75af9e57cfa16fd38d92042718961e54_icgraph" alt=""/></div>
+</div>
 
 </div>
 </div>
@@ -339,7 +622,7 @@ Here is the call graph for this function:</div>
 <p>Initializes the RCC Oscillators according to the specified parameters in the RCC_OscInitTypeDef structure.</p>
 <p>Initializes the CPU, AHB and APB buses clocks</p>
 
-<p class="definition">Definition at line <a class="el" href="main_8c_source.html#l00172">172</a> of file <a class="el" href="main_8c_source.html">main.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="main_8c_source.html#l00271">271</a> of file <a class="el" href="main_8c_source.html">main.c</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -350,6 +633,71 @@ Here is the caller graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="main_8c_a70af21c671abfcc773614a9a4f63d920_icgraph.png" border="0" usemap="#amain_8c_a70af21c671abfcc773614a9a4f63d920_icgraph" alt=""/></div>
 </div>
+
+</div>
+</div>
+<h2 class="groupheader">Variable Documentation</h2>
+<a id="a63177970cacb40efba67ce501ea89210" name="a63177970cacb40efba67ce501ea89210"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a63177970cacb40efba67ce501ea89210">&#9670;&#160;</a></span>angle</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int angle = 0</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="main_8c_source.html#l00137">137</a> of file <a class="el" href="main_8c_source.html">main.c</a>.</p>
+
+</div>
+</div>
+<a id="aba786303f859db8c5a19c24994390c81" name="aba786303f859db8c5a19c24994390c81"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aba786303f859db8c5a19c24994390c81">&#9670;&#160;</a></span>gyro_K</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int gyro_K = 0</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="main_8c_source.html#l00066">66</a> of file <a class="el" href="main_8c_source.html">main.c</a>.</p>
+
+</div>
+</div>
+<a id="a2c1544c90194616f5706c3a6df94f6d8" name="a2c1544c90194616f5706c3a6df94f6d8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2c1544c90194616f5706c3a6df94f6d8">&#9670;&#160;</a></span>proportional_coeff</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const float proportional_coeff = 0.0001</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="main_8c_source.html#l00138">138</a> of file <a class="el" href="main_8c_source.html">main.c</a>.</p>
+
+</div>
+</div>
+<a id="aeb016710a7f49ee941c22d68f48e40e1" name="aeb016710a7f49ee941c22d68f48e40e1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aeb016710a7f49ee941c22d68f48e40e1">&#9670;&#160;</a></span>serial_buff</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">char serial_buff[SERIAL_BUFF_SIZE]</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="main_8c_source.html#l00064">64</a> of file <a class="el" href="main_8c_source.html">main.c</a>.</p>
 
 </div>
 </div>

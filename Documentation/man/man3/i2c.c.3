@@ -1,4 +1,4 @@
-.TH "/home/oliver/Documents/3A/capteurs_reseaux_VO_ESE_TP2/capteurs_reseaux_VO/Core/Src/i2c.c" 3 "Bus et Réseaux - VO" \" -*- nroff -*-
+.TH "/home/oliver/Documents/3A/capteurs_reseaux_VO_ESE_TP2/capteurs_reseaux_VO/Core/Src/i2c.c" 3 "Version TP5" "Bus et Réseaux - VO" \" -*- nroff -*-
 .ad l
 .nh
 .SH NAME
@@ -14,7 +14,7 @@
 
 .in +1c
 .ti -1c
-.RI "void \fBMX_I2C3_Init\fP (void)"
+.RI "void \fBMX_I2C1_Init\fP (void)"
 .br
 .ti -1c
 .RI "void \fBHAL_I2C_MspInit\fP (I2C_HandleTypeDef *i2cHandle)"
@@ -27,7 +27,7 @@
 
 .in +1c
 .ti -1c
-.RI "I2C_HandleTypeDef \fBhi2c3\fP"
+.RI "I2C_HandleTypeDef \fBhi2c1\fP"
 .br
 .in -1c
 .SH "Detailed Description"
@@ -49,20 +49,20 @@ Definition in file \fBi2c\&.c\fP\&.
 .SH "Function Documentation"
 .PP 
 .SS "void HAL_I2C_MspDeInit (I2C_HandleTypeDef * i2cHandle)"
-I2C3 GPIO Configuration PA8 ------> I2C3_SCL PB4 ------> I2C3_SDA
+I2C1 GPIO Configuration PB6 ------> I2C1_SCL PB7 ------> I2C1_SDA
 .PP
-Definition at line \fB97\fP of file \fBi2c\&.c\fP\&.
+Definition at line \fB89\fP of file \fBi2c\&.c\fP\&.
 .SS "void HAL_I2C_MspInit (I2C_HandleTypeDef * i2cHandle)"
-I2C3 GPIO Configuration PA8 ------> I2C3_SCL PB4 ------> I2C3_SDA
+I2C1 GPIO Configuration PB6 ------> I2C1_SCL PB7 ------> I2C1_SDA
 .PP
 Definition at line \fB59\fP of file \fBi2c\&.c\fP\&.
-.SS "void MX_I2C3_Init (void)"
+.SS "void MX_I2C1_Init (void)"
 
 .PP
 Definition at line \fB30\fP of file \fBi2c\&.c\fP\&.
 .SH "Variable Documentation"
 .PP 
-.SS "I2C_HandleTypeDef hi2c3"
+.SS "I2C_HandleTypeDef hi2c1"
 
 .PP
 Definition at line \fB27\fP of file \fBi2c\&.c\fP\&.

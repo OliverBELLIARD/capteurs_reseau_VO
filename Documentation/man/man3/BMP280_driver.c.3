@@ -1,4 +1,4 @@
-.TH "/home/oliver/Documents/3A/capteurs_reseaux_VO_ESE_TP2/capteurs_reseaux_VO/Core/Src/BMP280_driver.c" 3 "Bus et Réseaux - VO" \" -*- nroff -*-
+.TH "/home/oliver/Documents/3A/capteurs_reseaux_VO_ESE_TP2/capteurs_reseaux_VO/Core/Src/BMP280_driver.c" 3 "Version TP5" "Bus et Réseaux - VO" \" -*- nroff -*-
 .ad l
 .nh
 .SH NAME
@@ -14,6 +14,13 @@
 \fC#include 'BMP280_driver\&.h'\fP
 .br
 
+.SS "Macros"
+
+.in +1c
+.ti -1c
+.RI "#define \fBVERBOSE\fP   0"
+.br
+.in -1c
 .SS "Functions"
 
 .in +1c
@@ -26,7 +33,7 @@
 .br
 .RI "Configure the BMP280 sensor\&. "
 .ti -1c
-.RI "void \fBBMP280_calibration\fP (void)"
+.RI "int \fBBMP280_calibration\fP (void)"
 .br
 .RI "Update the calibration parameters of BMP280\&. "
 .ti -1c
@@ -107,9 +114,15 @@
 Created on: Oct 18, 2024 Author: oliver 
 .PP
 Definition in file \fBBMP280_driver\&.c\fP\&.
+.SH "Macro Definition Documentation"
+.PP 
+.SS "#define VERBOSE   0"
+
+.PP
+Definition at line \fB13\fP of file \fBBMP280_driver\&.c\fP\&.
 .SH "Function Documentation"
 .PP 
-.SS "void BMP280_calibration (void)"
+.SS "int BMP280_calibration (void)"
 
 .PP
 Update the calibration parameters of BMP280\&. Reads calibration data from the BMP280 sensor and stores it in global variables for temperature and pressure compensation calculations\&. 
@@ -145,7 +158,7 @@ BMP280_U32_t Compensated pressure in Pascals as a unsigned 32 bit integer (Outpu
 .PP
 
 .PP
-Definition at line \fB175\fP of file \fBBMP280_driver\&.c\fP\&.
+Definition at line \fB181\fP of file \fBBMP280_driver\&.c\fP\&.
 .SS "BMP280_S32_t BMP280_compensate_T_int32 (BMP280_S32_t adc_T)"
 
 .PP
@@ -163,7 +176,7 @@ BMP280_S32_t Compensated temperature in degrees Celsius, scaled by 100 (e\&.g\&.
 .PP
 
 .PP
-Definition at line \fB154\fP of file \fBBMP280_driver\&.c\fP\&.
+Definition at line \fB160\fP of file \fBBMP280_driver\&.c\fP\&.
 .SS "int BMP280_Config (void)"
 
 .PP
@@ -189,7 +202,7 @@ BMP280_S32_t Compensated pressure in Pascals\&.
 .PP
 
 .PP
-Definition at line \fB299\fP of file \fBBMP280_driver\&.c\fP\&.
+Definition at line \fB309\fP of file \fBBMP280_driver\&.c\fP\&.
 .SS "BMP280_S32_t BMP280_get_temperature (void)"
 
 .PP
@@ -202,7 +215,7 @@ BMP280_S32_t Compensated temperature in degrees Celsius, scaled by 100\&.
 .PP
 
 .PP
-Definition at line \fB268\fP of file \fBBMP280_driver\&.c\fP\&.
+Definition at line \fB274\fP of file \fBBMP280_driver\&.c\fP\&.
 .SS "uint8_t * BMP280_Read_Reg (uint8_t reg, uint8_t length)"
 
 .PP
@@ -222,7 +235,7 @@ uint8_t* Pointer to buffer with read data\&. The caller is responsible for freei
 .PP
 
 .PP
-Definition at line \fB241\fP of file \fBBMP280_driver\&.c\fP\&.
+Definition at line \fB247\fP of file \fBBMP280_driver\&.c\fP\&.
 .SS "int BMP280_Write_Reg (uint8_t reg, uint8_t value)"
 
 .PP
@@ -242,7 +255,7 @@ int Returns EXIT_SUCCESS if value is successfully written, otherwise returns EXI
 .PP
 
 .PP
-Definition at line \fB207\fP of file \fBBMP280_driver\&.c\fP\&.
+Definition at line \fB213\fP of file \fBBMP280_driver\&.c\fP\&.
 .SH "Variable Documentation"
 .PP 
 .SS "uint16_t dig_P1"
@@ -296,7 +309,7 @@ Definition at line \fB88\fP of file \fBBMP280_driver\&.c\fP\&.
 .SS "I2C_HandleTypeDef* hi2c_user"
 
 .PP
-Definition at line \fB14\fP of file \fBBMP280_driver\&.c\fP\&.
+Definition at line \fB15\fP of file \fBBMP280_driver\&.c\fP\&.
 .SS "BMP280_S32_t t_fine"
 
 .PP

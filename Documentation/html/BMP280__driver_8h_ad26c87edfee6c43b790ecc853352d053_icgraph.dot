@@ -9,5 +9,9 @@ digraph "BMP280_compensate_T_int32"
   Node1 -> Node2 [id="edge1_Node000001_Node000002",dir="back",color="steelblue1",style="solid",tooltip=" "];
   Node2 [id="Node000002",label="BMP280_get_temperature",height=0.2,width=0.4,color="grey40", fillcolor="white", style="filled",URL="$BMP280__driver_8c.html#a9ad63608e8acf7960d27522dd0b207e7",tooltip="Get the compensated temperature in degrees Celsius."];
   Node2 -> Node3 [id="edge2_Node000002_Node000003",dir="back",color="steelblue1",style="solid",tooltip=" "];
-  Node3 [id="Node000003",label="main",height=0.2,width=0.4,color="grey40", fillcolor="white", style="filled",URL="$main_8c.html#a840291bc02cba5474a4cb46a9b9566fe",tooltip="The application entry point."];
+  Node3 [id="Node000003",label="HAL_TIM_PeriodElapsedCallback",height=0.2,width=0.4,color="grey40", fillcolor="white", style="filled",URL="$main_8c.html#a8a3b0ad512a6e6c6157440b68d395eac",tooltip="Period elapsed callback in non-blocking mode."];
+  Node2 -> Node4 [id="edge3_Node000002_Node000004",dir="back",color="steelblue1",style="solid",tooltip=" "];
+  Node4 [id="Node000004",label="parse_RaspberryPI_Request",height=0.2,width=0.4,color="grey40", fillcolor="white", style="filled",URL="$main_8c.html#a75af9e57cfa16fd38d92042718961e54",tooltip="Process the command received from the Raspberry Pi over UART."];
+  Node4 -> Node5 [id="edge4_Node000004_Node000005",dir="back",color="steelblue1",style="solid",tooltip=" "];
+  Node5 [id="Node000005",label="HAL_UARTEx_RxEventCallback",height=0.2,width=0.4,color="grey40", fillcolor="white", style="filled",URL="$main_8c.html#a925534fb8bf7ca464fd05c982fe4bfa0",tooltip="UART Receive Event callback function. It processes received data from USART1."];
 }

@@ -1,4 +1,4 @@
-.TH "/home/oliver/Documents/3A/capteurs_reseaux_VO_ESE_TP2/capteurs_reseaux_VO/Core/Src/syscalls.c" 3 "Bus et Réseaux - VO" \" -*- nroff -*-
+.TH "/home/oliver/Documents/3A/capteurs_reseaux_VO_ESE_TP2/capteurs_reseaux_VO/Core/Src/syscalls.c" 3 "Version TP5" "Bus et Réseaux - VO" \" -*- nroff -*-
 .ad l
 .nh
 .SH NAME
@@ -30,6 +30,7 @@
 .ti -1c
 .RI "int \fB__io_putchar\fP (int ch) __attribute__((weak))"
 .br
+.RI "Transmit a character over UART\&. "
 .ti -1c
 .RI "int \fB__io_getchar\fP (void)"
 .br
@@ -134,7 +135,21 @@ Definition at line \fB36\fP of file \fBsyscalls\&.c\fP\&.
 .SS "int __io_putchar (int ch)\fC [extern]\fP"
 
 .PP
-Definition at line \fB67\fP of file \fBmain\&.c\fP\&.
+Transmit a character over UART\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIch\fP Character to transmit\&. 
+.RE
+.PP
+\fBReturn values\fP
+.RS 4
+\fIint\fP The transmitted character\&. 
+.RE
+.PP
+
+.PP
+Definition at line \fB83\fP of file \fBmain\&.c\fP\&.
 .SS "int _close (int file)"
 
 .PP

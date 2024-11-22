@@ -25,6 +25,27 @@ void \mbox{\hyperlink{MPU9250__driver_8c_a0b9572bcd1f2755e895204e9bdcc313f}{MPU\
 \begin{DoxyCompactList}\small\item\em Calculate the real world sensor values. \end{DoxyCompactList}\item 
 void \mbox{\hyperlink{MPU9250__driver_8c_a9e48249ac6c48ba5b4e1816e67d8807f}{MPU\+\_\+calc\+Attitude}} (I2\+C\+\_\+\+Handle\+Type\+Def \texorpdfstring{$\ast$}{*}I2\+Cx)
 \begin{DoxyCompactList}\small\item\em Calculate the attitude of the sensor in degrees using a complementary filter. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{structRawData}{Raw\+Data}} \mbox{\hyperlink{MPU9250__driver_8c_af8b332d9548f9e358e689ca66916ecdc}{raw\+Data}}
+\item 
+struct \mbox{\hyperlink{structSensorData}{Sensor\+Data}} \mbox{\hyperlink{MPU9250__driver_8c_a86aba6b52546191382ef191cb35e2215}{sensor\+Data}}
+\item 
+struct \mbox{\hyperlink{structGyroCal}{Gyro\+Cal}} \mbox{\hyperlink{MPU9250__driver_8c_af5841326de5e20e01a05a58b4642cf7d}{gyro\+Cal}}
+\item 
+struct \mbox{\hyperlink{structAttitude}{Attitude}} \mbox{\hyperlink{MPU9250__driver_8c_a2da816efd46ad10a81a1b1f616c4dc6e}{attitude}}
+\item 
+uint8\+\_\+t \mbox{\hyperlink{MPU9250__driver_8c_a94481033f284133a315c2ae6932509ad}{\+\_\+addr}}
+\item 
+float \mbox{\hyperlink{MPU9250__driver_8c_a49682d8798d683d38ec251b31c34b18c}{\+\_\+dt}}
+\item 
+float \mbox{\hyperlink{MPU9250__driver_8c_a40c3631fb89cc3c36fd2261fc11c7037}{\+\_\+tau}}
+\item 
+float \mbox{\hyperlink{MPU9250__driver_8c_ad3b386e9054925162fa3e7a14b24b5db}{a\+Scale\+Factor}}
+\item 
+float \mbox{\hyperlink{MPU9250__driver_8c_a4f1ebfd683d8999b56b5d6fddb46855a}{g\+Scale\+Factor}}
+\end{DoxyCompactItemize}
 
 
 \doxysubsection{Detailed Description}
@@ -64,10 +85,12 @@ Set the IMU address, check for connection, reset IMU, and set full range scale.
 \end{DoxyParams}
 
 
-Definition at line \mbox{\hyperlink{MPU9250__driver_8c_source_l00023}{23}} of file \mbox{\hyperlink{MPU9250__driver_8c_source}{MPU9250\+\_\+driver.\+c}}.
+Definition at line \mbox{\hyperlink{MPU9250__driver_8c_source_l00034}{34}} of file \mbox{\hyperlink{MPU9250__driver_8c_source}{MPU9250\+\_\+driver.\+c}}.
 
 Here is the call graph for this function\+:
 % FIG 1
+Here is the caller graph for this function\+:
+% FIG 2
 \Hypertarget{MPU9250__driver_8c_a9e48249ac6c48ba5b4e1816e67d8807f}\label{MPU9250__driver_8c_a9e48249ac6c48ba5b4e1816e67d8807f} 
 \index{MPU9250\_driver.c@{MPU9250\_driver.c}!MPU\_calcAttitude@{MPU\_calcAttitude}}
 \index{MPU\_calcAttitude@{MPU\_calcAttitude}!MPU9250\_driver.c@{MPU9250\_driver.c}}
@@ -85,10 +108,12 @@ Calculate the attitude of the sensor in degrees using a complementary filter.
 \end{DoxyParams}
 
 
-Definition at line \mbox{\hyperlink{MPU9250__driver_8c_source_l00211}{211}} of file \mbox{\hyperlink{MPU9250__driver_8c_source}{MPU9250\+\_\+driver.\+c}}.
+Definition at line \mbox{\hyperlink{MPU9250__driver_8c_source_l00222}{222}} of file \mbox{\hyperlink{MPU9250__driver_8c_source}{MPU9250\+\_\+driver.\+c}}.
 
 Here is the call graph for this function\+:
-% FIG 2
+% FIG 3
+Here is the caller graph for this function\+:
+% FIG 4
 \Hypertarget{MPU9250__driver_8c_aa847c36df2da652d7fa796696a056758}\label{MPU9250__driver_8c_aa847c36df2da652d7fa796696a056758} 
 \index{MPU9250\_driver.c@{MPU9250\_driver.c}!MPU\_calibrateGyro@{MPU\_calibrateGyro}}
 \index{MPU\_calibrateGyro@{MPU\_calibrateGyro}!MPU9250\_driver.c@{MPU9250\_driver.c}}
@@ -108,10 +133,12 @@ Find offsets for each axis of gyroscope.
 \end{DoxyParams}
 
 
-Definition at line \mbox{\hyperlink{MPU9250__driver_8c_source_l00157}{157}} of file \mbox{\hyperlink{MPU9250__driver_8c_source}{MPU9250\+\_\+driver.\+c}}.
+Definition at line \mbox{\hyperlink{MPU9250__driver_8c_source_l00168}{168}} of file \mbox{\hyperlink{MPU9250__driver_8c_source}{MPU9250\+\_\+driver.\+c}}.
 
 Here is the call graph for this function\+:
-% FIG 3
+% FIG 5
+Here is the caller graph for this function\+:
+% FIG 6
 \Hypertarget{MPU9250__driver_8c_a0b9572bcd1f2755e895204e9bdcc313f}\label{MPU9250__driver_8c_a0b9572bcd1f2755e895204e9bdcc313f} 
 \index{MPU9250\_driver.c@{MPU9250\_driver.c}!MPU\_readProcessedData@{MPU\_readProcessedData}}
 \index{MPU\_readProcessedData@{MPU\_readProcessedData}!MPU9250\_driver.c@{MPU9250\_driver.c}}
@@ -129,12 +156,12 @@ Calculate the real world sensor values.
 \end{DoxyParams}
 
 
-Definition at line \mbox{\hyperlink{MPU9250__driver_8c_source_l00188}{188}} of file \mbox{\hyperlink{MPU9250__driver_8c_source}{MPU9250\+\_\+driver.\+c}}.
+Definition at line \mbox{\hyperlink{MPU9250__driver_8c_source_l00199}{199}} of file \mbox{\hyperlink{MPU9250__driver_8c_source}{MPU9250\+\_\+driver.\+c}}.
 
 Here is the call graph for this function\+:
-% FIG 4
+% FIG 7
 Here is the caller graph for this function\+:
-% FIG 5
+% FIG 8
 \Hypertarget{MPU9250__driver_8c_a9c3d9fc8303a931dd23be6debffaa598}\label{MPU9250__driver_8c_a9c3d9fc8303a931dd23be6debffaa598} 
 \index{MPU9250\_driver.c@{MPU9250\_driver.c}!MPU\_readRawData@{MPU\_readRawData}}
 \index{MPU\_readRawData@{MPU\_readRawData}!MPU9250\_driver.c@{MPU9250\_driver.c}}
@@ -152,10 +179,10 @@ Read raw data from IMU.
 \end{DoxyParams}
 
 
-Definition at line \mbox{\hyperlink{MPU9250__driver_8c_source_l00136}{136}} of file \mbox{\hyperlink{MPU9250__driver_8c_source}{MPU9250\+\_\+driver.\+c}}.
+Definition at line \mbox{\hyperlink{MPU9250__driver_8c_source_l00147}{147}} of file \mbox{\hyperlink{MPU9250__driver_8c_source}{MPU9250\+\_\+driver.\+c}}.
 
 Here is the caller graph for this function\+:
-% FIG 6
+% FIG 9
 \Hypertarget{MPU9250__driver_8c_af7b16d00e6f5e3d9585a920cb33584bd}\label{MPU9250__driver_8c_af7b16d00e6f5e3d9585a920cb33584bd} 
 \index{MPU9250\_driver.c@{MPU9250\_driver.c}!MPU\_writeAccFullScaleRange@{MPU\_writeAccFullScaleRange}}
 \index{MPU\_writeAccFullScaleRange@{MPU\_writeAccFullScaleRange}!MPU9250\_driver.c@{MPU9250\_driver.c}}
@@ -175,10 +202,10 @@ Set the accelerometer full scale range.
 \end{DoxyParams}
 
 
-Definition at line \mbox{\hyperlink{MPU9250__driver_8c_source_l00059}{59}} of file \mbox{\hyperlink{MPU9250__driver_8c_source}{MPU9250\+\_\+driver.\+c}}.
+Definition at line \mbox{\hyperlink{MPU9250__driver_8c_source_l00070}{70}} of file \mbox{\hyperlink{MPU9250__driver_8c_source}{MPU9250\+\_\+driver.\+c}}.
 
 Here is the caller graph for this function\+:
-% FIG 7
+% FIG 10
 \Hypertarget{MPU9250__driver_8c_a93c5414a16ec3a8bb315a9ce5ac2ebfb}\label{MPU9250__driver_8c_a93c5414a16ec3a8bb315a9ce5ac2ebfb} 
 \index{MPU9250\_driver.c@{MPU9250\_driver.c}!MPU\_writeGyroFullScaleRange@{MPU\_writeGyroFullScaleRange}}
 \index{MPU\_writeGyroFullScaleRange@{MPU\_writeGyroFullScaleRange}!MPU9250\_driver.c@{MPU9250\_driver.c}}
@@ -198,7 +225,100 @@ Set the gyroscope full scale range.
 \end{DoxyParams}
 
 
-Definition at line \mbox{\hyperlink{MPU9250__driver_8c_source_l00098}{98}} of file \mbox{\hyperlink{MPU9250__driver_8c_source}{MPU9250\+\_\+driver.\+c}}.
+Definition at line \mbox{\hyperlink{MPU9250__driver_8c_source_l00109}{109}} of file \mbox{\hyperlink{MPU9250__driver_8c_source}{MPU9250\+\_\+driver.\+c}}.
 
 Here is the caller graph for this function\+:
-% FIG 8
+% FIG 11
+
+
+\doxysubsection{Variable Documentation}
+\Hypertarget{MPU9250__driver_8c_a94481033f284133a315c2ae6932509ad}\label{MPU9250__driver_8c_a94481033f284133a315c2ae6932509ad} 
+\index{MPU9250\_driver.c@{MPU9250\_driver.c}!\_addr@{\_addr}}
+\index{\_addr@{\_addr}!MPU9250\_driver.c@{MPU9250\_driver.c}}
+\doxysubsubsection{\texorpdfstring{\_addr}{\_addr}}
+{\footnotesize\ttfamily uint8\+\_\+t \+\_\+addr}
+
+
+
+Definition at line \mbox{\hyperlink{MPU9250__driver_8c_source_l00023}{23}} of file \mbox{\hyperlink{MPU9250__driver_8c_source}{MPU9250\+\_\+driver.\+c}}.
+
+\Hypertarget{MPU9250__driver_8c_a49682d8798d683d38ec251b31c34b18c}\label{MPU9250__driver_8c_a49682d8798d683d38ec251b31c34b18c} 
+\index{MPU9250\_driver.c@{MPU9250\_driver.c}!\_dt@{\_dt}}
+\index{\_dt@{\_dt}!MPU9250\_driver.c@{MPU9250\_driver.c}}
+\doxysubsubsection{\texorpdfstring{\_dt}{\_dt}}
+{\footnotesize\ttfamily float \+\_\+dt}
+
+
+
+Definition at line \mbox{\hyperlink{MPU9250__driver_8c_source_l00024}{24}} of file \mbox{\hyperlink{MPU9250__driver_8c_source}{MPU9250\+\_\+driver.\+c}}.
+
+\Hypertarget{MPU9250__driver_8c_a40c3631fb89cc3c36fd2261fc11c7037}\label{MPU9250__driver_8c_a40c3631fb89cc3c36fd2261fc11c7037} 
+\index{MPU9250\_driver.c@{MPU9250\_driver.c}!\_tau@{\_tau}}
+\index{\_tau@{\_tau}!MPU9250\_driver.c@{MPU9250\_driver.c}}
+\doxysubsubsection{\texorpdfstring{\_tau}{\_tau}}
+{\footnotesize\ttfamily float \+\_\+tau}
+
+
+
+Definition at line \mbox{\hyperlink{MPU9250__driver_8c_source_l00024}{24}} of file \mbox{\hyperlink{MPU9250__driver_8c_source}{MPU9250\+\_\+driver.\+c}}.
+
+\Hypertarget{MPU9250__driver_8c_ad3b386e9054925162fa3e7a14b24b5db}\label{MPU9250__driver_8c_ad3b386e9054925162fa3e7a14b24b5db} 
+\index{MPU9250\_driver.c@{MPU9250\_driver.c}!aScaleFactor@{aScaleFactor}}
+\index{aScaleFactor@{aScaleFactor}!MPU9250\_driver.c@{MPU9250\_driver.c}}
+\doxysubsubsection{\texorpdfstring{aScaleFactor}{aScaleFactor}}
+{\footnotesize\ttfamily float a\+Scale\+Factor}
+
+
+
+Definition at line \mbox{\hyperlink{MPU9250__driver_8c_source_l00025}{25}} of file \mbox{\hyperlink{MPU9250__driver_8c_source}{MPU9250\+\_\+driver.\+c}}.
+
+\Hypertarget{MPU9250__driver_8c_a2da816efd46ad10a81a1b1f616c4dc6e}\label{MPU9250__driver_8c_a2da816efd46ad10a81a1b1f616c4dc6e} 
+\index{MPU9250\_driver.c@{MPU9250\_driver.c}!attitude@{attitude}}
+\index{attitude@{attitude}!MPU9250\_driver.c@{MPU9250\_driver.c}}
+\doxysubsubsection{\texorpdfstring{attitude}{attitude}}
+{\footnotesize\ttfamily struct \mbox{\hyperlink{structAttitude}{Attitude}} attitude}
+
+
+
+Definition at line \mbox{\hyperlink{MPU9250__driver_8c_source_l00020}{20}} of file \mbox{\hyperlink{MPU9250__driver_8c_source}{MPU9250\+\_\+driver.\+c}}.
+
+\Hypertarget{MPU9250__driver_8c_a4f1ebfd683d8999b56b5d6fddb46855a}\label{MPU9250__driver_8c_a4f1ebfd683d8999b56b5d6fddb46855a} 
+\index{MPU9250\_driver.c@{MPU9250\_driver.c}!gScaleFactor@{gScaleFactor}}
+\index{gScaleFactor@{gScaleFactor}!MPU9250\_driver.c@{MPU9250\_driver.c}}
+\doxysubsubsection{\texorpdfstring{gScaleFactor}{gScaleFactor}}
+{\footnotesize\ttfamily float g\+Scale\+Factor}
+
+
+
+Definition at line \mbox{\hyperlink{MPU9250__driver_8c_source_l00025}{25}} of file \mbox{\hyperlink{MPU9250__driver_8c_source}{MPU9250\+\_\+driver.\+c}}.
+
+\Hypertarget{MPU9250__driver_8c_af5841326de5e20e01a05a58b4642cf7d}\label{MPU9250__driver_8c_af5841326de5e20e01a05a58b4642cf7d} 
+\index{MPU9250\_driver.c@{MPU9250\_driver.c}!gyroCal@{gyroCal}}
+\index{gyroCal@{gyroCal}!MPU9250\_driver.c@{MPU9250\_driver.c}}
+\doxysubsubsection{\texorpdfstring{gyroCal}{gyroCal}}
+{\footnotesize\ttfamily struct \mbox{\hyperlink{structGyroCal}{Gyro\+Cal}} gyro\+Cal}
+
+
+
+Definition at line \mbox{\hyperlink{MPU9250__driver_8c_source_l00019}{19}} of file \mbox{\hyperlink{MPU9250__driver_8c_source}{MPU9250\+\_\+driver.\+c}}.
+
+\Hypertarget{MPU9250__driver_8c_af8b332d9548f9e358e689ca66916ecdc}\label{MPU9250__driver_8c_af8b332d9548f9e358e689ca66916ecdc} 
+\index{MPU9250\_driver.c@{MPU9250\_driver.c}!rawData@{rawData}}
+\index{rawData@{rawData}!MPU9250\_driver.c@{MPU9250\_driver.c}}
+\doxysubsubsection{\texorpdfstring{rawData}{rawData}}
+{\footnotesize\ttfamily struct \mbox{\hyperlink{structRawData}{Raw\+Data}} raw\+Data}
+
+
+
+Definition at line \mbox{\hyperlink{MPU9250__driver_8c_source_l00017}{17}} of file \mbox{\hyperlink{MPU9250__driver_8c_source}{MPU9250\+\_\+driver.\+c}}.
+
+\Hypertarget{MPU9250__driver_8c_a86aba6b52546191382ef191cb35e2215}\label{MPU9250__driver_8c_a86aba6b52546191382ef191cb35e2215} 
+\index{MPU9250\_driver.c@{MPU9250\_driver.c}!sensorData@{sensorData}}
+\index{sensorData@{sensorData}!MPU9250\_driver.c@{MPU9250\_driver.c}}
+\doxysubsubsection{\texorpdfstring{sensorData}{sensorData}}
+{\footnotesize\ttfamily struct \mbox{\hyperlink{structSensorData}{Sensor\+Data}} sensor\+Data}
+
+
+
+Definition at line \mbox{\hyperlink{MPU9250__driver_8c_source_l00018}{18}} of file \mbox{\hyperlink{MPU9250__driver_8c_source}{MPU9250\+\_\+driver.\+c}}.
+

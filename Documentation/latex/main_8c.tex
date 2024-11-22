@@ -7,11 +7,14 @@
 
 {\ttfamily \#include "{}main.\+h"{}}\newline
 {\ttfamily \#include "{}can.\+h"{}}\newline
+{\ttfamily \#include "{}dma.\+h"{}}\newline
 {\ttfamily \#include "{}i2c.\+h"{}}\newline
+{\ttfamily \#include "{}tim.\+h"{}}\newline
 {\ttfamily \#include "{}usart.\+h"{}}\newline
 {\ttfamily \#include "{}gpio.\+h"{}}\newline
 {\ttfamily \#include $<$stdio.\+h$>$}\newline
 {\ttfamily \#include $<$stdlib.\+h$>$}\newline
+{\ttfamily \#include $<$string.\+h$>$}\newline
 {\ttfamily \#include "{}BMP280\+\_\+driver.\+h"{}}\newline
 {\ttfamily \#include "{}MPU9250\+\_\+driver.\+h"{}}\newline
 {\ttfamily \#include "{}motor\+\_\+driver.\+h"{}}\newline
@@ -23,6 +26,12 @@ Include dependency graph for main.\+c\+:
 \#define \mbox{\hyperlink{main_8c_aa8cecfc5c5c054d2875c03e77b7be15d}{TRUE}}~1
 \item 
 \#define \mbox{\hyperlink{main_8c_aa93f0eb578d23995850d61f7d61c55c1}{FALSE}}~0
+\item 
+\#define \mbox{\hyperlink{main_8c_a42f8c497a1968074f38bf5055c650dca}{VERBOSE}}~0
+\item 
+\#define \mbox{\hyperlink{main_8c_a3378cada74dea34e3b772d7946e9978c}{SERIAL\+\_\+\+BUFF\+\_\+\+SIZE}}~7
+\item 
+\#define \mbox{\hyperlink{main_8c_a02d0e6ddbe27a99f97f19798427add2d}{GYRO\+\_\+\+CAL\+\_\+\+POINTS}}~1500
 \end{DoxyCompactItemize}
 \doxysubsubsection*{Functions}
 \begin{DoxyCompactItemize}
@@ -30,17 +39,34 @@ Include dependency graph for main.\+c\+:
 void \mbox{\hyperlink{main_8c_a70af21c671abfcc773614a9a4f63d920}{System\+Clock\+\_\+\+Config}} (void)
 \begin{DoxyCompactList}\small\item\em System Clock Configuration. \end{DoxyCompactList}\item 
 int \mbox{\hyperlink{main_8c_abc513dd972081ae765b6949a62872eb7}{\+\_\+\+\_\+io\+\_\+putchar}} (int ch)
-\item 
-void \mbox{\hyperlink{main_8c_ae3168b9163675628a89fc1e422de4b5e}{BMP280\+\_\+init}} ()
-\item 
+\begin{DoxyCompactList}\small\item\em Transmit a character over UART. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{main_8c_aa4bbab1f0ca72971d0db94c1287af007}{BMP280\+\_\+init}} ()
+\begin{DoxyCompactList}\small\item\em Initialize BMP280 sensor. \end{DoxyCompactList}\item 
 void \mbox{\hyperlink{main_8c_aea5e73ce5da71b09a981bfa9118ba050}{MPU9250\+\_\+init}} ()
-\item 
+\begin{DoxyCompactList}\small\item\em Initialize the MPU9250 sensor. \end{DoxyCompactList}\item 
 void \mbox{\hyperlink{main_8c_a2423e6b09704c3b8497e776a963ebf90}{MOT\+\_\+\+Init}} ()
-\item 
+\begin{DoxyCompactList}\small\item\em Initialize the motor driver and CAN interface. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{main_8c_a8a3b0ad512a6e6c6157440b68d395eac}{HAL\+\_\+\+TIM\+\_\+\+Period\+Elapsed\+Callback}} (TIM\+\_\+\+Handle\+Type\+Def \texorpdfstring{$\ast$}{*}htim)
+\begin{DoxyCompactList}\small\item\em Period elapsed callback in non-\/blocking mode. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{main_8c_a75af9e57cfa16fd38d92042718961e54}{parse\+\_\+\+Raspberry\+PI\+\_\+\+Request}} (char \texorpdfstring{$\ast$}{*}cmd)
+\begin{DoxyCompactList}\small\item\em Process the command received from the Raspberry Pi over UART. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{main_8c_a925534fb8bf7ca464fd05c982fe4bfa0}{HAL\+\_\+\+UARTEx\+\_\+\+Rx\+Event\+Callback}} (UART\+\_\+\+Handle\+Type\+Def \texorpdfstring{$\ast$}{*}huart, uint16\+\_\+t Size)
+\begin{DoxyCompactList}\small\item\em UART Receive Event callback function. It processes received data from USART1. \end{DoxyCompactList}\item 
 int \mbox{\hyperlink{main_8c_a840291bc02cba5474a4cb46a9b9566fe}{main}} (void)
 \begin{DoxyCompactList}\small\item\em The application entry point. \end{DoxyCompactList}\item 
 void \mbox{\hyperlink{main_8c_a1730ffe1e560465665eb47d9264826f9}{Error\+\_\+\+Handler}} (void)
 \begin{DoxyCompactList}\small\item\em This function is executed in case of error occurrence. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+char \mbox{\hyperlink{main_8c_aeb016710a7f49ee941c22d68f48e40e1}{serial\+\_\+buff}} \mbox{[}SERIAL\+\_\+\+BUFF\+\_\+\+SIZE\mbox{]}
+\item 
+int \mbox{\hyperlink{main_8c_aba786303f859db8c5a19c24994390c81}{gyro\+\_\+K}} = 0
+\item 
+int \mbox{\hyperlink{main_8c_a63177970cacb40efba67ce501ea89210}{angle}} = 0
+\item 
+const float \mbox{\hyperlink{main_8c_a2c1544c90194616f5706c3a6df94f6d8}{proportional\+\_\+coeff}} = 0.\+0001
+\end{DoxyCompactItemize}
 
 
 \doxysubsection{Detailed Description}
@@ -66,7 +92,27 @@ Definition in file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
 
 
 
-Definition at line \mbox{\hyperlink{main_8c_source_l00044}{44}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+Definition at line \mbox{\hyperlink{main_8c_source_l00047}{47}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\Hypertarget{main_8c_a02d0e6ddbe27a99f97f19798427add2d}\label{main_8c_a02d0e6ddbe27a99f97f19798427add2d} 
+\index{main.c@{main.c}!GYRO\_CAL\_POINTS@{GYRO\_CAL\_POINTS}}
+\index{GYRO\_CAL\_POINTS@{GYRO\_CAL\_POINTS}!main.c@{main.c}}
+\doxysubsubsection{\texorpdfstring{GYRO\_CAL\_POINTS}{GYRO\_CAL\_POINTS}}
+{\footnotesize\ttfamily \#define GYRO\+\_\+\+CAL\+\_\+\+POINTS~1500}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00052}{52}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\Hypertarget{main_8c_a3378cada74dea34e3b772d7946e9978c}\label{main_8c_a3378cada74dea34e3b772d7946e9978c} 
+\index{main.c@{main.c}!SERIAL\_BUFF\_SIZE@{SERIAL\_BUFF\_SIZE}}
+\index{SERIAL\_BUFF\_SIZE@{SERIAL\_BUFF\_SIZE}!main.c@{main.c}}
+\doxysubsubsection{\texorpdfstring{SERIAL\_BUFF\_SIZE}{SERIAL\_BUFF\_SIZE}}
+{\footnotesize\ttfamily \#define SERIAL\+\_\+\+BUFF\+\_\+\+SIZE~7}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00050}{50}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
 
 \Hypertarget{main_8c_aa8cecfc5c5c054d2875c03e77b7be15d}\label{main_8c_aa8cecfc5c5c054d2875c03e77b7be15d} 
 \index{main.c@{main.c}!TRUE@{TRUE}}
@@ -76,7 +122,17 @@ Definition at line \mbox{\hyperlink{main_8c_source_l00044}{44}} of file \mbox{\h
 
 
 
-Definition at line \mbox{\hyperlink{main_8c_source_l00043}{43}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+Definition at line \mbox{\hyperlink{main_8c_source_l00046}{46}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\Hypertarget{main_8c_a42f8c497a1968074f38bf5055c650dca}\label{main_8c_a42f8c497a1968074f38bf5055c650dca} 
+\index{main.c@{main.c}!VERBOSE@{VERBOSE}}
+\index{VERBOSE@{VERBOSE}!main.c@{main.c}}
+\doxysubsubsection{\texorpdfstring{VERBOSE}{VERBOSE}}
+{\footnotesize\ttfamily \#define VERBOSE~0}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00048}{48}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
 
 
 
@@ -89,18 +145,45 @@ Definition at line \mbox{\hyperlink{main_8c_source_l00043}{43}} of file \mbox{\h
 
 
 
-Definition at line \mbox{\hyperlink{main_8c_source_l00067}{67}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+Transmit a character over UART. 
 
-\Hypertarget{main_8c_ae3168b9163675628a89fc1e422de4b5e}\label{main_8c_ae3168b9163675628a89fc1e422de4b5e} 
+
+\begin{DoxyParams}{Parameters}
+{\em ch} & Character to transmit. \\
+\hline
+\end{DoxyParams}
+
+\begin{DoxyRetVals}{Return values}
+{\em int} & The transmitted character. \\
+\hline
+\end{DoxyRetVals}
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00083}{83}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\Hypertarget{main_8c_aa4bbab1f0ca72971d0db94c1287af007}\label{main_8c_aa4bbab1f0ca72971d0db94c1287af007} 
 \index{main.c@{main.c}!BMP280\_init@{BMP280\_init}}
 \index{BMP280\_init@{BMP280\_init}!main.c@{main.c}}
 \doxysubsubsection{\texorpdfstring{BMP280\_init()}{BMP280\_init()}}
-{\footnotesize\ttfamily void BMP280\+\_\+init (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+{\footnotesize\ttfamily int BMP280\+\_\+init (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
 
 
 
-Definition at line \mbox{\hyperlink{main_8c_source_l00075}{75}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+Initialize BMP280 sensor. 
 
+
+\begin{DoxyRetVals}{Return values}
+{\em int} & EXIT\+\_\+\+SUCCESS if initialization is successful, EXIT\+\_\+\+FAILURE if failed. \\
+\hline
+\end{DoxyRetVals}
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00095}{95}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+Here is the call graph for this function\+:
+% FIG 1
+Here is the caller graph for this function\+:
+% FIG 2
 \Hypertarget{main_8c_a1730ffe1e560465665eb47d9264826f9}\label{main_8c_a1730ffe1e560465665eb47d9264826f9} 
 \index{main.c@{main.c}!Error\_Handler@{Error\_Handler}}
 \index{Error\_Handler@{Error\_Handler}!main.c@{main.c}}
@@ -118,10 +201,64 @@ This function is executed in case of error occurrence.
 \end{DoxyRetVals}
 
 
-Definition at line \mbox{\hyperlink{main_8c_source_l00223}{223}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+Definition at line \mbox{\hyperlink{main_8c_source_l00322}{322}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
 
 Here is the caller graph for this function\+:
-% FIG 1
+% FIG 3
+\Hypertarget{main_8c_a8a3b0ad512a6e6c6157440b68d395eac}\label{main_8c_a8a3b0ad512a6e6c6157440b68d395eac} 
+\index{main.c@{main.c}!HAL\_TIM\_PeriodElapsedCallback@{HAL\_TIM\_PeriodElapsedCallback}}
+\index{HAL\_TIM\_PeriodElapsedCallback@{HAL\_TIM\_PeriodElapsedCallback}!main.c@{main.c}}
+\doxysubsubsection{\texorpdfstring{HAL\_TIM\_PeriodElapsedCallback()}{HAL\_TIM\_PeriodElapsedCallback()}}
+{\footnotesize\ttfamily void HAL\+\_\+\+TIM\+\_\+\+Period\+Elapsed\+Callback (\begin{DoxyParamCaption}\item[{TIM\+\_\+\+Handle\+Type\+Def \texorpdfstring{$\ast$}{*}}]{htim }\end{DoxyParamCaption})}
+
+
+
+Period elapsed callback in non-\/blocking mode. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em htim} & TIM handle \\
+\hline
+\end{DoxyParams}
+
+\begin{DoxyRetVals}{Return values}
+{\em None} & \\
+\hline
+\end{DoxyRetVals}
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00144}{144}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+Here is the call graph for this function\+:
+% FIG 4
+\Hypertarget{main_8c_a925534fb8bf7ca464fd05c982fe4bfa0}\label{main_8c_a925534fb8bf7ca464fd05c982fe4bfa0} 
+\index{main.c@{main.c}!HAL\_UARTEx\_RxEventCallback@{HAL\_UARTEx\_RxEventCallback}}
+\index{HAL\_UARTEx\_RxEventCallback@{HAL\_UARTEx\_RxEventCallback}!main.c@{main.c}}
+\doxysubsubsection{\texorpdfstring{HAL\_UARTEx\_RxEventCallback()}{HAL\_UARTEx\_RxEventCallback()}}
+{\footnotesize\ttfamily void HAL\+\_\+\+UARTEx\+\_\+\+Rx\+Event\+Callback (\begin{DoxyParamCaption}\item[{UART\+\_\+\+Handle\+Type\+Def \texorpdfstring{$\ast$}{*}}]{huart,  }\item[{uint16\+\_\+t}]{Size }\end{DoxyParamCaption})}
+
+
+
+UART Receive Event callback function. It processes received data from USART1. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em huart} & Pointer to the UART handle. \\
+\hline
+{\em Size} & Size of received data. \\
+\hline
+\end{DoxyParams}
+
+\begin{DoxyRetVals}{Return values}
+{\em None} & \\
+\hline
+\end{DoxyRetVals}
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00192}{192}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+Here is the call graph for this function\+:
+% FIG 5
 \Hypertarget{main_8c_a840291bc02cba5474a4cb46a9b9566fe}\label{main_8c_a840291bc02cba5474a4cb46a9b9566fe} 
 \index{main.c@{main.c}!main@{main}}
 \index{main@{main}!main.c@{main.c}}
@@ -139,10 +276,10 @@ The application entry point.
 \end{DoxyRetVals}
 
 
-Definition at line \mbox{\hyperlink{main_8c_source_l00115}{115}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+Definition at line \mbox{\hyperlink{main_8c_source_l00208}{208}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
 
 Here is the call graph for this function\+:
-% FIG 2
+% FIG 6
 \Hypertarget{main_8c_a2423e6b09704c3b8497e776a963ebf90}\label{main_8c_a2423e6b09704c3b8497e776a963ebf90} 
 \index{main.c@{main.c}!MOT\_Init@{MOT\_Init}}
 \index{MOT\_Init@{MOT\_Init}!main.c@{main.c}}
@@ -151,8 +288,21 @@ Here is the call graph for this function\+:
 
 
 
-Definition at line \mbox{\hyperlink{main_8c_source_l00102}{102}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+Initialize the motor driver and CAN interface. 
 
+
+\begin{DoxyRetVals}{Return values}
+{\em None} & \\
+\hline
+\end{DoxyRetVals}
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00130}{130}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+Here is the call graph for this function\+:
+% FIG 7
+Here is the caller graph for this function\+:
+% FIG 8
 \Hypertarget{main_8c_aea5e73ce5da71b09a981bfa9118ba050}\label{main_8c_aea5e73ce5da71b09a981bfa9118ba050} 
 \index{main.c@{main.c}!MPU9250\_init@{MPU9250\_init}}
 \index{MPU9250\_init@{MPU9250\_init}!main.c@{main.c}}
@@ -161,8 +311,49 @@ Definition at line \mbox{\hyperlink{main_8c_source_l00102}{102}} of file \mbox{\
 
 
 
-Definition at line \mbox{\hyperlink{main_8c_source_l00085}{85}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+Initialize the MPU9250 sensor. 
 
+
+\begin{DoxyRetVals}{Return values}
+{\em None} & \\
+\hline
+\end{DoxyRetVals}
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00108}{108}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+Here is the call graph for this function\+:
+% FIG 9
+Here is the caller graph for this function\+:
+% FIG 10
+\Hypertarget{main_8c_a75af9e57cfa16fd38d92042718961e54}\label{main_8c_a75af9e57cfa16fd38d92042718961e54} 
+\index{main.c@{main.c}!parse\_RaspberryPI\_Request@{parse\_RaspberryPI\_Request}}
+\index{parse\_RaspberryPI\_Request@{parse\_RaspberryPI\_Request}!main.c@{main.c}}
+\doxysubsubsection{\texorpdfstring{parse\_RaspberryPI\_Request()}{parse\_RaspberryPI\_Request()}}
+{\footnotesize\ttfamily void parse\+\_\+\+Raspberry\+PI\+\_\+\+Request (\begin{DoxyParamCaption}\item[{char \texorpdfstring{$\ast$}{*}}]{cmd }\end{DoxyParamCaption})}
+
+
+
+Process the command received from the Raspberry Pi over UART. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em String} & to parse, of type char \\
+\hline
+\end{DoxyParams}
+
+\begin{DoxyRetVals}{Return values}
+{\em None} & \\
+\hline
+\end{DoxyRetVals}
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00162}{162}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+Here is the call graph for this function\+:
+% FIG 11
+Here is the caller graph for this function\+:
+% FIG 12
 \Hypertarget{main_8c_a70af21c671abfcc773614a9a4f63d920}\label{main_8c_a70af21c671abfcc773614a9a4f63d920} 
 \index{main.c@{main.c}!SystemClock\_Config@{SystemClock\_Config}}
 \index{SystemClock\_Config@{SystemClock\_Config}!main.c@{main.c}}
@@ -184,9 +375,52 @@ Initializes the RCC Oscillators according to the specified parameters in the RCC
 
 Initializes the CPU, AHB and APB buses clocks
 
-Definition at line \mbox{\hyperlink{main_8c_source_l00172}{172}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+Definition at line \mbox{\hyperlink{main_8c_source_l00271}{271}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
 
 Here is the call graph for this function\+:
-% FIG 3
+% FIG 13
 Here is the caller graph for this function\+:
-% FIG 4
+% FIG 14
+
+
+\doxysubsection{Variable Documentation}
+\Hypertarget{main_8c_a63177970cacb40efba67ce501ea89210}\label{main_8c_a63177970cacb40efba67ce501ea89210} 
+\index{main.c@{main.c}!angle@{angle}}
+\index{angle@{angle}!main.c@{main.c}}
+\doxysubsubsection{\texorpdfstring{angle}{angle}}
+{\footnotesize\ttfamily int angle = 0}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00137}{137}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\Hypertarget{main_8c_aba786303f859db8c5a19c24994390c81}\label{main_8c_aba786303f859db8c5a19c24994390c81} 
+\index{main.c@{main.c}!gyro\_K@{gyro\_K}}
+\index{gyro\_K@{gyro\_K}!main.c@{main.c}}
+\doxysubsubsection{\texorpdfstring{gyro\_K}{gyro\_K}}
+{\footnotesize\ttfamily int gyro\+\_\+K = 0}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00066}{66}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\Hypertarget{main_8c_a2c1544c90194616f5706c3a6df94f6d8}\label{main_8c_a2c1544c90194616f5706c3a6df94f6d8} 
+\index{main.c@{main.c}!proportional\_coeff@{proportional\_coeff}}
+\index{proportional\_coeff@{proportional\_coeff}!main.c@{main.c}}
+\doxysubsubsection{\texorpdfstring{proportional\_coeff}{proportional\_coeff}}
+{\footnotesize\ttfamily const float proportional\+\_\+coeff = 0.\+0001}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00138}{138}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\Hypertarget{main_8c_aeb016710a7f49ee941c22d68f48e40e1}\label{main_8c_aeb016710a7f49ee941c22d68f48e40e1} 
+\index{main.c@{main.c}!serial\_buff@{serial\_buff}}
+\index{serial\_buff@{serial\_buff}!main.c@{main.c}}
+\doxysubsubsection{\texorpdfstring{serial\_buff}{serial\_buff}}
+{\footnotesize\ttfamily char serial\+\_\+buff\mbox{[}SERIAL\+\_\+\+BUFF\+\_\+\+SIZE\mbox{]}}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00064}{64}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+

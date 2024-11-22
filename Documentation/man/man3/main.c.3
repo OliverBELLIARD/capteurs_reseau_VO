@@ -1,4 +1,4 @@
-.TH "/home/oliver/Documents/3A/capteurs_reseaux_VO_ESE_TP2/capteurs_reseaux_VO/Core/Src/main.c" 3 "Bus et Réseaux - VO" \" -*- nroff -*-
+.TH "/home/oliver/Documents/3A/capteurs_reseaux_VO_ESE_TP2/capteurs_reseaux_VO/Core/Src/main.c" 3 "Version TP5" "Bus et Réseaux - VO" \" -*- nroff -*-
 .ad l
 .nh
 .SH NAME
@@ -11,7 +11,11 @@
 .br
 \fC#include 'can\&.h'\fP
 .br
+\fC#include 'dma\&.h'\fP
+.br
 \fC#include 'i2c\&.h'\fP
+.br
+\fC#include 'tim\&.h'\fP
 .br
 \fC#include 'usart\&.h'\fP
 .br
@@ -20,6 +24,8 @@
 \fC#include <stdio\&.h>\fP
 .br
 \fC#include <stdlib\&.h>\fP
+.br
+\fC#include <string\&.h>\fP
 .br
 \fC#include 'BMP280_driver\&.h'\fP
 .br
@@ -37,6 +43,15 @@
 .ti -1c
 .RI "#define \fBFALSE\fP   0"
 .br
+.ti -1c
+.RI "#define \fBVERBOSE\fP   0"
+.br
+.ti -1c
+.RI "#define \fBSERIAL_BUFF_SIZE\fP   7"
+.br
+.ti -1c
+.RI "#define \fBGYRO_CAL_POINTS\fP   1500"
+.br
 .in -1c
 .SS "Functions"
 
@@ -48,15 +63,31 @@
 .ti -1c
 .RI "int \fB__io_putchar\fP (int ch)"
 .br
+.RI "Transmit a character over UART\&. "
 .ti -1c
-.RI "void \fBBMP280_init\fP ()"
+.RI "int \fBBMP280_init\fP ()"
 .br
+.RI "Initialize BMP280 sensor\&. "
 .ti -1c
 .RI "void \fBMPU9250_init\fP ()"
 .br
+.RI "Initialize the MPU9250 sensor\&. "
 .ti -1c
 .RI "void \fBMOT_Init\fP ()"
 .br
+.RI "Initialize the motor driver and CAN interface\&. "
+.ti -1c
+.RI "void \fBHAL_TIM_PeriodElapsedCallback\fP (TIM_HandleTypeDef *htim)"
+.br
+.RI "Period elapsed callback in non-blocking mode\&. "
+.ti -1c
+.RI "void \fBparse_RaspberryPI_Request\fP (char *cmd)"
+.br
+.RI "Process the command received from the Raspberry Pi over UART\&. "
+.ti -1c
+.RI "void \fBHAL_UARTEx_RxEventCallback\fP (UART_HandleTypeDef *huart, uint16_t Size)"
+.br
+.RI "UART Receive Event callback function\&. It processes received data from USART1\&. "
 .ti -1c
 .RI "int \fBmain\fP (void)"
 .br
@@ -65,6 +96,22 @@
 .RI "void \fBError_Handler\fP (void)"
 .br
 .RI "This function is executed in case of error occurrence\&. "
+.in -1c
+.SS "Variables"
+
+.in +1c
+.ti -1c
+.RI "char \fBserial_buff\fP [SERIAL_BUFF_SIZE]"
+.br
+.ti -1c
+.RI "int \fBgyro_K\fP = 0"
+.br
+.ti -1c
+.RI "int \fBangle\fP = 0"
+.br
+.ti -1c
+.RI "const float \fBproportional_coeff\fP = 0\&.0001"
+.br
 .in -1c
 .SH "Detailed Description"
 .PP 
@@ -87,21 +134,56 @@ Definition in file \fBmain\&.c\fP\&.
 .SS "#define FALSE   0"
 
 .PP
-Definition at line \fB44\fP of file \fBmain\&.c\fP\&.
+Definition at line \fB47\fP of file \fBmain\&.c\fP\&.
+.SS "#define GYRO_CAL_POINTS   1500"
+
+.PP
+Definition at line \fB52\fP of file \fBmain\&.c\fP\&.
+.SS "#define SERIAL_BUFF_SIZE   7"
+
+.PP
+Definition at line \fB50\fP of file \fBmain\&.c\fP\&.
 .SS "#define TRUE   1"
 
 .PP
-Definition at line \fB43\fP of file \fBmain\&.c\fP\&.
+Definition at line \fB46\fP of file \fBmain\&.c\fP\&.
+.SS "#define VERBOSE   0"
+
+.PP
+Definition at line \fB48\fP of file \fBmain\&.c\fP\&.
 .SH "Function Documentation"
 .PP 
 .SS "int __io_putchar (int ch)"
 
 .PP
-Definition at line \fB67\fP of file \fBmain\&.c\fP\&.
-.SS "void BMP280_init ()"
+Transmit a character over UART\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIch\fP Character to transmit\&. 
+.RE
+.PP
+\fBReturn values\fP
+.RS 4
+\fIint\fP The transmitted character\&. 
+.RE
+.PP
 
 .PP
-Definition at line \fB75\fP of file \fBmain\&.c\fP\&.
+Definition at line \fB83\fP of file \fBmain\&.c\fP\&.
+.SS "int BMP280_init ()"
+
+.PP
+Initialize BMP280 sensor\&. 
+.PP
+\fBReturn values\fP
+.RS 4
+\fIint\fP EXIT_SUCCESS if initialization is successful, EXIT_FAILURE if failed\&. 
+.RE
+.PP
+
+.PP
+Definition at line \fB95\fP of file \fBmain\&.c\fP\&.
 .SS "void Error_Handler (void)"
 
 .PP
@@ -114,7 +196,45 @@ This function is executed in case of error occurrence\&.
 .PP
 
 .PP
-Definition at line \fB223\fP of file \fBmain\&.c\fP\&.
+Definition at line \fB322\fP of file \fBmain\&.c\fP\&.
+.SS "void HAL_TIM_PeriodElapsedCallback (TIM_HandleTypeDef * htim)"
+
+.PP
+Period elapsed callback in non-blocking mode\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIhtim\fP TIM handle 
+.RE
+.PP
+\fBReturn values\fP
+.RS 4
+\fINone\fP 
+.RE
+.PP
+
+.PP
+Definition at line \fB144\fP of file \fBmain\&.c\fP\&.
+.SS "void HAL_UARTEx_RxEventCallback (UART_HandleTypeDef * huart, uint16_t Size)"
+
+.PP
+UART Receive Event callback function\&. It processes received data from USART1\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIhuart\fP Pointer to the UART handle\&. 
+.br
+\fISize\fP Size of received data\&. 
+.RE
+.PP
+\fBReturn values\fP
+.RS 4
+\fINone\fP 
+.RE
+.PP
+
+.PP
+Definition at line \fB192\fP of file \fBmain\&.c\fP\&.
 .SS "int main (void)"
 
 .PP
@@ -127,15 +247,51 @@ The application entry point\&.
 .PP
 
 .PP
-Definition at line \fB115\fP of file \fBmain\&.c\fP\&.
+Definition at line \fB208\fP of file \fBmain\&.c\fP\&.
 .SS "void MOT_Init ()"
 
 .PP
-Definition at line \fB102\fP of file \fBmain\&.c\fP\&.
+Initialize the motor driver and CAN interface\&. 
+.PP
+\fBReturn values\fP
+.RS 4
+\fINone\fP 
+.RE
+.PP
+
+.PP
+Definition at line \fB130\fP of file \fBmain\&.c\fP\&.
 .SS "void MPU9250_init ()"
 
 .PP
-Definition at line \fB85\fP of file \fBmain\&.c\fP\&.
+Initialize the MPU9250 sensor\&. 
+.PP
+\fBReturn values\fP
+.RS 4
+\fINone\fP 
+.RE
+.PP
+
+.PP
+Definition at line \fB108\fP of file \fBmain\&.c\fP\&.
+.SS "void parse_RaspberryPI_Request (char * cmd)"
+
+.PP
+Process the command received from the Raspberry Pi over UART\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIString\fP to parse, of type char 
+.RE
+.PP
+\fBReturn values\fP
+.RS 4
+\fINone\fP 
+.RE
+.PP
+
+.PP
+Definition at line \fB162\fP of file \fBmain\&.c\fP\&.
 .SS "void SystemClock_Config (void)"
 
 .PP
@@ -152,7 +308,25 @@ Initializes the RCC Oscillators according to the specified parameters in the RCC
 .PP
 Initializes the CPU, AHB and APB buses clocks
 .PP
-Definition at line \fB172\fP of file \fBmain\&.c\fP\&.
+Definition at line \fB271\fP of file \fBmain\&.c\fP\&.
+.SH "Variable Documentation"
+.PP 
+.SS "int angle = 0"
+
+.PP
+Definition at line \fB137\fP of file \fBmain\&.c\fP\&.
+.SS "int gyro_K = 0"
+
+.PP
+Definition at line \fB66\fP of file \fBmain\&.c\fP\&.
+.SS "const float proportional_coeff = 0\&.0001"
+
+.PP
+Definition at line \fB138\fP of file \fBmain\&.c\fP\&.
+.SS "char serial_buff[SERIAL_BUFF_SIZE]"
+
+.PP
+Definition at line \fB64\fP of file \fBmain\&.c\fP\&.
 .SH "Author"
 .PP 
 Generated automatically by Doxygen for Bus et Réseaux - VO from the source code\&.

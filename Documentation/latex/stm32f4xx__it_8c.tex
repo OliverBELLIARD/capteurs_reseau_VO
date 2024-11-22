@@ -29,7 +29,22 @@ void \mbox{\hyperlink{stm32f4xx__it_8c_adbdfb05858cc36fc520974df37ec3cb0}{Debug\
 void \mbox{\hyperlink{stm32f4xx__it_8c_a6303e1f258cbdc1f970ce579cc015623}{Pend\+SV\+\_\+\+Handler}} (void)
 \begin{DoxyCompactList}\small\item\em This function handles Pendable request for system service. \end{DoxyCompactList}\item 
 void \mbox{\hyperlink{stm32f4xx__it_8c_ab5e09814056d617c521549e542639b7e}{Sys\+Tick\+\_\+\+Handler}} (void)
-\begin{DoxyCompactList}\small\item\em This function handles System tick timer. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\begin{DoxyCompactList}\small\item\em This function handles System tick timer. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{stm32f4xx__it_8c_a38ad4725462bdc5e86c4ead4f04b9fc2}{TIM2\+\_\+\+IRQHandler}} (void)
+\begin{DoxyCompactList}\small\item\em This function handles TIM2 global interrupt. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{stm32f4xx__it_8c_a7139cd4baabbbcbab0c1fe6d7d4ae1cc}{USART1\+\_\+\+IRQHandler}} (void)
+\begin{DoxyCompactList}\small\item\em This function handles USART1 global interrupt. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{stm32f4xx__it_8c_a7e367d7c7b74485c4c75cdef30ad01e1}{DMA2\+\_\+\+Stream2\+\_\+\+IRQHandler}} (void)
+\begin{DoxyCompactList}\small\item\em This function handles DMA2 stream2 global interrupt. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+TIM\+\_\+\+Handle\+Type\+Def \mbox{\hyperlink{stm32f4xx__it_8c_a2c80fd5510e2990a59a5c90d745c716c}{htim2}}
+\item 
+DMA\+\_\+\+Handle\+Type\+Def \mbox{\hyperlink{stm32f4xx__it_8c_a34251392f0d5e2461e3aef615918c235}{hdma\+\_\+usart1\+\_\+rx}}
+\item 
+UART\+\_\+\+Handle\+Type\+Def \mbox{\hyperlink{stm32f4xx__it_8c_a2cf715bef37f7e8ef385a30974a5f0d5}{huart1}}
+\end{DoxyCompactItemize}
 
 
 \doxysubsection{Detailed Description}
@@ -59,7 +74,7 @@ This function handles Pre-\/fetch fault, memory access fault.
 
 
 
-Definition at line \mbox{\hyperlink{stm32f4xx__it_8c_source_l00114}{114}} of file \mbox{\hyperlink{stm32f4xx__it_8c_source}{stm32f4xx\+\_\+it.\+c}}.
+Definition at line \mbox{\hyperlink{stm32f4xx__it_8c_source_l00116}{116}} of file \mbox{\hyperlink{stm32f4xx__it_8c_source}{stm32f4xx\+\_\+it.\+c}}.
 
 \Hypertarget{stm32f4xx__it_8c_adbdfb05858cc36fc520974df37ec3cb0}\label{stm32f4xx__it_8c_adbdfb05858cc36fc520974df37ec3cb0} 
 \index{stm32f4xx\_it.c@{stm32f4xx\_it.c}!DebugMon\_Handler@{DebugMon\_Handler}}
@@ -73,7 +88,21 @@ This function handles Debug monitor.
 
 
 
-Definition at line \mbox{\hyperlink{stm32f4xx__it_8c_source_l00157}{157}} of file \mbox{\hyperlink{stm32f4xx__it_8c_source}{stm32f4xx\+\_\+it.\+c}}.
+Definition at line \mbox{\hyperlink{stm32f4xx__it_8c_source_l00159}{159}} of file \mbox{\hyperlink{stm32f4xx__it_8c_source}{stm32f4xx\+\_\+it.\+c}}.
+
+\Hypertarget{stm32f4xx__it_8c_a7e367d7c7b74485c4c75cdef30ad01e1}\label{stm32f4xx__it_8c_a7e367d7c7b74485c4c75cdef30ad01e1} 
+\index{stm32f4xx\_it.c@{stm32f4xx\_it.c}!DMA2\_Stream2\_IRQHandler@{DMA2\_Stream2\_IRQHandler}}
+\index{DMA2\_Stream2\_IRQHandler@{DMA2\_Stream2\_IRQHandler}!stm32f4xx\_it.c@{stm32f4xx\_it.c}}
+\doxysubsubsection{\texorpdfstring{DMA2\_Stream2\_IRQHandler()}{DMA2\_Stream2\_IRQHandler()}}
+{\footnotesize\ttfamily void DMA2\+\_\+\+Stream2\+\_\+\+IRQHandler (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+
+
+This function handles DMA2 stream2 global interrupt. 
+
+
+
+Definition at line \mbox{\hyperlink{stm32f4xx__it_8c_source_l00234}{234}} of file \mbox{\hyperlink{stm32f4xx__it_8c_source}{stm32f4xx\+\_\+it.\+c}}.
 
 \Hypertarget{stm32f4xx__it_8c_a2bffc10d5bd4106753b7c30e86903bea}\label{stm32f4xx__it_8c_a2bffc10d5bd4106753b7c30e86903bea} 
 \index{stm32f4xx\_it.c@{stm32f4xx\_it.c}!HardFault\_Handler@{HardFault\_Handler}}
@@ -87,7 +116,7 @@ This function handles Hard fault interrupt.
 
 
 
-Definition at line \mbox{\hyperlink{stm32f4xx__it_8c_source_l00084}{84}} of file \mbox{\hyperlink{stm32f4xx__it_8c_source}{stm32f4xx\+\_\+it.\+c}}.
+Definition at line \mbox{\hyperlink{stm32f4xx__it_8c_source_l00086}{86}} of file \mbox{\hyperlink{stm32f4xx__it_8c_source}{stm32f4xx\+\_\+it.\+c}}.
 
 \Hypertarget{stm32f4xx__it_8c_a3150f74512510287a942624aa9b44cc5}\label{stm32f4xx__it_8c_a3150f74512510287a942624aa9b44cc5} 
 \index{stm32f4xx\_it.c@{stm32f4xx\_it.c}!MemManage\_Handler@{MemManage\_Handler}}
@@ -101,7 +130,7 @@ This function handles Memory management fault.
 
 
 
-Definition at line \mbox{\hyperlink{stm32f4xx__it_8c_source_l00099}{99}} of file \mbox{\hyperlink{stm32f4xx__it_8c_source}{stm32f4xx\+\_\+it.\+c}}.
+Definition at line \mbox{\hyperlink{stm32f4xx__it_8c_source_l00101}{101}} of file \mbox{\hyperlink{stm32f4xx__it_8c_source}{stm32f4xx\+\_\+it.\+c}}.
 
 \Hypertarget{stm32f4xx__it_8c_a6ad7a5e3ee69cb6db6a6b9111ba898bc}\label{stm32f4xx__it_8c_a6ad7a5e3ee69cb6db6a6b9111ba898bc} 
 \index{stm32f4xx\_it.c@{stm32f4xx\_it.c}!NMI\_Handler@{NMI\_Handler}}
@@ -115,7 +144,7 @@ This function handles Non maskable interrupt.
 
 
 
-Definition at line \mbox{\hyperlink{stm32f4xx__it_8c_source_l00069}{69}} of file \mbox{\hyperlink{stm32f4xx__it_8c_source}{stm32f4xx\+\_\+it.\+c}}.
+Definition at line \mbox{\hyperlink{stm32f4xx__it_8c_source_l00071}{71}} of file \mbox{\hyperlink{stm32f4xx__it_8c_source}{stm32f4xx\+\_\+it.\+c}}.
 
 \Hypertarget{stm32f4xx__it_8c_a6303e1f258cbdc1f970ce579cc015623}\label{stm32f4xx__it_8c_a6303e1f258cbdc1f970ce579cc015623} 
 \index{stm32f4xx\_it.c@{stm32f4xx\_it.c}!PendSV\_Handler@{PendSV\_Handler}}
@@ -129,7 +158,7 @@ This function handles Pendable request for system service.
 
 
 
-Definition at line \mbox{\hyperlink{stm32f4xx__it_8c_source_l00170}{170}} of file \mbox{\hyperlink{stm32f4xx__it_8c_source}{stm32f4xx\+\_\+it.\+c}}.
+Definition at line \mbox{\hyperlink{stm32f4xx__it_8c_source_l00172}{172}} of file \mbox{\hyperlink{stm32f4xx__it_8c_source}{stm32f4xx\+\_\+it.\+c}}.
 
 \Hypertarget{stm32f4xx__it_8c_a3e5ddb3df0d62f2dc357e64a3f04a6ce}\label{stm32f4xx__it_8c_a3e5ddb3df0d62f2dc357e64a3f04a6ce} 
 \index{stm32f4xx\_it.c@{stm32f4xx\_it.c}!SVC\_Handler@{SVC\_Handler}}
@@ -143,7 +172,7 @@ This function handles System service call via SWI instruction.
 
 
 
-Definition at line \mbox{\hyperlink{stm32f4xx__it_8c_source_l00144}{144}} of file \mbox{\hyperlink{stm32f4xx__it_8c_source}{stm32f4xx\+\_\+it.\+c}}.
+Definition at line \mbox{\hyperlink{stm32f4xx__it_8c_source_l00146}{146}} of file \mbox{\hyperlink{stm32f4xx__it_8c_source}{stm32f4xx\+\_\+it.\+c}}.
 
 \Hypertarget{stm32f4xx__it_8c_ab5e09814056d617c521549e542639b7e}\label{stm32f4xx__it_8c_ab5e09814056d617c521549e542639b7e} 
 \index{stm32f4xx\_it.c@{stm32f4xx\_it.c}!SysTick\_Handler@{SysTick\_Handler}}
@@ -157,7 +186,21 @@ This function handles System tick timer.
 
 
 
-Definition at line \mbox{\hyperlink{stm32f4xx__it_8c_source_l00183}{183}} of file \mbox{\hyperlink{stm32f4xx__it_8c_source}{stm32f4xx\+\_\+it.\+c}}.
+Definition at line \mbox{\hyperlink{stm32f4xx__it_8c_source_l00185}{185}} of file \mbox{\hyperlink{stm32f4xx__it_8c_source}{stm32f4xx\+\_\+it.\+c}}.
+
+\Hypertarget{stm32f4xx__it_8c_a38ad4725462bdc5e86c4ead4f04b9fc2}\label{stm32f4xx__it_8c_a38ad4725462bdc5e86c4ead4f04b9fc2} 
+\index{stm32f4xx\_it.c@{stm32f4xx\_it.c}!TIM2\_IRQHandler@{TIM2\_IRQHandler}}
+\index{TIM2\_IRQHandler@{TIM2\_IRQHandler}!stm32f4xx\_it.c@{stm32f4xx\_it.c}}
+\doxysubsubsection{\texorpdfstring{TIM2\_IRQHandler()}{TIM2\_IRQHandler()}}
+{\footnotesize\ttfamily void TIM2\+\_\+\+IRQHandler (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+
+
+This function handles TIM2 global interrupt. 
+
+
+
+Definition at line \mbox{\hyperlink{stm32f4xx__it_8c_source_l00206}{206}} of file \mbox{\hyperlink{stm32f4xx__it_8c_source}{stm32f4xx\+\_\+it.\+c}}.
 
 \Hypertarget{stm32f4xx__it_8c_a1d98923de2ed6b7309b66f9ba2971647}\label{stm32f4xx__it_8c_a1d98923de2ed6b7309b66f9ba2971647} 
 \index{stm32f4xx\_it.c@{stm32f4xx\_it.c}!UsageFault\_Handler@{UsageFault\_Handler}}
@@ -171,5 +214,52 @@ This function handles Undefined instruction or illegal state.
 
 
 
-Definition at line \mbox{\hyperlink{stm32f4xx__it_8c_source_l00129}{129}} of file \mbox{\hyperlink{stm32f4xx__it_8c_source}{stm32f4xx\+\_\+it.\+c}}.
+Definition at line \mbox{\hyperlink{stm32f4xx__it_8c_source_l00131}{131}} of file \mbox{\hyperlink{stm32f4xx__it_8c_source}{stm32f4xx\+\_\+it.\+c}}.
+
+\Hypertarget{stm32f4xx__it_8c_a7139cd4baabbbcbab0c1fe6d7d4ae1cc}\label{stm32f4xx__it_8c_a7139cd4baabbbcbab0c1fe6d7d4ae1cc} 
+\index{stm32f4xx\_it.c@{stm32f4xx\_it.c}!USART1\_IRQHandler@{USART1\_IRQHandler}}
+\index{USART1\_IRQHandler@{USART1\_IRQHandler}!stm32f4xx\_it.c@{stm32f4xx\_it.c}}
+\doxysubsubsection{\texorpdfstring{USART1\_IRQHandler()}{USART1\_IRQHandler()}}
+{\footnotesize\ttfamily void USART1\+\_\+\+IRQHandler (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+
+
+This function handles USART1 global interrupt. 
+
+
+
+Definition at line \mbox{\hyperlink{stm32f4xx__it_8c_source_l00220}{220}} of file \mbox{\hyperlink{stm32f4xx__it_8c_source}{stm32f4xx\+\_\+it.\+c}}.
+
+
+
+\doxysubsection{Variable Documentation}
+\Hypertarget{stm32f4xx__it_8c_a34251392f0d5e2461e3aef615918c235}\label{stm32f4xx__it_8c_a34251392f0d5e2461e3aef615918c235} 
+\index{stm32f4xx\_it.c@{stm32f4xx\_it.c}!hdma\_usart1\_rx@{hdma\_usart1\_rx}}
+\index{hdma\_usart1\_rx@{hdma\_usart1\_rx}!stm32f4xx\_it.c@{stm32f4xx\_it.c}}
+\doxysubsubsection{\texorpdfstring{hdma\_usart1\_rx}{hdma\_usart1\_rx}}
+{\footnotesize\ttfamily DMA\+\_\+\+Handle\+Type\+Def hdma\+\_\+usart1\+\_\+rx\hspace{0.3cm}{\ttfamily [extern]}}
+
+
+
+Definition at line \mbox{\hyperlink{usart_8c_source_l00029}{29}} of file \mbox{\hyperlink{usart_8c_source}{usart.\+c}}.
+
+\Hypertarget{stm32f4xx__it_8c_a2c80fd5510e2990a59a5c90d745c716c}\label{stm32f4xx__it_8c_a2c80fd5510e2990a59a5c90d745c716c} 
+\index{stm32f4xx\_it.c@{stm32f4xx\_it.c}!htim2@{htim2}}
+\index{htim2@{htim2}!stm32f4xx\_it.c@{stm32f4xx\_it.c}}
+\doxysubsubsection{\texorpdfstring{htim2}{htim2}}
+{\footnotesize\ttfamily TIM\+\_\+\+Handle\+Type\+Def htim2\hspace{0.3cm}{\ttfamily [extern]}}
+
+
+
+Definition at line \mbox{\hyperlink{tim_8c_source_l00027}{27}} of file \mbox{\hyperlink{tim_8c_source}{tim.\+c}}.
+
+\Hypertarget{stm32f4xx__it_8c_a2cf715bef37f7e8ef385a30974a5f0d5}\label{stm32f4xx__it_8c_a2cf715bef37f7e8ef385a30974a5f0d5} 
+\index{stm32f4xx\_it.c@{stm32f4xx\_it.c}!huart1@{huart1}}
+\index{huart1@{huart1}!stm32f4xx\_it.c@{stm32f4xx\_it.c}}
+\doxysubsubsection{\texorpdfstring{huart1}{huart1}}
+{\footnotesize\ttfamily UART\+\_\+\+Handle\+Type\+Def huart1\hspace{0.3cm}{\ttfamily [extern]}}
+
+
+
+Definition at line \mbox{\hyperlink{usart_8c_source_l00027}{27}} of file \mbox{\hyperlink{usart_8c_source}{usart.\+c}}.
 

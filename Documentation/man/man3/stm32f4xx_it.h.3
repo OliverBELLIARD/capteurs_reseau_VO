@@ -1,4 +1,4 @@
-.TH "/home/oliver/Documents/3A/capteurs_reseaux_VO_ESE_TP2/capteurs_reseaux_VO/Core/Inc/stm32f4xx_it.h" 3 "Bus et Réseaux - VO" \" -*- nroff -*-
+.TH "/home/oliver/Documents/3A/capteurs_reseaux_VO_ESE_TP2/capteurs_reseaux_VO/Core/Inc/stm32f4xx_it.h" 3 "Version TP5" "Bus et Réseaux - VO" \" -*- nroff -*-
 .ad l
 .nh
 .SH NAME
@@ -46,6 +46,18 @@
 .RI "void \fBSysTick_Handler\fP (void)"
 .br
 .RI "This function handles System tick timer\&. "
+.ti -1c
+.RI "void \fBTIM2_IRQHandler\fP (void)"
+.br
+.RI "This function handles TIM2 global interrupt\&. "
+.ti -1c
+.RI "void \fBUSART1_IRQHandler\fP (void)"
+.br
+.RI "This function handles USART1 global interrupt\&. "
+.ti -1c
+.RI "void \fBDMA2_Stream2_IRQHandler\fP (void)"
+.br
+.RI "This function handles DMA2 stream2 global interrupt\&. "
 .in -1c
 .SH "Detailed Description"
 .PP 
@@ -70,55 +82,73 @@ Definition in file \fBstm32f4xx_it\&.h\fP\&.
 .PP
 This function handles Pre-fetch fault, memory access fault\&. 
 .PP
-Definition at line \fB114\fP of file \fBstm32f4xx_it\&.c\fP\&.
+Definition at line \fB116\fP of file \fBstm32f4xx_it\&.c\fP\&.
 .SS "void DebugMon_Handler (void)"
 
 .PP
 This function handles Debug monitor\&. 
 .PP
-Definition at line \fB157\fP of file \fBstm32f4xx_it\&.c\fP\&.
+Definition at line \fB159\fP of file \fBstm32f4xx_it\&.c\fP\&.
+.SS "void DMA2_Stream2_IRQHandler (void)"
+
+.PP
+This function handles DMA2 stream2 global interrupt\&. 
+.PP
+Definition at line \fB234\fP of file \fBstm32f4xx_it\&.c\fP\&.
 .SS "void HardFault_Handler (void)"
 
 .PP
 This function handles Hard fault interrupt\&. 
 .PP
-Definition at line \fB84\fP of file \fBstm32f4xx_it\&.c\fP\&.
+Definition at line \fB86\fP of file \fBstm32f4xx_it\&.c\fP\&.
 .SS "void MemManage_Handler (void)"
 
 .PP
 This function handles Memory management fault\&. 
 .PP
-Definition at line \fB99\fP of file \fBstm32f4xx_it\&.c\fP\&.
+Definition at line \fB101\fP of file \fBstm32f4xx_it\&.c\fP\&.
 .SS "void NMI_Handler (void)"
 
 .PP
 This function handles Non maskable interrupt\&. 
 .PP
-Definition at line \fB69\fP of file \fBstm32f4xx_it\&.c\fP\&.
+Definition at line \fB71\fP of file \fBstm32f4xx_it\&.c\fP\&.
 .SS "void PendSV_Handler (void)"
 
 .PP
 This function handles Pendable request for system service\&. 
 .PP
-Definition at line \fB170\fP of file \fBstm32f4xx_it\&.c\fP\&.
+Definition at line \fB172\fP of file \fBstm32f4xx_it\&.c\fP\&.
 .SS "void SVC_Handler (void)"
 
 .PP
 This function handles System service call via SWI instruction\&. 
 .PP
-Definition at line \fB144\fP of file \fBstm32f4xx_it\&.c\fP\&.
+Definition at line \fB146\fP of file \fBstm32f4xx_it\&.c\fP\&.
 .SS "void SysTick_Handler (void)"
 
 .PP
 This function handles System tick timer\&. 
 .PP
-Definition at line \fB183\fP of file \fBstm32f4xx_it\&.c\fP\&.
+Definition at line \fB185\fP of file \fBstm32f4xx_it\&.c\fP\&.
+.SS "void TIM2_IRQHandler (void)"
+
+.PP
+This function handles TIM2 global interrupt\&. 
+.PP
+Definition at line \fB206\fP of file \fBstm32f4xx_it\&.c\fP\&.
 .SS "void UsageFault_Handler (void)"
 
 .PP
 This function handles Undefined instruction or illegal state\&. 
 .PP
-Definition at line \fB129\fP of file \fBstm32f4xx_it\&.c\fP\&.
+Definition at line \fB131\fP of file \fBstm32f4xx_it\&.c\fP\&.
+.SS "void USART1_IRQHandler (void)"
+
+.PP
+This function handles USART1 global interrupt\&. 
+.PP
+Definition at line \fB220\fP of file \fBstm32f4xx_it\&.c\fP\&.
 .SH "Author"
 .PP 
 Generated automatically by Doxygen for Bus et Réseaux - VO from the source code\&.

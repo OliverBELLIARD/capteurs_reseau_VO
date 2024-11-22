@@ -1,4 +1,4 @@
-.TH "/home/oliver/Documents/3A/capteurs_reseaux_VO_ESE_TP2/capteurs_reseaux_VO/Core/Src/usart.c" 3 "Bus et Réseaux - VO" \" -*- nroff -*-
+.TH "/home/oliver/Documents/3A/capteurs_reseaux_VO_ESE_TP2/capteurs_reseaux_VO/Core/Src/usart.c" 3 "Version TP5" "Bus et Réseaux - VO" \" -*- nroff -*-
 .ad l
 .nh
 .SH NAME
@@ -35,6 +35,9 @@
 .ti -1c
 .RI "UART_HandleTypeDef \fBhuart2\fP"
 .br
+.ti -1c
+.RI "DMA_HandleTypeDef \fBhdma_usart1_rx\fP"
+.br
 .in -1c
 .SH "Detailed Description"
 .PP 
@@ -59,23 +62,27 @@ USART1 GPIO Configuration PA9 ------> USART1_TX PA10 ------> USART1_RX
 .PP
 USART2 GPIO Configuration PA2 ------> USART2_TX PA3 ------> USART2_RX
 .PP
-Definition at line \fB143\fP of file \fBusart\&.c\fP\&.
+Definition at line \fB166\fP of file \fBusart\&.c\fP\&.
 .SS "void HAL_UART_MspInit (UART_HandleTypeDef * uartHandle)"
 USART1 GPIO Configuration PA9 ------> USART1_TX PA10 ------> USART1_RX
 .PP
 USART2 GPIO Configuration PA2 ------> USART2_TX PA3 ------> USART2_RX
 .PP
-Definition at line \fB89\fP of file \fBusart\&.c\fP\&.
+Definition at line \fB90\fP of file \fBusart\&.c\fP\&.
 .SS "void MX_USART1_UART_Init (void)"
 
 .PP
-Definition at line \fB32\fP of file \fBusart\&.c\fP\&.
+Definition at line \fB33\fP of file \fBusart\&.c\fP\&.
 .SS "void MX_USART2_UART_Init (void)"
 
 .PP
-Definition at line \fB61\fP of file \fBusart\&.c\fP\&.
+Definition at line \fB62\fP of file \fBusart\&.c\fP\&.
 .SH "Variable Documentation"
 .PP 
+.SS "DMA_HandleTypeDef hdma_usart1_rx"
+
+.PP
+Definition at line \fB29\fP of file \fBusart\&.c\fP\&.
 .SS "UART_HandleTypeDef huart1"
 
 .PP

@@ -1,4 +1,4 @@
-.TH "/home/oliver/Documents/3A/capteurs_reseaux_VO_ESE_TP2/capteurs_reseaux_VO/Core/Inc/MPU9250_driver.h" 3 "Bus et Réseaux - VO" \" -*- nroff -*-
+.TH "/home/oliver/Documents/3A/capteurs_reseaux_VO_ESE_TP2/capteurs_reseaux_VO/Core/Inc/MPU9250_driver.h" 3 "Version TP5" "Bus et Réseaux - VO" \" -*- nroff -*-
 .ad l
 .nh
 .SH NAME
@@ -227,7 +227,7 @@ Set the IMU address, check for connection, reset IMU, and set full range scale\&
 .PP
 
 .PP
-Definition at line \fB23\fP of file \fBMPU9250_driver\&.c\fP\&.
+Definition at line \fB34\fP of file \fBMPU9250_driver\&.c\fP\&.
 .SS "void MPU_calcAttitude (I2C_HandleTypeDef * I2Cx)"
 
 .PP
@@ -240,7 +240,7 @@ Calculate the attitude of the sensor in degrees using a complementary filter\&.
 .PP
 
 .PP
-Definition at line \fB211\fP of file \fBMPU9250_driver\&.c\fP\&.
+Definition at line \fB222\fP of file \fBMPU9250_driver\&.c\fP\&.
 .SS "void MPU_calibrateGyro (I2C_HandleTypeDef * I2Cx, uint16_t numCalPoints)"
 
 .PP
@@ -255,7 +255,7 @@ Find offsets for each axis of gyroscope\&.
 .PP
 
 .PP
-Definition at line \fB157\fP of file \fBMPU9250_driver\&.c\fP\&.
+Definition at line \fB168\fP of file \fBMPU9250_driver\&.c\fP\&.
 .SS "void MPU_readProcessedData (I2C_HandleTypeDef * I2Cx)"
 
 .PP
@@ -268,7 +268,7 @@ Calculate the real world sensor values\&.
 .PP
 
 .PP
-Definition at line \fB188\fP of file \fBMPU9250_driver\&.c\fP\&.
+Definition at line \fB199\fP of file \fBMPU9250_driver\&.c\fP\&.
 .SS "void MPU_readRawData (I2C_HandleTypeDef * I2Cx)"
 
 .PP
@@ -281,7 +281,7 @@ Read raw data from IMU\&.
 .PP
 
 .PP
-Definition at line \fB136\fP of file \fBMPU9250_driver\&.c\fP\&.
+Definition at line \fB147\fP of file \fBMPU9250_driver\&.c\fP\&.
 .SS "void MPU_writeAccFullScaleRange (I2C_HandleTypeDef * I2Cx, uint8_t aScale)"
 
 .PP
@@ -296,7 +296,7 @@ Set the accelerometer full scale range\&.
 .PP
 
 .PP
-Definition at line \fB59\fP of file \fBMPU9250_driver\&.c\fP\&.
+Definition at line \fB70\fP of file \fBMPU9250_driver\&.c\fP\&.
 .SS "void MPU_writeGyroFullScaleRange (I2C_HandleTypeDef * I2Cx, uint8_t gScale)"
 
 .PP
@@ -311,13 +311,25 @@ Set the gyroscope full scale range\&.
 .PP
 
 .PP
-Definition at line \fB98\fP of file \fBMPU9250_driver\&.c\fP\&.
+Definition at line \fB109\fP of file \fBMPU9250_driver\&.c\fP\&.
 .SH "Variable Documentation"
 .PP 
+.SS "uint8_t _addr\fC [extern]\fP"
+
+.PP
+Definition at line \fB23\fP of file \fBMPU9250_driver\&.c\fP\&.
+.SS "float _dt\fC [extern]\fP"
+
+.PP
+Definition at line \fB24\fP of file \fBMPU9250_driver\&.c\fP\&.
 .SS "float _tau"
 
 .PP
 Definition at line \fB77\fP of file \fBMPU9250_driver\&.h\fP\&.
+.SS "float aScaleFactor\fC [extern]\fP"
+
+.PP
+Definition at line \fB25\fP of file \fBMPU9250_driver\&.c\fP\&.
 .SS "float gScaleFactor"
 
 .PP

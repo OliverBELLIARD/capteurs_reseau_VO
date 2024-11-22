@@ -10,6 +10,11 @@
 {\ttfamily \#include "{}BMP280\+\_\+driver.\+h"{}}\newline
 Include dependency graph for BMP280\+\_\+driver.\+c\+:
 % FIG 0
+\doxysubsubsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define \mbox{\hyperlink{BMP280__driver_8c_a42f8c497a1968074f38bf5055c650dca}{VERBOSE}}~0
+\end{DoxyCompactItemize}
 \doxysubsubsection*{Functions}
 \begin{DoxyCompactItemize}
 \item 
@@ -17,7 +22,7 @@ int \mbox{\hyperlink{BMP280__driver_8c_a7e2d8e132c60f4de59663255cc0b8987}{BMP280
 \begin{DoxyCompactList}\small\item\em Check the BMP280 sensor ID. \end{DoxyCompactList}\item 
 int \mbox{\hyperlink{BMP280__driver_8c_a39319860004e0f63b0d14f2f33a0119b}{BMP280\+\_\+\+Config}} (void)
 \begin{DoxyCompactList}\small\item\em Configure the BMP280 sensor. \end{DoxyCompactList}\item 
-void \mbox{\hyperlink{BMP280__driver_8c_a36c96244995f846115c0357dd9bf5dcc}{BMP280\+\_\+calibration}} (void)
+int \mbox{\hyperlink{BMP280__driver_8c_aa05648d9008b19b92cdec2f60d4c237a}{BMP280\+\_\+calibration}} (void)
 \begin{DoxyCompactList}\small\item\em Update the calibration parameters of BMP280. \end{DoxyCompactList}\item 
 BMP280\+\_\+\+S32\+\_\+t \mbox{\hyperlink{BMP280__driver_8c_a834859c5ae69b3526a0b585923956c46}{BMP280\+\_\+compensate\+\_\+\+T\+\_\+int32}} (BMP280\+\_\+\+S32\+\_\+t adc\+\_\+T)
 \begin{DoxyCompactList}\small\item\em Compensate temperature reading from BMP280. \end{DoxyCompactList}\item 
@@ -73,12 +78,25 @@ Definition in file \mbox{\hyperlink{BMP280__driver_8c_source}{BMP280\+\_\+driver
 
 
 
+\doxysubsection{Macro Definition Documentation}
+\Hypertarget{BMP280__driver_8c_a42f8c497a1968074f38bf5055c650dca}\label{BMP280__driver_8c_a42f8c497a1968074f38bf5055c650dca} 
+\index{BMP280\_driver.c@{BMP280\_driver.c}!VERBOSE@{VERBOSE}}
+\index{VERBOSE@{VERBOSE}!BMP280\_driver.c@{BMP280\_driver.c}}
+\doxysubsubsection{\texorpdfstring{VERBOSE}{VERBOSE}}
+{\footnotesize\ttfamily \#define VERBOSE~0}
+
+
+
+Definition at line \mbox{\hyperlink{BMP280__driver_8c_source_l00013}{13}} of file \mbox{\hyperlink{BMP280__driver_8c_source}{BMP280\+\_\+driver.\+c}}.
+
+
+
 \doxysubsection{Function Documentation}
-\Hypertarget{BMP280__driver_8c_a36c96244995f846115c0357dd9bf5dcc}\label{BMP280__driver_8c_a36c96244995f846115c0357dd9bf5dcc} 
+\Hypertarget{BMP280__driver_8c_aa05648d9008b19b92cdec2f60d4c237a}\label{BMP280__driver_8c_aa05648d9008b19b92cdec2f60d4c237a} 
 \index{BMP280\_driver.c@{BMP280\_driver.c}!BMP280\_calibration@{BMP280\_calibration}}
 \index{BMP280\_calibration@{BMP280\_calibration}!BMP280\_driver.c@{BMP280\_driver.c}}
 \doxysubsubsection{\texorpdfstring{BMP280\_calibration()}{BMP280\_calibration()}}
-{\footnotesize\ttfamily void BMP280\+\_\+calibration (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+{\footnotesize\ttfamily int BMP280\+\_\+calibration (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
 
 
 
@@ -88,6 +106,8 @@ Reads calibration data from the BMP280 sensor and stores it in global variables 
 
 Definition at line \mbox{\hyperlink{BMP280__driver_8c_source_l00107}{107}} of file \mbox{\hyperlink{BMP280__driver_8c_source}{BMP280\+\_\+driver.\+c}}.
 
+Here is the caller graph for this function\+:
+% FIG 1
 \Hypertarget{BMP280__driver_8c_a7e2d8e132c60f4de59663255cc0b8987}\label{BMP280__driver_8c_a7e2d8e132c60f4de59663255cc0b8987} 
 \index{BMP280\_driver.c@{BMP280\_driver.c}!BMP280\_Check\_id@{BMP280\_Check\_id}}
 \index{BMP280\_Check\_id@{BMP280\_Check\_id}!BMP280\_driver.c@{BMP280\_driver.c}}
@@ -107,6 +127,8 @@ int Returns EXIT\+\_\+\+SUCCESS if ID is read successfully, otherwise returns EX
 
 Definition at line \mbox{\hyperlink{BMP280__driver_8c_source_l00025}{25}} of file \mbox{\hyperlink{BMP280__driver_8c_source}{BMP280\+\_\+driver.\+c}}.
 
+Here is the caller graph for this function\+:
+% FIG 2
 \Hypertarget{BMP280__driver_8c_a910d1e5dd2fbdb3870e5cf4ca5a763ec}\label{BMP280__driver_8c_a910d1e5dd2fbdb3870e5cf4ca5a763ec} 
 \index{BMP280\_driver.c@{BMP280\_driver.c}!BMP280\_compensate\_P\_int64@{BMP280\_compensate\_P\_int64}}
 \index{BMP280\_compensate\_P\_int64@{BMP280\_compensate\_P\_int64}!BMP280\_driver.c@{BMP280\_driver.c}}
@@ -129,10 +151,10 @@ BMP280\+\_\+\+U32\+\_\+t Compensated pressure in Pascals as a unsigned 32 bit in
 \end{DoxyReturn}
 
 
-Definition at line \mbox{\hyperlink{BMP280__driver_8c_source_l00175}{175}} of file \mbox{\hyperlink{BMP280__driver_8c_source}{BMP280\+\_\+driver.\+c}}.
+Definition at line \mbox{\hyperlink{BMP280__driver_8c_source_l00181}{181}} of file \mbox{\hyperlink{BMP280__driver_8c_source}{BMP280\+\_\+driver.\+c}}.
 
 Here is the caller graph for this function\+:
-% FIG 1
+% FIG 3
 \Hypertarget{BMP280__driver_8c_a834859c5ae69b3526a0b585923956c46}\label{BMP280__driver_8c_a834859c5ae69b3526a0b585923956c46} 
 \index{BMP280\_driver.c@{BMP280\_driver.c}!BMP280\_compensate\_T\_int32@{BMP280\_compensate\_T\_int32}}
 \index{BMP280\_compensate\_T\_int32@{BMP280\_compensate\_T\_int32}!BMP280\_driver.c@{BMP280\_driver.c}}
@@ -155,10 +177,10 @@ BMP280\+\_\+\+S32\+\_\+t Compensated temperature in degrees Celsius, scaled by 1
 \end{DoxyReturn}
 
 
-Definition at line \mbox{\hyperlink{BMP280__driver_8c_source_l00154}{154}} of file \mbox{\hyperlink{BMP280__driver_8c_source}{BMP280\+\_\+driver.\+c}}.
+Definition at line \mbox{\hyperlink{BMP280__driver_8c_source_l00160}{160}} of file \mbox{\hyperlink{BMP280__driver_8c_source}{BMP280\+\_\+driver.\+c}}.
 
 Here is the caller graph for this function\+:
-% FIG 2
+% FIG 4
 \Hypertarget{BMP280__driver_8c_a39319860004e0f63b0d14f2f33a0119b}\label{BMP280__driver_8c_a39319860004e0f63b0d14f2f33a0119b} 
 \index{BMP280\_driver.c@{BMP280\_driver.c}!BMP280\_Config@{BMP280\_Config}}
 \index{BMP280\_Config@{BMP280\_Config}!BMP280\_driver.c@{BMP280\_driver.c}}
@@ -178,6 +200,8 @@ int Returns EXIT\+\_\+\+SUCCESS if configuration is confirmed, otherwise returns
 
 Definition at line \mbox{\hyperlink{BMP280__driver_8c_source_l00057}{57}} of file \mbox{\hyperlink{BMP280__driver_8c_source}{BMP280\+\_\+driver.\+c}}.
 
+Here is the caller graph for this function\+:
+% FIG 5
 \Hypertarget{BMP280__driver_8c_a5ee7cd62db9e5e3ae5a20073af186812}\label{BMP280__driver_8c_a5ee7cd62db9e5e3ae5a20073af186812} 
 \index{BMP280\_driver.c@{BMP280\_driver.c}!BMP280\_get\_pressure@{BMP280\_get\_pressure}}
 \index{BMP280\_get\_pressure@{BMP280\_get\_pressure}!BMP280\_driver.c@{BMP280\_driver.c}}
@@ -195,10 +219,12 @@ BMP280\+\_\+\+S32\+\_\+t Compensated pressure in Pascals.
 \end{DoxyReturn}
 
 
-Definition at line \mbox{\hyperlink{BMP280__driver_8c_source_l00299}{299}} of file \mbox{\hyperlink{BMP280__driver_8c_source}{BMP280\+\_\+driver.\+c}}.
+Definition at line \mbox{\hyperlink{BMP280__driver_8c_source_l00309}{309}} of file \mbox{\hyperlink{BMP280__driver_8c_source}{BMP280\+\_\+driver.\+c}}.
 
 Here is the call graph for this function\+:
-% FIG 3
+% FIG 6
+Here is the caller graph for this function\+:
+% FIG 7
 \Hypertarget{BMP280__driver_8c_a9ad63608e8acf7960d27522dd0b207e7}\label{BMP280__driver_8c_a9ad63608e8acf7960d27522dd0b207e7} 
 \index{BMP280\_driver.c@{BMP280\_driver.c}!BMP280\_get\_temperature@{BMP280\_get\_temperature}}
 \index{BMP280\_get\_temperature@{BMP280\_get\_temperature}!BMP280\_driver.c@{BMP280\_driver.c}}
@@ -216,12 +242,12 @@ BMP280\+\_\+\+S32\+\_\+t Compensated temperature in degrees Celsius, scaled by 1
 \end{DoxyReturn}
 
 
-Definition at line \mbox{\hyperlink{BMP280__driver_8c_source_l00268}{268}} of file \mbox{\hyperlink{BMP280__driver_8c_source}{BMP280\+\_\+driver.\+c}}.
+Definition at line \mbox{\hyperlink{BMP280__driver_8c_source_l00274}{274}} of file \mbox{\hyperlink{BMP280__driver_8c_source}{BMP280\+\_\+driver.\+c}}.
 
 Here is the call graph for this function\+:
-% FIG 4
+% FIG 8
 Here is the caller graph for this function\+:
-% FIG 5
+% FIG 9
 \Hypertarget{BMP280__driver_8c_aa66b5f318d41d4ead70418d8d4e0a21f}\label{BMP280__driver_8c_aa66b5f318d41d4ead70418d8d4e0a21f} 
 \index{BMP280\_driver.c@{BMP280\_driver.c}!BMP280\_Read\_Reg@{BMP280\_Read\_Reg}}
 \index{BMP280\_Read\_Reg@{BMP280\_Read\_Reg}!BMP280\_driver.c@{BMP280\_driver.c}}
@@ -246,10 +272,10 @@ uint8\+\_\+t\texorpdfstring{$\ast$}{*} Pointer to buffer with read data. The cal
 \end{DoxyReturn}
 
 
-Definition at line \mbox{\hyperlink{BMP280__driver_8c_source_l00241}{241}} of file \mbox{\hyperlink{BMP280__driver_8c_source}{BMP280\+\_\+driver.\+c}}.
+Definition at line \mbox{\hyperlink{BMP280__driver_8c_source_l00247}{247}} of file \mbox{\hyperlink{BMP280__driver_8c_source}{BMP280\+\_\+driver.\+c}}.
 
 Here is the caller graph for this function\+:
-% FIG 6
+% FIG 10
 \Hypertarget{BMP280__driver_8c_a6e2697078df39b7582d0c93aa33bed21}\label{BMP280__driver_8c_a6e2697078df39b7582d0c93aa33bed21} 
 \index{BMP280\_driver.c@{BMP280\_driver.c}!BMP280\_Write\_Reg@{BMP280\_Write\_Reg}}
 \index{BMP280\_Write\_Reg@{BMP280\_Write\_Reg}!BMP280\_driver.c@{BMP280\_driver.c}}
@@ -274,7 +300,7 @@ int Returns EXIT\+\_\+\+SUCCESS if value is successfully written, otherwise retu
 \end{DoxyReturn}
 
 
-Definition at line \mbox{\hyperlink{BMP280__driver_8c_source_l00207}{207}} of file \mbox{\hyperlink{BMP280__driver_8c_source}{BMP280\+\_\+driver.\+c}}.
+Definition at line \mbox{\hyperlink{BMP280__driver_8c_source_l00213}{213}} of file \mbox{\hyperlink{BMP280__driver_8c_source}{BMP280\+\_\+driver.\+c}}.
 
 
 
@@ -407,7 +433,7 @@ Definition at line \mbox{\hyperlink{BMP280__driver_8c_source_l00088}{88}} of fil
 
 
 
-Definition at line \mbox{\hyperlink{BMP280__driver_8c_source_l00014}{14}} of file \mbox{\hyperlink{BMP280__driver_8c_source}{BMP280\+\_\+driver.\+c}}.
+Definition at line \mbox{\hyperlink{BMP280__driver_8c_source_l00015}{15}} of file \mbox{\hyperlink{BMP280__driver_8c_source}{BMP280\+\_\+driver.\+c}}.
 
 \Hypertarget{BMP280__driver_8c_a76976acd94b5aa6ded5c69ae13c1e4ee}\label{BMP280__driver_8c_a76976acd94b5aa6ded5c69ae13c1e4ee} 
 \index{BMP280\_driver.c@{BMP280\_driver.c}!t\_fine@{t\_fine}}

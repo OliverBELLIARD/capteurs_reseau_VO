@@ -19,7 +19,7 @@ Include dependency graph for syscalls.\+c\+:
 \begin{DoxyCompactItemize}
 \item 
 int \mbox{\hyperlink{syscalls_8c_aa53ed4b191897a1bfc205aa1da005d24}{\+\_\+\+\_\+io\+\_\+putchar}} (int ch) \+\_\+\+\_\+attribute\+\_\+\+\_\+((weak))
-\item 
+\begin{DoxyCompactList}\small\item\em Transmit a character over UART. \end{DoxyCompactList}\item 
 int \mbox{\hyperlink{syscalls_8c_ad0122671640a3af49792ddaa59e8294e}{\+\_\+\+\_\+io\+\_\+getchar}} (void)
 \item 
 void \mbox{\hyperlink{syscalls_8c_a25c7f100d498300fff65568c2fcfe639}{initialise\+\_\+monitor\+\_\+handles}} ()
@@ -113,7 +113,21 @@ Definition at line \mbox{\hyperlink{syscalls_8c_source_l00036}{36}} of file \mbo
 
 
 
-Definition at line \mbox{\hyperlink{main_8c_source_l00067}{67}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+Transmit a character over UART. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em ch} & Character to transmit. \\
+\hline
+\end{DoxyParams}
+
+\begin{DoxyRetVals}{Return values}
+{\em int} & The transmitted character. \\
+\hline
+\end{DoxyRetVals}
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00083}{83}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
 
 \Hypertarget{syscalls_8c_a5aab5e2acfd600e3667dc915a2bbc7cb}\label{syscalls_8c_a5aab5e2acfd600e3667dc915a2bbc7cb} 
 \index{syscalls.c@{syscalls.c}!\_close@{\_close}}

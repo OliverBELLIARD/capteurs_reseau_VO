@@ -8,8 +8,17 @@ digraph "MPU_readRawData"
   Node1 [id="Node000001",label="MPU_readRawData",height=0.2,width=0.4,color="gray40", fillcolor="grey60", style="filled", fontcolor="black",tooltip="Read raw data from IMU."];
   Node1 -> Node2 [id="edge1_Node000001_Node000002",dir="back",color="steelblue1",style="solid",tooltip=" "];
   Node2 [id="Node000002",label="MPU_calibrateGyro",height=0.2,width=0.4,color="grey40", fillcolor="white", style="filled",URL="$MPU9250__driver_8c.html#aa847c36df2da652d7fa796696a056758",tooltip="Find offsets for each axis of gyroscope."];
-  Node1 -> Node3 [id="edge2_Node000001_Node000003",dir="back",color="steelblue1",style="solid",tooltip=" "];
-  Node3 [id="Node000003",label="MPU_readProcessedData",height=0.2,width=0.4,color="grey40", fillcolor="white", style="filled",URL="$MPU9250__driver_8c.html#a0b9572bcd1f2755e895204e9bdcc313f",tooltip="Calculate the real world sensor values."];
+  Node2 -> Node3 [id="edge2_Node000002_Node000003",dir="back",color="steelblue1",style="solid",tooltip=" "];
+  Node3 [id="Node000003",label="MPU9250_init",height=0.2,width=0.4,color="grey40", fillcolor="white", style="filled",URL="$main_8c.html#aea5e73ce5da71b09a981bfa9118ba050",tooltip="Initialize the MPU9250 sensor."];
   Node3 -> Node4 [id="edge3_Node000003_Node000004",dir="back",color="steelblue1",style="solid",tooltip=" "];
-  Node4 [id="Node000004",label="MPU_calcAttitude",height=0.2,width=0.4,color="grey40", fillcolor="white", style="filled",URL="$MPU9250__driver_8c.html#a9e48249ac6c48ba5b4e1816e67d8807f",tooltip="Calculate the attitude of the sensor in degrees using a complementary filter."];
+  Node4 [id="Node000004",label="main",height=0.2,width=0.4,color="grey40", fillcolor="white", style="filled",URL="$main_8c.html#a840291bc02cba5474a4cb46a9b9566fe",tooltip="The application entry point."];
+  Node2 -> Node5 [id="edge4_Node000002_Node000005",dir="back",color="steelblue1",style="solid",tooltip=" "];
+  Node5 [id="Node000005",label="parse_RaspberryPI_Request",height=0.2,width=0.4,color="grey40", fillcolor="white", style="filled",URL="$main_8c.html#a75af9e57cfa16fd38d92042718961e54",tooltip="Process the command received from the Raspberry Pi over UART."];
+  Node5 -> Node6 [id="edge5_Node000005_Node000006",dir="back",color="steelblue1",style="solid",tooltip=" "];
+  Node6 [id="Node000006",label="HAL_UARTEx_RxEventCallback",height=0.2,width=0.4,color="grey40", fillcolor="white", style="filled",URL="$main_8c.html#a925534fb8bf7ca464fd05c982fe4bfa0",tooltip="UART Receive Event callback function. It processes received data from USART1."];
+  Node1 -> Node7 [id="edge6_Node000001_Node000007",dir="back",color="steelblue1",style="solid",tooltip=" "];
+  Node7 [id="Node000007",label="MPU_readProcessedData",height=0.2,width=0.4,color="grey40", fillcolor="white", style="filled",URL="$MPU9250__driver_8c.html#a0b9572bcd1f2755e895204e9bdcc313f",tooltip="Calculate the real world sensor values."];
+  Node7 -> Node8 [id="edge7_Node000007_Node000008",dir="back",color="steelblue1",style="solid",tooltip=" "];
+  Node8 [id="Node000008",label="MPU_calcAttitude",height=0.2,width=0.4,color="grey40", fillcolor="white", style="filled",URL="$MPU9250__driver_8c.html#a9e48249ac6c48ba5b4e1816e67d8807f",tooltip="Calculate the attitude of the sensor in degrees using a complementary filter."];
+  Node8 -> Node5 [id="edge8_Node000008_Node000005",dir="back",color="steelblue1",style="solid",tooltip=" "];
 }
