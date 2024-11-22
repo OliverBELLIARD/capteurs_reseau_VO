@@ -621,7 +621,7 @@ D'autres méthodes auraient pu être utilisées, notamment `redirect` avec `url_
 ## 4.3. Nouvelles métodes HTTP
 ### Méthodes POST, PUT, DELETE…
 
-Pour être encore un peu plus RESTful, votre application doit gérer plusieurs méthodes (verb) HTTP
+Pour être encore un peu plus RESTful, notre application doit gérer plusieurs méthodes (verb) HTTP
 
 ### Méthode POST
 
@@ -634,7 +634,7 @@ Une fois que curl est disponible on peut l'utiliser de la façon suivante :
 ```
 curl -X POST http://192.168.88.235/api/welcome/14
 ```
-On peut aussi utiliser l'extension RESTED de Firefox, c'est l'option qu'on a retenu car plus intuitive !   
+On peut aussi utiliser l'extension RESTED de Firefox, c'est l'option qu'on a retenu car plus intuitive.    
 
 Notre Raspberry nous renvoie l'erreur 405. En effet, nous n'avons pas encore ajouté la liste des méthodes acceptées à notre route, on peut remédier à ce probleme en écrivant notre route de cette façon :  
 
@@ -660,32 +660,25 @@ def api_request(path=None):
                 }
     return jsonify(resp)
 ```  
-On arrive à peupler les champs `args` et `data` en effectuant une requête POST. En effet, dans la fonction fournie le champ "data" se remplit seulement si la requête reçue est un POST.
+On arrive à peupler les champs `args` et `data` en effectuant une requête POST. En effet, dans la fonction fournie le champ "data" se remplit seulement si la requête reçue est un POST.    
 
-### API CRUD
+## API CRUD
 
-En reprenant la fonction `api_welcome_index`, ajoutez-y les fonctions CRUD suivantes:  
+Pour que notre serveur soit "rested", il faudrait que celui-ci puisse supporter les requêtes suivantes :  
 
-  ![image](https://github.com/user-attachments/assets/a945682f-f53e-4ba9-adcd-e51e76a22e52)
-  
-Pour chaque action, l’échange de donnée doit se faire en JSON, et si une action ne renvoie rien, alors le code status de la réponse doit être modifié. Par exemple, le POST doit retourner un `202 No Content`.
-  
-Pour les codes de succès HTTP: https://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.2  
+![image](https://github.com/user-attachments/assets/ab42c171-8957-459c-b6f2-8ab1d5b5e527)
+ 
 
-## 4.4. Et encore plus fort...
+Nous manquions de temps et le plus important du TP est assuré si on peut supporter les requêtes GET et POST donc on s'est seulement concentré sur ces deux requêtes là.  
 
-Le code écrit avec Flask pour créer une API REST est rapide, mais finalement il y a encore beaucoup de redondance...  
-  
-Et donc, il y a encore plus fort: FASTAPI, https://fastapi.tiangolo.com/  
-  
-En plus d'accélérer encore plus l'écriture du code, FASTAPI est auto-documenté... Essayez de réécrire votre code avec FASTAPI, et allez voir la page [/docs](https://moodle.ensea.fr/docs).  
+Si on avait eu un peu plus de temps on aurait aussi pu passer sur FASTAPI car il y est plus rapide d'écrire du code et celui-ci est auto-documenté.
 
 # 5. TP4 - Bus CAN
 **Objectif: Développement d'une API Rest et mise en place d'un périphérique sur bus CAN**  
 
-  ![image](https://github.com/user-attachments/assets/ccfa4086-71ed-44d9-96b3-1d676e14bd5a)
+![image](https://github.com/user-attachments/assets/2bcf4369-3ff1-4248-a1cd-389b651174c0)
 
-Les cartes STM32L476 sont équipées d'un contrôleur CAN intégré. Pour pouvoir les utiliser, il faut leur adjoindre un Tranceiver CAN. Ce rôle est dévolu à un TJA1050 (https://www.nxp.com/docs/en/data-sheet/TJA1050.pdf). Ce composant est alimenté en 5V, mais possède des E/S compatibles 3,3V.
+Nos cartes STM32L476 sont équipées d'un contrôleur CAN intégré. Pour pouvoir l'utiliser, il faut leur adjoindre un Tranceiver CAN. Ce rôle est donné à un TJA1050 (https://www.nxp.com/docs/en/data-sheet/TJA1050.pdf). Ce composant est alimenté en 5V, mais possède des Entrées / Sorties compatibles en 3,3V.
 
 Afin de faciliter sa mise en œuvre, ce composant a été installé sur une carte fille (shield) au format Arduino, qui peut donc s'insérer sur les cartes nucléo64:
 
@@ -695,11 +688,11 @@ Ce shield possède un connecteur subd9, qui permet de connecter un câble au for
 
 ![image](https://github.com/user-attachments/assets/10b2e4df-5e11-4b47-ac9c-2ce2b66b547c)
 
-Seules les broches 2, 3 et 7 sont utilisés sur les câbles à votre dispositions.  
+Seules les broches 2, 3 et 7 sont utilisés sur les câbles à notre disposition.  
   
-Remarque: Vous pourrez noter que les lignes CANL et CANH ont été routées en tant que paire différentielle, et qu'une boucle a été ajouté à la ligne CANL pour la mettre à la même longueur que la ligne CANH.
+On voit notamment que les lignes CANL et CANH ont été routées en tant que paire différentielle, et qu'une boucle a été ajouté à la ligne CANL pour la mettre à la même longueur que la ligne CANH. Sans quoi nous risquions d'avoir des interférences de par la différence de longueur entre ces deux pistes, ce qui est aurait pu compromettre toute la communication CAN.
   
-Vous allez utiliser le bus CAN pour piloter un module moteur pas-à-pas. Ce module s'alimente en +12V. L'ensemble des informations nécessaires pour utiliser ce module est disponible dans ce document: https://moodle.ensea.fr/mod/resource/view.php?id=1921
+Ce bus CAN va être utilisé pour communiquer avec un module de moteur pas-à-pas. Celui-ci s'alimente en 12v. 
   
 La carte moteur est un peu capricieuse et ne semble tolérer qu'une vitesse CAN de 500kbit/s. Pensez à régler CubeMx en conséquence.
 Edit 2022: Il semble que ce soit surtout le ratio seg2/(seg1+seg2), qui détermine l'instant de décision, qui doit être aux alentours de 87%. Vous pouvez utiliser le calculateur suivant: http://www.bittiming.can-wiki.info/
