@@ -602,7 +602,7 @@ nous obtenons bel et bien un résultat en json si nous le vérifions sur firefox
 
 ### Erreur 404
 
-Il arrive souvent que les URL demandées soient fausses, il faut donc que votre serveur renvoie une erreur 404.
+Il arrive souvent que les URL demandées soient fausses, il faut donc que votre serveur puisse renvoyer une erreur 404.
 
 En créant un fichier vide en .html, en le nommant `page_not_found.html` et en copiant-collant le contenu du fichier suivant : [page_not_found.html](https://github.com/OliverBELLIARD/capteurs_reseaux_VO_ESE_TP2/blob/main/REST_server/templates/page_not_found.html) dedans, nous avons créé un template vers lequel nous sommes redirigés lorsque l'url entrée est fausse. Il est nécessaire de créer ce fichier dans un répertoire qu'on vient de créer et de nommer `templates`, cette nomenclature étant imposée par flask.
 
@@ -625,21 +625,24 @@ Pour être encore un peu plus RESTful, votre application doit gérer plusieurs m
 
 ### Méthode POST
 
-Pour essayer une autre méthode, utilisez l’utilitaire `curl` sur linux (par exemple directement depuis le raspberry) de cette manière:
+Pour essayer une autre méthode on peut utiliser l’utilitaire `curl` sur linux (par exemple directement depuis le raspberry).  
+Cette méthode est utilisable si on installe curl au préalable à l'aide de cette ligne de commande :  
 ```
-curl -X POST http://ip.du.pi.0/api/welcome/14
+sudo apt-get install curl
 ```
-ou bien utiliser l’extension RESTED sur firefox.
+Une fois que curl est disponible on peut l'utiliser de la façon suivante :   
+```
+curl -X POST http://192.168.88.235/api/welcome/14
+```
+On peut aussi utiliser l'extension RESTED de Firefox, c'est l'option qu'on a retenu car plus intuitive !   
 
-Normalement, votre raspberry doit vous insulter à coup d’erreur 405…
+Notre Raspberry nous renvoie l'erreur 405. En effet, nous n'avons pas encore ajouté la liste des méthodes acceptées à notre route, on peut remédier à ce probleme en écrivant notre route de cette façon :  
 
-Et oui, il faut ajouter la liste des méthodes acceptées à votre route, par exemple
+@app.route('/api/welcome/<int:index>', methods=['GET','POST'])  
 
-@app.route('/api/welcome/<int:index>', methods=['GET','POST'])
+Mais ajouter la méthode ne suffit pas, il faut aussi que notre fonction réagisse correctement à cette méthode. Dans le cas d’un POST, le corps de la requête contient des informations qui doivent être fournies à notre serveur REST.
 
-Mais ajouter la méthode ne suffit pas, il faut aussi que votre fonction réagisse correctement à cette méthode. Dans le cas d’un POST, le corps de la requête contient des informations qui doivent être fournies à votre serveur.
-
-Testez à l’aide de **RESTED** ou de curl la founction suivante:
+A l'aide de l'extension RESTED de Firefox on teste la fonction suivante :  
 ```python
 @app.route('/api/request/', methods=['GET', 'POST'])
 @app.route('/api/request/<path>', methods=['GET','POST'])
@@ -656,8 +659,8 @@ def api_request(path=None):
                 "data" : request.get_json(),
                 }
     return jsonify(resp)
-```
-Faite en sorte notamment d’obtenir une réponse qui peuple correctement les champs `args` et `data`.
+```  
+On arrive à peupler les champs `args` et `data` en effectuant une requête POST. En effet, dans la fonction fournie le champ "data" se remplit seulement si la requête reçue est un POST.
 
 ### API CRUD
 
