@@ -351,7 +351,7 @@ On peut maintenant brancher les pins TX/RX de notre Raspberry sur le UART1 du ST
 ### Communication avec la STM32
 /!\\ Attention : pour que le port UART utilisé pour la communication avec le PC (UART over USB) puisse fonctionner, les pins PA2 et PA3 ne sont pas par défaut connectés aux borniers CN9 et CN10. (C'est possible en jouant avec le fer à souder : doc Nucleo 64 page 27).
 
-C'est pourquoi nous devons utiliser un 2ᵉ port UART sur le STM32, qui servira à la communication avec le Raspberry Pi (comme indiqué lors du TP1). Nous avons modifié notre fonction `printf` pour qu'elle print sur les 2 ports série en même temps.  
+C'est pourquoi nous devons utiliser un 2ᵉ port UART sur le STM32, qui servira à la communication avec le Raspberry Pi (comme indiqué lors du TP1). Nous avons modifié notre fonction `printf` pour qu'elle envoie des caractères sur les 2 ports série en même temps.  
 ```c
 /**
  * @brief  Transmit a character over UART.
@@ -382,12 +382,12 @@ Les valeurs compensées de P et T pourront être remplacées par les valeurs bru
 
 Finalement pour que notre Raspberry puisse héberger une interface  REST nous devons dans un premier installer dessus python 3 et plusieurs librairies :  
 
-```c
+```python
 sudo apt update
 sudo apt install python3-pip
 ```
 Installez ensuite la bibliothèque pyserial:
-```c
+```python
 pip3 install pyserial
 ```  
 À partir de là, la bibliothèque est accessible après avoir effectué un : `import serial`
