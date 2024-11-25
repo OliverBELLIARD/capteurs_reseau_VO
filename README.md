@@ -346,12 +346,28 @@ Ensuite, dans la fichier cmdline.txt on doit retirer l'option "console=serial0,1
 Pour vérifier si le port série de la Raspberry fonctionne bien, on branche d'abord son TX et RX en loopback et on utilise la commande "minicom -D /dev/ttyAMA0" pour voir si les caractères qu'on rentre nous sont renvoyés, ce qui est vrai dans notre cas donc le port série de la Raspberry est correctement configuré. Pour voir l'attribution de notre arduino nous avons utilisé ce site : https://pinout.xyz/  
 
 On peut maintenant brancher les pins TX/RX de notre Raspberry sur le UART1 du STM32 et notre capteur en I2C sur la STM32. On pense au passage à ne pas oublier de ramener la masse commune à la Raspberry.  
-## 3.2. Port Série
 
+## 3.2. Port Série
+### Loopback
+
+À fin de tester le bon fonctionnement du port série de notre Raspberry Pi, nous avons mis en place une communication en loopback électriquement. Pour cela, nous avons branché le port série du Raspberry en boucle : RX sur TX.  
+  
+Nous avons ensuite utilisé le logiciel `minicom`, mis en place précédemment sur le Raspberry, pour tester le port série. On lance le logiciel avec la ligne suivante, comme expliqué plus haut :
+```
+minicom -D /dev/ttyAMA0 
+```
+
+Une fois dans `minicom`, il faut configurer le port série en pressant `CTRL+A` suivi de `O`.  
+> Pensez à désactiver le contrôle de flux matériel (on n'utilise pas les lignes `RTS/CTS`).  
+  
+Après, il suffit d'écrire quelques lettres au clavier pour vérifier le bon fonctionnement. Quand elles s'affichent, on sait que le loopback fonctionne.  
+  
+Nous pouvons enfin appuyer sur `CTRL+A` puis `Q` pour quitter `minicom`.  
+  
 ### Communication avec la STM32
 /!\\ Attention : pour que le port UART utilisé pour la communication avec le PC (UART over USB) puisse fonctionner, les pins PA2 et PA3 ne sont pas par défaut connectés aux borniers CN9 et CN10. (C'est possible en jouant avec le fer à souder : doc Nucleo 64 page 27).
 
-C'est pourquoi nous devons utiliser un 2ᵉ port UART sur le STM32, qui servira à la communication avec le Raspberry Pi (comme indiqué lors du TP1). Nous avons modifié notre fonction `printf` pour qu'elle envoie des caractères sur les 2 ports série en même temps.  
+C'est pourquoi nous devons utiliser un 2ᵉ port UART sur le STM32, qui servira à la communication avec le Raspberry Pi (comme indiqué lors du TP1). Nous avons modifié notre fonction `printf` pour qu'elle envoie des caractères sur les 2 ports série en même temps et pouvoir debugger nos envois de données avec un terminal en écoute de la liaison série.  
 ```c
 /**
  * @brief  Transmit a character over UART.
@@ -366,7 +382,7 @@ int __io_putchar(int ch)
 	return ch;
 }
 ```
-
+  
 Le protocole de communication entre le Raspberry et la STM32 est le suivant:  
 | Requête du RPi | Réponse du STM | Commentaire |
 |----------------|----------------|-------------|
@@ -375,8 +391,15 @@ Le protocole de communication entre le Raspberry et la STM32 est le suivant:
 | SET_K=1234 |	SET_K=OK |	Fixe le coefficient K (en 1/100e) |
 | GET_K |	K=12.34000 |	Coefficient K sur 10 caractères |
 | GET_A |	A=125.7000 | Angle sur 10 caractères |
-
-Les valeurs compensées de P et T pourront être remplacées par les valeurs brutes hexadécimales sur 5 caractères  (20bits) suivis d'un "H", par exemple: T=7F54B2H
+  
+Les valeurs compensées de P et de T pourront être remplacées par les valeurs brutes hexadécimales sur 5 caractères (20 bits) suivis d'un "H", par exemple : T=7F54B2H  
+  
+Ce protocole a été implémenté dans le STM32.  
+> Une des difficultés rencontres lors du développement de la reconnaissance des commandes reçues par la liaison série a été d'utiliser la fonction `strcmp` a la place de la fonction `strncmp` qui prend en compte la longueur et le contenu de deux chaînes de caractères lors de la comparaison.  
+  
+Après nous avons Branche le STM32 sur le Raspberry en prenant soin de croiser les signaux RX et TX. Les 2 fonctionnent en 3,3 V donc aucune adaptation de niveau n'est nécessaire.  
+  
+Tous nos tests pour ce protocole ont été effectués depuis le Raspberry à l'aide de `minicom`, en envoyant des ordres manuellement et en vérifiant les valeurs renvoyées par le STM32. C'est à ce moment-là que nous avons remarqué que nos fonctions de calibrage n'étalonnaient pas correctement nos capteurs. En revanche, les commandes sont reconnues et renvoient des donnes dans le format spécifié.
 
 ## 3.3. Commande depuis Python
 
@@ -392,8 +415,10 @@ pip3 install pyserial
 ```  
 À partir de là, la bibliothèque est accessible après avoir effectué un : `import serial`
   
-Plus d'info: https://pyserial.readthedocs.io/en/latest/shortintro.html   
-
+> Plus d'infos sur : https://pyserial.readthedocs.io/en/latest/shortintro.html   
+  
+À partir de là, nous pouvons réaliser un script en Python3 qui permet de communiquer avec le STM32. C'est ce que nous avons fait conjointement avec notre interface REST qui utilise cette fonctionnalité.  
+  
 # 4. TP3 - Interface REST
 ## 4.1. Installation du serveur Python
 
@@ -602,7 +627,7 @@ nous obtenons bel et bien un résultat en json si nous le vérifions sur firefox
 
 ### Erreur 404
 
-Il arrive souvent que les URL demandées soient fausses, il faut donc que votre serveur puisse renvoyer une erreur 404.
+Il arrive souvent que les URL demandées soient fausses, il faut donc que notre serveur puisse renvoyer une erreur 404.
 
 En créant un fichier vide en .html, en le nommant `page_not_found.html` et en copiant-collant le contenu du fichier suivant : [page_not_found.html](https://github.com/OliverBELLIARD/capteurs_reseaux_VO_ESE_TP2/blob/main/REST_server/templates/page_not_found.html) dedans, nous avons créé un template vers lequel nous sommes redirigés lorsque l'url entrée est fausse. Il est nécessaire de créer ce fichier dans un répertoire qu'on vient de créer et de nommer `templates`, cette nomenclature étant imposée par flask.
 
@@ -662,49 +687,88 @@ def api_request(path=None):
 ```  
 On arrive à peupler les champs `args` et `data` en effectuant une requête POST. En effet, dans la fonction fournie le champ "data" se remplit seulement si la requête reçue est un POST.    
 
-## API CRUD
+### API CRUD
 
 Pour que notre serveur soit "rested", il faudrait que celui-ci puisse supporter les requêtes suivantes :  
 
 ![image](https://github.com/user-attachments/assets/ab42c171-8957-459c-b6f2-8ab1d5b5e527)
- 
+  
+Pour chaque action, l’échange de donnée devrait se faire en JSON, et si une action ne renvoie rien, alors le code status de la réponse devrait être modifié. Par exemple, le POST doit retourner un `202 No Content`.
+  
+Pour les codes de succès HTTP: https://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.2  
+  
+Manquant de temps pour compléter chaque action correctement, nous avons décidé de pleinement supporter les requêtes GET et POST seulement.
 
-Nous manquions de temps et le plus important du TP est assuré si on peut supporter les requêtes GET et POST donc on s'est seulement concentré sur ces deux requêtes là.  
-
-Si on avait eu un peu plus de temps on aurait aussi pu passer sur FASTAPI car il y est plus rapide d'écrire du code et celui-ci est auto-documenté.
+## 4.4. Et encore plus fort...
+Le code écrit avec Flask pour créer une API REST est rapide, mais finalement il y a encore beaucoup de redondance...  
+  
+Et donc, il y a encore plus fort: FASTAPI, https://fastapi.tiangolo.com/  
+  
+En plus d'accélérer encore plus l'écriture du code, FASTAPI est auto-documenté... Pour améliorer encore plus notre serveur, une bonne initiative aurait été de réécrire notre code avec FASTAPI, et aller voir la page [/docs](https://moodle.ensea.fr/docs).  
 
 # 5. TP4 - Bus CAN
 **Objectif: Développement d'une API Rest et mise en place d'un périphérique sur bus CAN**  
-
+  
 ![image](https://github.com/user-attachments/assets/2bcf4369-3ff1-4248-a1cd-389b651174c0)
+  
+Notre carte STM32L476 est équipée d'un contrôleur CAN intégré. Pour pouvoir l'utiliser, il faut lui adjoindre un Transceiver CAN. Ce rôle est donné à un [TJA1050](https://www.nxp.com/docs/en/data-sheet/TJA1050.pdf). Ce composant est alimenté en 5V, mais possède des Entrées / Sorties compatibles en 3,3 V.
 
-Notre carte STM32L476 est équipée d'un contrôleur CAN intégré. Pour pouvoir l'utiliser, il faut lui adjoindre un Transceiver CAN. Ce rôle est donné à un TJA1050. Ce composant est alimenté en 5V, mais possède des Entrées / Sorties compatibles en 3,3V.
-
-Afin de faciliter sa mise en œuvre, ce composant a été installé sur un shield au format Arduino, qui peut donc se brancher sur notre carte nucleo 64.
+Afin de faciliter sa mise en œuvre, ce composant a été installé sur une carte fille (shield) au format Arduino, qui peut donc se brancher sur notre carte nucleo 64.
 
 ![image](https://github.com/user-attachments/assets/bec57e48-b6b1-43a0-a814-62f8f7d9217b) ![image](https://github.com/user-attachments/assets/c7fa8152-261c-42ae-977d-5071e3511d48)
 
-Ce shield possède un connecteur subd9, qui nous permet de relier notre STM32 à notre moteur. Pour rappel, le connecteur se broche de cette façon :  
-
+Ce shield possède un connecteur subd9, qui nous permet de relier notre STM32 à notre moteur à l'aide d'un câble au format CAN. Pour rappel, le connecteur se broche de cette façon :  
+  
 ![image](https://github.com/user-attachments/assets/10b2e4df-5e11-4b47-ac9c-2ce2b66b547c)
-
+  
 Seules les broches 2, 3 et 7 sont utilisés sur les câbles à notre disposition.  
   
 On voit notamment que les lignes CANL et CANH ont été routées en tant que paire différentielle, et qu'une boucle a été ajouté à la ligne CANL pour la mettre à la même longueur que la ligne CANH. Sans quoi nous risquions d'avoir des interférences de par la différence de longueur entre ces deux pistes, ce qui est aurait pu compromettre toute la communication CAN.
   
-Ce bus CAN va être utilisé pour communiquer avec un module de moteur pas-à-pas. Celui-ci s'alimente en 12v. 
+Ce bus CAN va être utilisé pour communiquer avec un module de moteur pas-à-pas. Celui-ci s'alimente en 12v. L'ensemble des informations nécessaires pour utiliser ce module est disponible dans ce document: https://moodle.ensea.fr/mod/resource/view.php?id=1921
   
 La carte moteur tolère qu'une vitesse CAN de 500kbit/s. Nous avons effectué les rèlages nécessaires sur CubeMX pour atteindre cette vitesse en utilisant le calculateur suivant :  http://www.bittiming.can-wiki.info/
 
-Par ailleurs, les pins du shield qui étaient reliés au CAN tombaient sur l'emplacement qu'on avait d'abord aloué pour la communication I2C sur la STM32, on a donc dû déplacer les pins en conséquence.
+Par ailleurs, les pins du shield qui étaient reliés au CAN tombaient sur l'emplacement qu'on avait d'abord alloué pour la communication I2C sur la STM32, on a donc dû allouer des pins différents en conséquence.
 
 ## 5.1. Pilotage du moteur
-
-Pour Piloter ce moteur nous avons cherché à lui faire exécuter plusieurs fonctions :  
-
-Dans un premier temps nous cherchons à initialiser la communication CAN :  
+Pour Piloter ce moteur nous avons cherché à lui faire exécuter plusieurs fonctions en utilisant les primitives HAL suivantes:
+```c
+HAL_StatusTypeDef HAL_CAN_Start (CAN_HandleTypeDef * hcan)
+```
+pour activer le module CAN et
+```c
+HAL_StatusTypeDef HAL_CAN_AddTxMessage (CAN_HandleTypeDef * hcan, CAN_TxHeaderTypeDef * pHeader, uint8_t aData[], uint32_t * pTxMailbox)
+```
+pour envoyer un message, où:  
+  
+`CAN_HandleTypeDef * hcan` pointe vers la structure stockant les infos du contrôleur CAN.
+`CAN_TxHeaderTypeDef * pHeader` pointe vers la structure contenant les infos du header de la trame CAN à envoyer.  
+`uint8_t aData[] buffer` contient les données à envoyer et.  
+`uint32_t * pTxMailbox` pointe vers la boite au lettre de transmission.
+  
+La variable `hcan` est définie par CubeMX, donc ce sera `hcan1`.
+  
+La variable `pHeader` est une structure contenant les champs suivants, que l'on remplit avant de faire appel à `HAL_CAN_AddTxMessage` :
+  
+`.StdId` contient le message ID quand celui-ci est standard (11 bits)  
+`.ExtId` contient le message ID quand celui-ci est étendu (29 bits)  
+ `.IDE` définit si la trame est standard (CAN_ID_STD) ou étendue (CAN_ID_EXT)  
+`.RTR` définit si la trame est du type standard (CAN_RTR_DATA) ou RTR (CAN_RTR_REMOTE) (voir le cours)  
+`.DLC` est un entier représentant la taille des données à transmettre (entre 0 et 8)  
+`.TransmitGlobal` dispositif permettant de mesurer les temps de réponse du bus CAN, qu'on utilisera pas. Le fixer à DISABLE
+  
+Dans un premier temps nous initialisons la communication CAN :  
 
 ```c
+#define TRUE  1
+#define FALSE 0
+
+int logs;	// Boolean to choose to display logs or not
+
+/**
+ * @brief Initialises the CAN communication
+ */
 void CAN_Init()
 {
 	HAL_StatusTypeDef status;
@@ -736,10 +800,29 @@ void CAN_Init()
 	}
 }
 ```  
-
-Nous avons ici mis au point la fonction permettant d'envoyer nos messages en CAN jusqu'au moteur : 
+Lors de notre initialisation, nous nous assurons de gérer les différentes erreurs qui peuvent arriver pour rendre notre driver plus robuste.   
+  
+Nous avons ensuite mis au point la fonction permettant d'envoyer nos messages en CAN : 
 
 ```c
+/**
+ * @brief Sends a CAN message with retry logic.
+ *
+ * This function attempts to send a message over the CAN bus to a specified
+ * message ID (`msg_id`). If the CAN bus is busy, it will retry sending up to
+ * a maximum number of attempts (`maxRetries`). In case of any other error
+ * (such as timeout or general error), the function will call `Error_Handler()`
+ * to manage the failure.
+ *
+ * @param uint8_t* aData	Pointer to the data buffer containing the message to send.
+ *               			The data should be in the form of an array of `uint8_t`.
+ * @param uint32_t size		Size of the data in bytes (must match the Data Length Code (DLC)
+ * 				 			field in the CAN frame).
+ * @param uint32_t msg_id	CAN message identifier (11-bit standard ID) that defines the
+ *               			destination or type of the message being sent.
+ *
+ * @retval None
+ */
 void CAN_Send(uint8_t * aData, uint32_t size, uint32_t msg_id)
 {
 	HAL_StatusTypeDef status;
@@ -806,30 +889,15 @@ void CAN_Send(uint8_t * aData, uint32_t size, uint32_t msg_id)
 	}
 }
 ```  
-pour envoyer un message, où:  
-
-`CAN_HandleTypeDef * hcan` pointe vers la structure stockant les infos du contrôleur CAN.
-`CAN_TxHeaderTypeDef * pHeader` pointe vers la structure contenant les infos du header de la trame CAN à envoyer.  
-`uint8_t aData[] buffer` contient les données à envoyer et.  
-`uint32_t * pTxMailbox` pointe vers la boite au lettre de transmission.
   
-La variable `hcan` est elle définie par CubeMX, donc ce sera `hcan1`.
-
-La variable `pHeader` est une structure contenant les champs suivants, que l'on remplit avant de faire appel à `HAL_CAN_AddTxMessage` :
-  
-`.StdId` contient le message ID quand celui-ci est standard (11 bits)  
-`.ExtId` contient le message ID quand celui-ci est étendu (29 bits)  
- `.IDE` définit si la trame est standard (CAN_ID_STD) ou étendue (CAN_ID_EXT)  
-`.RTR` définit si la trame est du type standard (CAN_RTR_DATA) ou RTR (CAN_RTR_REMOTE) (voir le cours)  
-`.DLC` est un entier représentant la taille des données à transmettre (entre 0 et 8)  
-`.TransmitGlobal` dispositif permettant de mesurer les temps de réponse du bus CAN, qu'on utilisera pas. Le fixer à DISABLE
-
 La gestion des priorités sur le bus CAN implique qu'il n'est pas garanti qu'un message puisse être envoyé immédiatement. Pour gérer cela, la fonction `HAL_StatusTypeDef` utilise un mécanisme de boîtes aux lettres : le message est placé dans une boîte aux lettres, où il reste en attente d'être transmis dès que le bus devient disponible. Cette fonction retourne le numéro de la boîte aux lettres via l'argument `pTxMailbox`, ce qui permet de vérifier à tout moment l'état de l'envoi du message à l'aide de la fonction `HAL_CAN_IsTxMessagePending`. Il est également possible d'annuler un message en attente avec la fonction `HAL_CAN_AbortTxRequest`.
-
+  
+C'est pour prendre en compte cette caractéristique des communications CAN que notre fonction `CAN_Send` essaye d'envoyer le message plusieurs fois jusqu'à ce que le nombre d'essais maximum soit atteint, ici `maxRetries = 5`, ou bien le message est envoyé avec succès.  
+  
 ## 5.2. Interfaçage avec le capteur
 
 En reprenant le code des TP précédents, nous avons réussi à faire évoluer le curseur du moteur proportionnellement aux valeurs de température et de pression récupérées par notre capteur associé.
-
+  
 # 6. TP5 - Intégration I²C - Serial - REST - CAN
 **Objectif: Faire marcher ensemble les TP 1, 2, 3 et 4**
   
