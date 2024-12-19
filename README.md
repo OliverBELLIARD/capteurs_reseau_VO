@@ -306,7 +306,7 @@ Le Pi Zero est suffisamment peu puissant pour être alimenté par le port USB de
 ### Préparation du Raspberry
 Téléchargez l'image "Raspberry Pi OS (32-bit) Lite" et installez la sur la carte SD, disponible à cette adresse:  https://www.raspberrypi.org/downloads/raspberry-pi-os/.  
 
-Pour l'installation sur la carte SD, nous avons utilise : Rpi_Imager: https://www.raspberrypi.com/software/  
+Pour l'installation sur la carte SD, nous avons utilisé : Rpi_Imager: https://www.raspberrypi.com/software/  
 
 Rpi_imager va nous permettre de choisir l'image, de la télécharger et de la configurer.
 
@@ -314,13 +314,14 @@ Configuration réseau du routeur utilisé en TP :
 SSID : ESE_Bus_Network  
 Password : ilovelinux  
 
-Pour activer le port série sur connecteur GPIO, sur la partition boot, modifiez le fichier config.txt pour ajouter à la fin les lignes suivantes :  
+Pour activer le port série sur connecteur GPIO, sur la partition boot, on a modifié le fichier config.txt pour ajouter à la fin les lignes suivantes :  
 ```
 enable_uart=1  
 dtoverlay=disable-bt  
 ```
 ### Premier démarrage
-On installe la carte SD dans le Raspberry puis on branche l'alimentation.
+On installe la carte SD dans le Raspberry puis on branche l'alimentation.  
+On peut alors se connecter à notre Raspberry via SSH en utilisant ces IDs : 
 
 > utilisateur : voese  
 > mdp : voese  
@@ -344,27 +345,29 @@ Ensuite, dans la fichier cmdline.txt on doit retirer l'option "console=serial0,1
 
 Pour vérifier si le port série de la Raspberry fonctionne bien, on branche d'abord son TX et RX en loopback et on utilise la commande "minicom -D /dev/ttyAMA0" pour voir si les caractères qu'on rentre nous sont renvoyés, ce qui est vrai dans notre cas donc le port série de la Raspberry est correctement configuré. Pour voir l'attribution de notre arduino nous avons utilisé ce site : https://pinout.xyz/  
 
-On peut maintenant brancher les pins TX/RX de notre Raspberry sur le UART1 du STM32 et notre capteur en I2C sur la STM32. On pense au passage à ne pas oublier de ramener la masse commune à la Raspberry.
+On peut maintenant brancher les pins TX/RX de notre Raspberry sur le UART1 du STM32 et notre capteur en I2C sur la STM32. On pense au passage à ne pas oublier de ramener la masse commune à la Raspberry.  
+
 ## 3.2. Port Série
 ### Loopback
 
-Branchez le port série du Raspberry en boucle: RX sur TX.
-
-Utilisez le logiciel minicom sur le raspberry pour tester le port série.
-
+À fin de tester le bon fonctionnement du port série de notre Raspberry Pi, nous avons mis en place une communication en loopback électriquement. Pour cela, nous avons branché le port série du Raspberry en boucle : RX sur TX.  
+  
+Nous avons ensuite utilisé le logiciel `minicom`, mis en place précédemment sur le Raspberry, pour tester le port série. On lance le logiciel avec la ligne suivante, comme expliqué plus haut :
+```
 minicom -D /dev/ttyAMA0 
+```
 
-Une fois dans minicom configurer le port série en pressant CTRL+A suivi de O. Pensez à déactiver le contrôle de flux matériel (on utilise pas les lignes RTS/CTS).
-
-Écrire quelques lettres au clavier. Si elles s'affichent, le loopback fonctionne (essayez en le débranchant).
-
-CTRL+A Q pour quitter minicom.
-
-
+Une fois dans `minicom`, il faut configurer le port série en pressant `CTRL+A` suivi de `O`.  
+> Pensez à désactiver le contrôle de flux matériel (on n'utilise pas les lignes `RTS/CTS`).  
+  
+Après, il suffit d'écrire quelques lettres au clavier pour vérifier le bon fonctionnement. Quand elles s'affichent, on sait que le loopback fonctionne.  
+  
+Nous pouvons enfin appuyer sur `CTRL+A` puis `Q` pour quitter `minicom`.  
+  
 ### Communication avec la STM32
 /!\\ Attention : pour que le port UART utilisé pour la communication avec le PC (UART over USB) puisse fonctionner, les pins PA2 et PA3 ne sont pas par défaut connectés aux borniers CN9 et CN10. (C'est possible en jouant avec le fer à souder : doc Nucleo 64 page 27).
 
-C'est pourquoi nous devons utiliser un 2ᵉ port UART sur le STM32, qui servira à la communication avec le Raspberry Pi (comme indiqué lors du TP1). Nous avons modifié notre fonction `printf` pour quelle affiche sur les 2 ports série en même temps.
+C'est pourquoi nous devons utiliser un 2ᵉ port UART sur le STM32, qui servira à la communication avec le Raspberry Pi (comme indiqué lors du TP1). Nous avons modifié notre fonction `printf` pour qu'elle envoie des caractères sur les 2 ports série en même temps et pouvoir debugger nos envois de données avec un terminal en écoute de la liaison série.  
 ```c
 /**
  * @brief  Transmit a character over UART.
@@ -379,7 +382,7 @@ int __io_putchar(int ch)
 	return ch;
 }
 ```
-
+  
 Le protocole de communication entre le Raspberry et la STM32 est le suivant:  
 | Requête du RPi | Réponse du STM | Commentaire |
 |----------------|----------------|-------------|
@@ -388,33 +391,34 @@ Le protocole de communication entre le Raspberry et la STM32 est le suivant:
 | SET_K=1234 |	SET_K=OK |	Fixe le coefficient K (en 1/100e) |
 | GET_K |	K=12.34000 |	Coefficient K sur 10 caractères |
 | GET_A |	A=125.7000 | Angle sur 10 caractères |
-
-Les valeurs compensées de P et T pourront être remplacées par les valeurs brutes hexadécimales sur 5 caractères  (20bits) suivis d'un "H", par exemple: T=7F54B2H
-
-Implémentez ce protocole dans le STM32.
-
-Branchez le STM32 sur le Raspberry en prenant soin de croiser les signaux RX et TX. Les 2 fonctionnent en 3,3V donc aucune adaptation de niveau est nécessaire.
-
-Testez ce protocole depuis le Raspberry à l'aide de minicom. Envoyez des ordres manuellement et vérifiez les valeurs renvoyées par le STM32.
+  
+Les valeurs compensées de P et de T pourront être remplacées par les valeurs brutes hexadécimales sur 5 caractères (20 bits) suivis d'un "H", par exemple : T=7F54B2H  
+  
+Ce protocole a été implémenté dans le STM32.  
+> Une des difficultés rencontres lors du développement de la reconnaissance des commandes reçues par la liaison série a été d'utiliser la fonction `strcmp` a la place de la fonction `strncmp` qui prend en compte la longueur et le contenu de deux chaînes de caractères lors de la comparaison.  
+  
+Après nous avons Branche le STM32 sur le Raspberry en prenant soin de croiser les signaux RX et TX. Les 2 fonctionnent en 3,3 V donc aucune adaptation de niveau n'est nécessaire.  
+  
+Tous nos tests pour ce protocole ont été effectués depuis le Raspberry à l'aide de `minicom`, en envoyant des ordres manuellement et en vérifiant les valeurs renvoyées par le STM32. C'est à ce moment-là que nous avons remarqué que nos fonctions de calibrage n'étalonnaient pas correctement nos capteurs. En revanche, les commandes sont reconnues et renvoient des donnes dans le format spécifié.
 
 ## 3.3. Commande depuis Python
 
-Installez pip pour python3 sur le Raspberry:
-```c
+Finalement pour que notre Raspberry puisse héberger une interface  REST nous devons dans un premier installer dessus python 3 et plusieurs librairies :  
+
+```python
 sudo apt update
 sudo apt install python3-pip
 ```
 Installez ensuite la bibliothèque pyserial:
-```c
+```python
 pip3 install pyserial
-```
-À partir de là, la bibliothèque est accessible après: `import serial`
+```  
+À partir de là, la bibliothèque est accessible après avoir effectué un : `import serial`
   
-Plus d'info: https://pyserial.readthedocs.io/en/latest/shortintro.html  
+> Plus d'infos sur : https://pyserial.readthedocs.io/en/latest/shortintro.html   
   
-
-Réalisez un script en Python3 qui permet communiquer avec le STM32. Idéalement, réalisez une fonction par ordre du protocole.  
-
+À partir de là, nous pouvons réaliser un script en Python3 qui permet de communiquer avec le STM32. C'est ce que nous avons fait conjointement avec notre interface REST qui utilise cette fonctionnalité.  
+  
 # 4. TP3 - Interface REST
 ## 4.1. Installation du serveur Python
 
@@ -623,7 +627,7 @@ nous obtenons bel et bien un résultat en json si nous le vérifions sur firefox
 
 ### Erreur 404
 
-Il arrive souvent que les URL demandées soient fausses, il faut donc que votre serveur renvoie une erreur 404.
+Il arrive souvent que les URL demandées soient fausses, il faut donc que notre serveur puisse renvoyer une erreur 404.
 
 En créant un fichier vide en .html, en le nommant `page_not_found.html` et en copiant-collant le contenu du fichier suivant : [page_not_found.html](https://github.com/OliverBELLIARD/capteurs_reseaux_VO_ESE_TP2/blob/main/REST_server/templates/page_not_found.html) dedans, nous avons créé un template vers lequel nous sommes redirigés lorsque l'url entrée est fausse. Il est nécessaire de créer ce fichier dans un répertoire qu'on vient de créer et de nommer `templates`, cette nomenclature étant imposée par flask.
 
@@ -642,25 +646,28 @@ D'autres méthodes auraient pu être utilisées, notamment `redirect` avec `url_
 ## 4.3. Nouvelles métodes HTTP
 ### Méthodes POST, PUT, DELETE…
 
-Pour être encore un peu plus RESTful, votre application doit gérer plusieurs méthodes (verb) HTTP
+Pour être encore un peu plus RESTful, notre application doit gérer plusieurs méthodes (verb) HTTP
 
 ### Méthode POST
 
-Pour essayer une autre méthode, utilisez l’utilitaire `curl` sur linux (par exemple directement depuis le raspberry) de cette manière:
+Pour essayer une autre méthode on peut utiliser l’utilitaire `curl` sur linux (par exemple directement depuis le raspberry).  
+Cette méthode est utilisable si on installe curl au préalable à l'aide de cette ligne de commande :  
 ```
-curl -X POST http://ip.du.pi.0/api/welcome/14
+sudo apt-get install curl
 ```
-ou bien utiliser l’extension RESTED sur firefox.
+Une fois que curl est disponible on peut l'utiliser de la façon suivante :   
+```
+curl -X POST http://192.168.88.235/api/welcome/14
+```
+On peut aussi utiliser l'extension RESTED de Firefox, c'est l'option qu'on a retenu car plus intuitive.    
 
-Normalement, votre raspberry doit vous insulter à coup d’erreur 405…
+Notre Raspberry nous renvoie l'erreur 405. En effet, nous n'avons pas encore ajouté la liste des méthodes acceptées à notre route, on peut remédier à ce probleme en écrivant notre route de cette façon :  
 
-Et oui, il faut ajouter la liste des méthodes acceptées à votre route, par exemple
+@app.route('/api/welcome/<int:index>', methods=['GET','POST'])  
 
-@app.route('/api/welcome/<int:index>', methods=['GET','POST'])
+Mais ajouter la méthode ne suffit pas, il faut aussi que notre fonction réagisse correctement à cette méthode. Dans le cas d’un POST, le corps de la requête contient des informations qui doivent être fournies à notre serveur REST.
 
-Mais ajouter la méthode ne suffit pas, il faut aussi que votre fonction réagisse correctement à cette méthode. Dans le cas d’un POST, le corps de la requête contient des informations qui doivent être fournies à votre serveur.
-
-Testez à l’aide de **RESTED** ou de curl la founction suivante:
+A l'aide de l'extension RESTED de Firefox on teste la fonction suivante :  
 ```python
 @app.route('/api/request/', methods=['GET', 'POST'])
 @app.route('/api/request/<path>', methods=['GET','POST'])
@@ -677,56 +684,55 @@ def api_request(path=None):
                 "data" : request.get_json(),
                 }
     return jsonify(resp)
-```
-Faite en sorte notamment d’obtenir une réponse qui peuple correctement les champs `args` et `data`.
+```  
+On arrive à peupler les champs `args` et `data` en effectuant une requête POST. En effet, dans la fonction fournie le champ "data" se remplit seulement si la requête reçue est un POST.    
 
 ### API CRUD
 
-En reprenant la fonction `api_welcome_index`, ajoutez-y les fonctions CRUD suivantes:  
+Pour que notre serveur soit "rested", il faudrait que celui-ci puisse supporter les requêtes suivantes :  
 
-  ![image](https://github.com/user-attachments/assets/a945682f-f53e-4ba9-adcd-e51e76a22e52)
+![image](https://github.com/user-attachments/assets/ab42c171-8957-459c-b6f2-8ab1d5b5e527)
   
-Pour chaque action, l’échange de donnée doit se faire en JSON, et si une action ne renvoie rien, alors le code status de la réponse doit être modifié. Par exemple, le POST doit retourner un `202 No Content`.
+Pour chaque action, l’échange de donnée devrait se faire en JSON, et si une action ne renvoie rien, alors le code status de la réponse devrait être modifié. Par exemple, le POST doit retourner un `202 No Content`.
   
 Pour les codes de succès HTTP: https://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.2  
+  
+Manquant de temps pour compléter chaque action correctement, nous avons décidé de pleinement supporter les requêtes GET et POST seulement.
 
 ## 4.4. Et encore plus fort...
-
 Le code écrit avec Flask pour créer une API REST est rapide, mais finalement il y a encore beaucoup de redondance...  
   
 Et donc, il y a encore plus fort: FASTAPI, https://fastapi.tiangolo.com/  
   
-En plus d'accélérer encore plus l'écriture du code, FASTAPI est auto-documenté... Essayez de réécrire votre code avec FASTAPI, et allez voir la page [/docs](https://moodle.ensea.fr/docs).  
+En plus d'accélérer encore plus l'écriture du code, FASTAPI est auto-documenté... Pour améliorer encore plus notre serveur, une bonne initiative aurait été de réécrire notre code avec FASTAPI, et aller voir la page [/docs](https://moodle.ensea.fr/docs).  
 
 # 5. TP4 - Bus CAN
 **Objectif: Développement d'une API Rest et mise en place d'un périphérique sur bus CAN**  
+  
+![image](https://github.com/user-attachments/assets/2bcf4369-3ff1-4248-a1cd-389b651174c0)
+  
+Notre carte STM32L476 est équipée d'un contrôleur CAN intégré. Pour pouvoir l'utiliser, il faut lui adjoindre un Transceiver CAN. Ce rôle est donné à un [TJA1050](https://www.nxp.com/docs/en/data-sheet/TJA1050.pdf). Ce composant est alimenté en 5V, mais possède des Entrées / Sorties compatibles en 3,3 V.
 
-  ![image](https://github.com/user-attachments/assets/ccfa4086-71ed-44d9-96b3-1d676e14bd5a)
-
-Les cartes STM32L476 sont équipées d'un contrôleur CAN intégré. Pour pouvoir les utiliser, il faut leur adjoindre un Tranceiver CAN. Ce rôle est dévolu à un TJA1050 (https://www.nxp.com/docs/en/data-sheet/TJA1050.pdf). Ce composant est alimenté en 5V, mais possède des E/S compatibles 3,3V.
-
-Afin de faciliter sa mise en œuvre, ce composant a été installé sur une carte fille (shield) au format Arduino, qui peut donc s'insérer sur les cartes nucléo64:
+Afin de faciliter sa mise en œuvre, ce composant a été installé sur une carte fille (shield) au format Arduino, qui peut donc se brancher sur notre carte nucleo 64.
 
 ![image](https://github.com/user-attachments/assets/bec57e48-b6b1-43a0-a814-62f8f7d9217b) ![image](https://github.com/user-attachments/assets/c7fa8152-261c-42ae-977d-5071e3511d48)
 
-Ce shield possède un connecteur subd9, qui permet de connecter un câble au format CAN. Pour rappel, le brochage de ce connecteur est le suivant:  
-
+Ce shield possède un connecteur subd9, qui nous permet de relier notre STM32 à notre moteur à l'aide d'un câble au format CAN. Pour rappel, le connecteur se broche de cette façon :  
+  
 ![image](https://github.com/user-attachments/assets/10b2e4df-5e11-4b47-ac9c-2ce2b66b547c)
+  
+Seules les broches 2, 3 et 7 sont utilisés sur les câbles à notre disposition.  
+  
+On voit notamment que les lignes CANL et CANH ont été routées en tant que paire différentielle, et qu'une boucle a été ajouté à la ligne CANL pour la mettre à la même longueur que la ligne CANH. Sans quoi nous risquions d'avoir des interférences de par la différence de longueur entre ces deux pistes, ce qui est aurait pu compromettre toute la communication CAN.
+  
+Ce bus CAN va être utilisé pour communiquer avec un module de moteur pas-à-pas. Celui-ci s'alimente en 12v. L'ensemble des informations nécessaires pour utiliser ce module est disponible dans ce document: https://moodle.ensea.fr/mod/resource/view.php?id=1921
+  
+La carte moteur tolère qu'une vitesse CAN de 500kbit/s. Nous avons effectué les rèlages nécessaires sur CubeMX pour atteindre cette vitesse en utilisant le calculateur suivant :  http://www.bittiming.can-wiki.info/
 
-Seules les broches 2, 3 et 7 sont utilisés sur les câbles à votre dispositions.  
-  
-Remarque: Vous pourrez noter que les lignes CANL et CANH ont été routées en tant que paire différentielle, et qu'une boucle a été ajouté à la ligne CANL pour la mettre à la même longueur que la ligne CANH.
-  
-Vous allez utiliser le bus CAN pour piloter un module moteur pas-à-pas. Ce module s'alimente en +12V. L'ensemble des informations nécessaires pour utiliser ce module est disponible dans ce document: https://moodle.ensea.fr/mod/resource/view.php?id=1921
-  
-La carte moteur est un peu capricieuse et ne semble tolérer qu'une vitesse CAN de 500kbit/s. Pensez à régler CubeMx en conséquence.
-Edit 2022: Il semble que ce soit surtout le ratio seg2/(seg1+seg2), qui détermine l'instant de décision, qui doit être aux alentours de 87%. Vous pouvez utiliser le calculateur suivant: http://www.bittiming.can-wiki.info/
+Par ailleurs, les pins du shield qui étaient reliés au CAN tombaient sur l'emplacement qu'on avait d'abord alloué pour la communication I2C sur la STM32, on a donc dû allouer des pins différents en conséquence.
 
 ## 5.1. Pilotage du moteur
-
-Commencez par mettre en place un code simple, qui fait bouger le moteur de 90° dans un sens, puis de 90° dans l'autre, avec une période de 1 seconde.
-
-Vous utiliserez pour cela les primitives HAL suivantes:
+Pour Piloter ce moteur nous avons cherché à lui faire exécuter plusieurs fonctions en utilisant les primitives HAL suivantes:
 ```c
 HAL_StatusTypeDef HAL_CAN_Start (CAN_HandleTypeDef * hcan)
 ```
@@ -736,34 +742,162 @@ HAL_StatusTypeDef HAL_CAN_AddTxMessage (CAN_HandleTypeDef * hcan, CAN_TxHeaderTy
 ```
 pour envoyer un message, où:  
   
-- `CAN_HandleTypeDef * hcan` pointeur vers la structure stockant les informations du contrôleur CAN
-- `CAN_TxHeaderTypeDef * pHeader` pointeur vers une structure stockant les informations du header de la trame CAN à envoyer
-- `uint8_t aData[] buffer` contenant les données à envoyer
-- `uint32_t * pTxMailbox` pointeur vers la boite au lettre de transmission
+`CAN_HandleTypeDef * hcan` pointe vers la structure stockant les infos du contrôleur CAN.
+`CAN_TxHeaderTypeDef * pHeader` pointe vers la structure contenant les infos du header de la trame CAN à envoyer.  
+`uint8_t aData[] buffer` contient les données à envoyer et.  
+`uint32_t * pTxMailbox` pointe vers la boite au lettre de transmission.
   
+La variable `hcan` est définie par CubeMX, donc ce sera `hcan1`.
   
-La variable `hcan` est celle définie par CubeMX, donc normalement ce sera `hcan1` .
+La variable `pHeader` est une structure contenant les champs suivants, que l'on remplit avant de faire appel à `HAL_CAN_AddTxMessage` :
+  
+`.StdId` contient le message ID quand celui-ci est standard (11 bits)  
+`.ExtId` contient le message ID quand celui-ci est étendu (29 bits)  
+ `.IDE` définit si la trame est standard (CAN_ID_STD) ou étendue (CAN_ID_EXT)  
+`.RTR` définit si la trame est du type standard (CAN_RTR_DATA) ou RTR (CAN_RTR_REMOTE) (voir le cours)  
+`.DLC` est un entier représentant la taille des données à transmettre (entre 0 et 8)  
+`.TransmitGlobal` dispositif permettant de mesurer les temps de réponse du bus CAN, qu'on utilisera pas. Le fixer à DISABLE
+  
+Dans un premier temps nous initialisons la communication CAN :  
 
-La variable `pHeader` est une structure contenant les champs suivants, que vous devez remplir avant de faire appel à `HAL_CAN_AddTxMessage` :
-  
-- `.StdId` contient le message ID quand celui-ci est standard (11 bits)
-- `.ExtId` contient le message ID quand celui-ci est étendu (29 bits) 
-- `.IDE` définit si la trame est standard (CAN_ID_STD) ou étendue (CAN_ID_EXT)
-- `.RTR` définit si la trame est du type standard (CAN_RTR_DATA) ou RTR (CAN_RTR_REMOTE) (voir le cours)
-- `.DLC` entier représentant la taille des données à transmettre (entre 0 et 8)
-- `.TransmitGlobal` dispositif permettant de mesurer les temps de réponse du bus CAN, qu'on utilisera pas. Le fixer à DISABLE
-  
-  
-La gestion de priorité du bus CAN fait que l'on ne peux pas être sûr que notre message puisse être envoyé. C'est pourquoi la fonction `HAL_StatusTypeDef` utilise une boîte au lettre: le message est stocké dans la boite au lettre, et sera envoyé dès que le bus le permettra. Cette fonction renvoie le numéro de boîte au lettre via l'argument `pTxMailbox` , qui permet d'interroger l'état de l'envoi du message à n'importe quel moment dan le code (`HAL_CAN_IsTxMessagePending`) et même d'annuler un message en attente (`HAL_CAN_AbortTxRequest`).
+```c
+#define TRUE  1
+#define FALSE 0
 
+int logs;	// Boolean to choose to display logs or not
+
+/**
+ * @brief Initialises the CAN communication
+ */
+void CAN_Init()
+{
+	HAL_StatusTypeDef status;
+	logs = FALSE;
+
+	status = HAL_CAN_Start(&hcan1);
+
+	switch (status)
+	{
+	case HAL_OK:
+		if (logs == TRUE) printf("CAN started successfully.\r\n");
+		break;
+	case HAL_ERROR:
+		if (logs == TRUE) printf("Error: CAN start failed.\r\n");
+		Error_Handler(); // Optional: Go to error handler
+		break;
+	case HAL_BUSY:
+		if (logs == TRUE) printf("Warning: CAN is busy. Retry later.\r\n");
+		// Optional: add retry logic if desired
+		break;
+	case HAL_TIMEOUT:
+		if (logs == TRUE) printf("Error: CAN start timed out.\r\n");
+		Error_Handler(); // Optional: Go to error handler
+		break;
+	default:
+		if (logs == TRUE) printf("Unknown status returned from HAL_CAN_Start.\r\n");
+		Error_Handler(); // Optional: Go to error handler
+		break;
+	}
+}
+```  
+Lors de notre initialisation, nous nous assurons de gérer les différentes erreurs qui peuvent arriver pour rendre notre driver plus robuste.   
+  
+Nous avons ensuite mis au point la fonction permettant d'envoyer nos messages en CAN : 
+
+```c
+/**
+ * @brief Sends a CAN message with retry logic.
+ *
+ * This function attempts to send a message over the CAN bus to a specified
+ * message ID (`msg_id`). If the CAN bus is busy, it will retry sending up to
+ * a maximum number of attempts (`maxRetries`). In case of any other error
+ * (such as timeout or general error), the function will call `Error_Handler()`
+ * to manage the failure.
+ *
+ * @param uint8_t* aData	Pointer to the data buffer containing the message to send.
+ *               			The data should be in the form of an array of `uint8_t`.
+ * @param uint32_t size		Size of the data in bytes (must match the Data Length Code (DLC)
+ * 				 			field in the CAN frame).
+ * @param uint32_t msg_id	CAN message identifier (11-bit standard ID) that defines the
+ *               			destination or type of the message being sent.
+ *
+ * @retval None
+ */
+void CAN_Send(uint8_t * aData, uint32_t size, uint32_t msg_id)
+{
+	HAL_StatusTypeDef status;
+	CAN_TxHeaderTypeDef header;
+	uint32_t txMailbox;
+	int retryCount = 0;
+	const int maxRetries = 5;
+
+	// Initialiser le header
+	header.StdId = msg_id;
+	header.IDE = CAN_ID_STD;
+	header.RTR = CAN_RTR_DATA;
+	header.DLC = size;
+	header.TransmitGlobalTime = DISABLE;
+
+	// Pointer vers les variables locales
+	CAN_TxHeaderTypeDef *pHeader = &header;
+	uint32_t *pTxMailbox = &txMailbox;
+
+	// Attempt to add the CAN message to the transmission mailbox with retry logic
+	do {
+		status = HAL_CAN_AddTxMessage(&hcan1, pHeader, aData, pTxMailbox);
+
+		switch (status)
+		{
+		case HAL_OK:
+			if (logs == TRUE)
+			{
+			printf("CAN message ");
+			for (int i = 0; i<size; i++)
+				printf(" 0x%X", aData[i]);
+			printf(" sent successfully to  0x%X.\r\n", (unsigned int)msg_id);
+			}
+			return;  // Exit the function if the message was sent successfully
+
+		case HAL_BUSY:
+			retryCount++;
+			if (logs == TRUE) printf("Warning: CAN bus is busy, retrying (%d/%d)...\r\n", retryCount, maxRetries);
+			HAL_Delay(10);  // Optional: Add a small delay between retries
+			break;
+
+		case HAL_ERROR:
+			if (logs == TRUE) printf("Error: Failed to send CAN message.\r\n");
+			Error_Handler();  // Optional: Go to error handler for critical failure
+			return;
+
+		case HAL_TIMEOUT:
+			if (logs == TRUE) printf("Error: CAN message send timed out.\r\n");
+			Error_Handler();  // Optional: Go to error handler for timeout
+			return;
+
+		default:
+			if (logs == TRUE) printf("Unknown status returned from HAL_CAN_AddTxMessage.\r\n");
+			Error_Handler();  // Optional: Handle unexpected status
+			return;
+		}
+
+	} while (status == HAL_BUSY && retryCount < maxRetries);
+
+	if (retryCount == maxRetries)
+	{
+		if (logs == TRUE) printf("Error: Exceeded maximum retries for CAN message send.\r\n");
+		Error_Handler();  // Optional: Go to error handler after max retries
+	}
+}
+```  
+  
+La gestion des priorités sur le bus CAN implique qu'il n'est pas garanti qu'un message puisse être envoyé immédiatement. Pour gérer cela, la fonction `HAL_StatusTypeDef` utilise un mécanisme de boîtes aux lettres : le message est placé dans une boîte aux lettres, où il reste en attente d'être transmis dès que le bus devient disponible. Cette fonction retourne le numéro de la boîte aux lettres via l'argument `pTxMailbox`, ce qui permet de vérifier à tout moment l'état de l'envoi du message à l'aide de la fonction `HAL_CAN_IsTxMessagePending`. Il est également possible d'annuler un message en attente avec la fonction `HAL_CAN_AbortTxRequest`.
+  
+C'est pour prendre en compte cette caractéristique des communications CAN que notre fonction `CAN_Send` essaye d'envoyer le message plusieurs fois jusqu'à ce que le nombre d'essais maximum soit atteint, ici `maxRetries = 5`, ou bien le message est envoyé avec succès.  
+  
 ## 5.2. Interfaçage avec le capteur
 
-En reprenant le code des TP précédents, faites en sorte que le mouvement du moteur soit proportionnel à la valeur du capteur.  
+En reprenant le code des TP précédents, nous avons réussi à faire évoluer le curseur du moteur proportionnellement aux valeurs de température et de pression récupérées par notre capteur associé.
   
-Le coefficient de proportionnalité sera stocké dans une variable. Le calcul peut parfaitement se faire à partir de la donnée issue du capteur sous forme binaire (le calcul avec la calibration n'est pas nécessaire à ce stade).  
-  
-Attention: le shield utilisant les pin PB8 et PB9 pour le CAN, vous allez devoir changer les pins du bus I2C, voir même changer de contrôleur I2C. Dans ce dernier cas, il faudra changer les noms de vos variables hi2c1 vers hic2cX.  
-
 # 6. TP5 - Intégration I²C - Serial - REST - CAN
 **Objectif: Faire marcher ensemble les TP 1, 2, 3 et 4**
   
